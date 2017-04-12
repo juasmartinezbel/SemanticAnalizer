@@ -1,6 +1,6 @@
 grammar MyLanguage;
 qb64		: instr* EOF;
-instr		: decl|print;
+instr		: decl|print|input;
 
 decl		: dim | 'const' sufdecl | sufdecl;
 dim			: 'dim' shared ID par 'as' TYPE;
@@ -12,8 +12,14 @@ par 		: (PIZQ pos (COMMA pos)* PDER)|;
 pos			: expr;
 
 print		: 'print' toprintfst ;
-toprintfst	: PYC expr toprint | expr toprint ;
-toprint 	: PYC expr toprint |;
+toprintfst	: toprint* | expr toprint* ;
+toprint 	: PYC expr;
+
+input		: 'input' inpara;
+inpara		: (STRING COMMA idn (inpn)* | idn (inpn)*);
+inpn		: COMMA idn;
+
+
 
 expr:	PIZQ expr PDER
 	|	NEG expr

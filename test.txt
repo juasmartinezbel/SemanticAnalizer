@@ -2,5 +2,7 @@
 'dim u as string
 'const m!(8,9,9,10)= 8+"md"
 m&= u and (9+o!(9,6+7and 6))*7
-print ; 8+9
+print ; 8+9; 1; 3; 5; 7; U; K+6
 print 7 ; n&=15+6 ; "uuu"; n&(8,3=14+6)
+input "asu oe que buen memazo", d, g, h, 8
+input ">:c", u

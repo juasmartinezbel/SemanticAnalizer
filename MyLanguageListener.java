@@ -137,6 +137,36 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitToprint(MyLanguageParser.ToprintContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#input}.
+	 * @param ctx the parse tree
+	 */
+	void enterInput(MyLanguageParser.InputContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#input}.
+	 * @param ctx the parse tree
+	 */
+	void exitInput(MyLanguageParser.InputContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#inpara}.
+	 * @param ctx the parse tree
+	 */
+	void enterInpara(MyLanguageParser.InparaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#inpara}.
+	 * @param ctx the parse tree
+	 */
+	void exitInpara(MyLanguageParser.InparaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#inpn}.
+	 * @param ctx the parse tree
+	 */
+	void enterInpn(MyLanguageParser.InpnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#inpn}.
+	 * @param ctx the parse tree
+	 */
+	void exitInpn(MyLanguageParser.InpnContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#expr}.
 	 * @param ctx the parse tree
 	 */
