@@ -27,6 +27,16 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitInstr(MyLanguageParser.InstrContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#functionsub}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionsub(MyLanguageParser.FunctionsubContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#functionsub}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionsub(MyLanguageParser.FunctionsubContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#decl}.
 	 * @param ctx the parse tree
 	 */
@@ -46,6 +56,16 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDim(MyLanguageParser.DimContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#idim}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdim(MyLanguageParser.IdimContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#idim}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdim(MyLanguageParser.IdimContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#shared}.
 	 * @param ctx the parse tree
@@ -86,6 +106,16 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSuf(MyLanguageParser.SufContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#sufix}.
+	 * @param ctx the parse tree
+	 */
+	void enterSufix(MyLanguageParser.SufixContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#sufix}.
+	 * @param ctx the parse tree
+	 */
+	void exitSufix(MyLanguageParser.SufixContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#par}.
 	 * @param ctx the parse tree
@@ -277,6 +307,146 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitCaselse(MyLanguageParser.CaselseContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#whilec}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhilec(MyLanguageParser.WhilecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#whilec}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhilec(MyLanguageParser.WhilecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#doc}.
+	 * @param ctx the parse tree
+	 */
+	void enterDoc(MyLanguageParser.DocContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#doc}.
+	 * @param ctx the parse tree
+	 */
+	void exitDoc(MyLanguageParser.DocContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#tdoc}.
+	 * @param ctx the parse tree
+	 */
+	void enterTdoc(MyLanguageParser.TdocContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#tdoc}.
+	 * @param ctx the parse tree
+	 */
+	void exitTdoc(MyLanguageParser.TdocContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#fun}.
+	 * @param ctx the parse tree
+	 */
+	void enterFun(MyLanguageParser.FunContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#fun}.
+	 * @param ctx the parse tree
+	 */
+	void exitFun(MyLanguageParser.FunContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#funidn}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunidn(MyLanguageParser.FunidnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#funidn}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunidn(MyLanguageParser.FunidnContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#sub}.
+	 * @param ctx the parse tree
+	 */
+	void enterSub(MyLanguageParser.SubContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#sub}.
+	 * @param ctx the parse tree
+	 */
+	void exitSub(MyLanguageParser.SubContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#subidn}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubidn(MyLanguageParser.SubidnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#subidn}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubidn(MyLanguageParser.SubidnContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#parfu}.
+	 * @param ctx the parse tree
+	 */
+	void enterParfu(MyLanguageParser.ParfuContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#parfu}.
+	 * @param ctx the parse tree
+	 */
+	void exitParfu(MyLanguageParser.ParfuContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#arg}.
+	 * @param ctx the parse tree
+	 */
+	void enterArg(MyLanguageParser.ArgContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#arg}.
+	 * @param ctx the parse tree
+	 */
+	void exitArg(MyLanguageParser.ArgContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#argpa}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgpa(MyLanguageParser.ArgpaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#argpa}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgpa(MyLanguageParser.ArgpaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#argn}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgn(MyLanguageParser.ArgnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#argn}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgn(MyLanguageParser.ArgnContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#call}.
+	 * @param ctx the parse tree
+	 */
+	void enterCall(MyLanguageParser.CallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#call}.
+	 * @param ctx the parse tree
+	 */
+	void exitCall(MyLanguageParser.CallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#callarg}.
+	 * @param ctx the parse tree
+	 */
+	void enterCallarg(MyLanguageParser.CallargContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#callarg}.
+	 * @param ctx the parse tree
+	 */
+	void exitCallarg(MyLanguageParser.CallargContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#calln}.
+	 * @param ctx the parse tree
+	 */
+	void enterCalln(MyLanguageParser.CallnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#calln}.
+	 * @param ctx the parse tree
+	 */
+	void exitCalln(MyLanguageParser.CallnContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#expr}.
 	 * @param ctx the parse tree
 	 */
@@ -297,6 +467,26 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitEqudi(MyLanguageParser.EqudiContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#neg}.
+	 * @param ctx the parse tree
+	 */
+	void enterNeg(MyLanguageParser.NegContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#neg}.
+	 * @param ctx the parse tree
+	 */
+	void exitNeg(MyLanguageParser.NegContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#addi}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddi(MyLanguageParser.AddiContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#addi}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddi(MyLanguageParser.AddiContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#valuev}.
 	 * @param ctx the parse tree
 	 */
@@ -316,4 +506,14 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitValue(MyLanguageParser.ValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#idnp}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdnp(MyLanguageParser.IdnpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#idnp}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdnp(MyLanguageParser.IdnpContext ctx);
 }
