@@ -6,11 +6,14 @@
 'print 7 ; n&=15+6 ; "uuu"; n&(8,3=14+6)
 'input "asu oe que buen memazo", d, g, h, 8
 'input ">:c", u
-if u&(8,9)>8 then
-	if 4 then
-	elseif 5 then
-	elseif 6 then
-	end if
-else
-	print 7
-end if
+'if u&(8,9)>8 then
+'	if 4 then
+''	elseif 5 then
+''	elseif 6 then
+''	end if
+'else
+''	print 7
+'end if
+
+for i! = 6 to k(8,9)
+next

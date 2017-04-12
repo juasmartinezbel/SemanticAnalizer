@@ -1,6 +1,6 @@
 grammar MyLanguage;
 qb64		: instr* EOF;
-instr		: decl|print|input|ifc;
+instr		: decl|print|input|ifc|forc;
 
 decl		: dim | 'const' sufdecl | sufdecl;
 dim			: 'dim' shared ID par 'as' TYPE;
@@ -23,6 +23,13 @@ ifc 		: 'if' expr 'then' instr* ifter;
 ifter		: 'elseif' expr 'then' instr* ifter 
 			| 'else' instr* 'end' 'if'
 			| 'end' 'if';
+
+forc		: 'for'	forexpr tofor step instr* 'next';
+forexpr		: ID forsuf EQUAL tothis;
+forsuf		: (SUFN|);
+tothis		: (ID suf| value);
+tofor 		: 'to' tothis;
+step		: ('step' tothis|);
 
 expr:	PIZQ expr PDER
 	|	NEG expr
@@ -53,7 +60,8 @@ AND			: ('and');
 OR			: ('or'|'xor');
 PYC			: ';';
 COMMA		: ',';
-SUF 		: ('&'|'!'|'%'|'#'|'$');
+SUFN 		: ('&'|'!'|'%'|'#');
+SUF 		: (SUFN|'$');
 TYPE		: ('string'|'double'|'single'|'long'|'integer') ;
 INTEGER		: ([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]|[0-3][0-2][0-7][0-6][0-7]);
 LONG		: [0-9]+;

@@ -187,6 +187,66 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitIfter(MyLanguageParser.IfterContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#forc}.
+	 * @param ctx the parse tree
+	 */
+	void enterForc(MyLanguageParser.ForcContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#forc}.
+	 * @param ctx the parse tree
+	 */
+	void exitForc(MyLanguageParser.ForcContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#forexpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterForexpr(MyLanguageParser.ForexprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#forexpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitForexpr(MyLanguageParser.ForexprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#forsuf}.
+	 * @param ctx the parse tree
+	 */
+	void enterForsuf(MyLanguageParser.ForsufContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#forsuf}.
+	 * @param ctx the parse tree
+	 */
+	void exitForsuf(MyLanguageParser.ForsufContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#tothis}.
+	 * @param ctx the parse tree
+	 */
+	void enterTothis(MyLanguageParser.TothisContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#tothis}.
+	 * @param ctx the parse tree
+	 */
+	void exitTothis(MyLanguageParser.TothisContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#tofor}.
+	 * @param ctx the parse tree
+	 */
+	void enterTofor(MyLanguageParser.ToforContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#tofor}.
+	 * @param ctx the parse tree
+	 */
+	void exitTofor(MyLanguageParser.ToforContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#step}.
+	 * @param ctx the parse tree
+	 */
+	void enterStep(MyLanguageParser.StepContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#step}.
+	 * @param ctx the parse tree
+	 */
+	void exitStep(MyLanguageParser.StepContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#expr}.
 	 * @param ctx the parse tree
 	 */
