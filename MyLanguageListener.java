@@ -107,6 +107,36 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitPos(MyLanguageParser.PosContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrint(MyLanguageParser.PrintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrint(MyLanguageParser.PrintContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#toprintfst}.
+	 * @param ctx the parse tree
+	 */
+	void enterToprintfst(MyLanguageParser.ToprintfstContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#toprintfst}.
+	 * @param ctx the parse tree
+	 */
+	void exitToprintfst(MyLanguageParser.ToprintfstContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#toprint}.
+	 * @param ctx the parse tree
+	 */
+	void enterToprint(MyLanguageParser.ToprintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#toprint}.
+	 * @param ctx the parse tree
+	 */
+	void exitToprint(MyLanguageParser.ToprintContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#expr}.
 	 * @param ctx the parse tree
 	 */
@@ -116,6 +146,16 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpr(MyLanguageParser.ExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#equdi}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqudi(MyLanguageParser.EqudiContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#equdi}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqudi(MyLanguageParser.EqudiContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#value}.
 	 * @param ctx the parse tree

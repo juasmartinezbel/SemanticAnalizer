@@ -1,15 +1,19 @@
 grammar MyLanguage;
 qb64		: instr* EOF;
-instr		: decl;
+instr		: decl|print;
 
 decl		: dim | 'const' sufdecl | sufdecl;
 dim			: 'dim' shared ID par 'as' TYPE;
 shared		: 'shared'| ;
-sufdecl		: idn '=' expr;
+sufdecl		: idn EQUAL expr;
 idn			: ID suf;
 suf 		: (SUF | ) (par);
 par 		: (PIZQ pos (COMMA pos)* PDER)|;
 pos			: expr;
+
+print		: 'print' toprintfst ;
+toprintfst	: PYC expr toprint | expr toprint ;
+toprint 	: PYC expr toprint |;
 
 expr:	PIZQ expr PDER
 	|	NEG expr
@@ -17,12 +21,13 @@ expr:	PIZQ expr PDER
 	|	expr MULT expr
     |	expr ADD expr
     |	expr REL expr
-    |	expr EQUDI expr
+    |	expr equdi expr
     |	expr AND expr
     | 	expr OR expr
     |	value
     ;
-value: (INTEGER|LONG|DOUBLE|SINGLE|INTEGER|STRING|idn);
+equdi 	: (EQUAL|DIF);
+value	: (INTEGER|LONG|DOUBLE|SINGLE|INTEGER|STRING|idn);
 
 COMMENT 	:'\'' ~[\r\n]* -> skip;
 WS			: [ \t\r\n]+ -> skip ;
@@ -33,7 +38,8 @@ POT			: '^' ;
 MULT		: ('*'|'/'|'mod');
 ADD			: ('+'|'-');
 REL			: ( '<' | '<=' | '>' | '>=');
-EQUDI		: ('=' | '<>');
+EQUAL		: '=';
+DIF			: '<>';
 AND			: ('and');
 OR			: ('or'|'xor');
 PYC			: ';';
