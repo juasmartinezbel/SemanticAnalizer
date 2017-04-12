@@ -247,6 +247,36 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitStep(MyLanguageParser.StepContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#selectc}.
+	 * @param ctx the parse tree
+	 */
+	void enterSelectc(MyLanguageParser.SelectcContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#selectc}.
+	 * @param ctx the parse tree
+	 */
+	void exitSelectc(MyLanguageParser.SelectcContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#cases}.
+	 * @param ctx the parse tree
+	 */
+	void enterCases(MyLanguageParser.CasesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#cases}.
+	 * @param ctx the parse tree
+	 */
+	void exitCases(MyLanguageParser.CasesContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#caselse}.
+	 * @param ctx the parse tree
+	 */
+	void enterCaselse(MyLanguageParser.CaselseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#caselse}.
+	 * @param ctx the parse tree
+	 */
+	void exitCaselse(MyLanguageParser.CaselseContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#expr}.
 	 * @param ctx the parse tree
 	 */
@@ -266,6 +296,16 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEqudi(MyLanguageParser.EqudiContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#valuev}.
+	 * @param ctx the parse tree
+	 */
+	void enterValuev(MyLanguageParser.ValuevContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#valuev}.
+	 * @param ctx the parse tree
+	 */
+	void exitValuev(MyLanguageParser.ValuevContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#value}.
 	 * @param ctx the parse tree

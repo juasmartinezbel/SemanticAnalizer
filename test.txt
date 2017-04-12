@@ -1,19 +1,7 @@
-'dim i(32767, 23, u$(5,6,7,i(7,8,9))) as integer
-'dim u as string
-'const m!(8,9,9,10)= 8+"md"
-'m&= u and (9+o!(9,6+7and 6))*7
-'print ; 8+9; 1; 3; 5; 7; U; K+6
-'print 7 ; n&=15+6 ; "uuu"; n&(8,3=14+6)
-'input "asu oe que buen memazo", d, g, h, 8
-'input ">:c", u
-'if u&(8,9)>8 then
-'	if 4 then
-''	elseif 5 then
-''	elseif 6 then
-''	end if
-'else
-''	print 7
-'end if
-
-for i! = 6 to k(8,9)
-next
+select case i
+case 1
+case "ff"
+case "u"
+ for i=9 to 10
+ next
+end select 

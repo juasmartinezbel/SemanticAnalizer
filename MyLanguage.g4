@@ -1,6 +1,6 @@
 grammar MyLanguage;
 qb64		: instr* EOF;
-instr		: decl|print|input|ifc|forc;
+instr		: decl|print|input|ifc|forc|selectc;
 
 decl		: dim | 'const' sufdecl | sufdecl;
 dim			: 'dim' shared ID par 'as' TYPE;
@@ -31,6 +31,10 @@ tothis		: (ID suf| value);
 tofor 		: 'to' tothis;
 step		: ('step' tothis|);
 
+selectc		: 'select' 'case' idn cases* caselse 'end' 'select';
+cases		: 'case' valuev instr*;
+caselse		: ('case' 'else' instr*| );
+
 expr:	PIZQ expr PDER
 	|	NEG expr
 	|	POT expr
@@ -43,7 +47,8 @@ expr:	PIZQ expr PDER
     |	value
     ;
 equdi 	: (EQUAL|DIF);
-value	: (INTEGER|LONG|DOUBLE|SINGLE|INTEGER|STRING|idn);
+valuev	: (INTEGER|LONG|DOUBLE|SINGLE|INTEGER|STRING);
+value	: (valuev|idn);
 
 COMMENT 	:'\'' ~[\r\n]* -> skip;
 WS			: [ \t\r\n]+ -> skip ;
