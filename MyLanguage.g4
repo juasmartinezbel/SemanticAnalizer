@@ -1,6 +1,6 @@
 grammar MyLanguage;
 qb64		: instr* EOF;
-instr		: decl|print|input;
+instr		: decl|print|input|ifc;
 
 decl		: dim | 'const' sufdecl | sufdecl;
 dim			: 'dim' shared ID par 'as' TYPE;
@@ -19,7 +19,10 @@ input		: 'input' inpara;
 inpara		: (STRING COMMA idn (inpn)* | idn (inpn)*);
 inpn		: COMMA idn;
 
-
+ifc 		: 'if' expr 'then' instr* ifter;
+ifter		: 'elseif' expr 'then' instr* ifter 
+			| 'else' instr* 'end' 'if'
+			| 'end' 'if';
 
 expr:	PIZQ expr PDER
 	|	NEG expr
