@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="classes.MyLanguageParser"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.Qb64Context"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.DeclContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.DimContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.ToprintfstContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.ToprintContext"/>
+</qualifiedTypeNameHistroy>

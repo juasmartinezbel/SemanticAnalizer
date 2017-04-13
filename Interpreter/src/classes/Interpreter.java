@@ -8,7 +8,7 @@ import org.antlr.v4.runtime.tree.*;
 public class Interpreter {
 
 	public static void main(String [] args) throws Exception{
-		System.setIn(new FileInputStream(new File("input.txt")));
+		/*System.setIn(new FileInputStream(new File("input.txt")));
 		ANTLRInputStream input = new ANTLRInputStream(System.in);
 		MyLanguageLexer lexer = new MyLanguageLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -17,6 +17,45 @@ public class Interpreter {
 
 
 		MyVisitor<Object> loader = new MyVisitor<Object>();
-		loader.visit(tree);
+		loader.visit(tree);*/
+	}
+
+	public Object operand(Object num1, Object num2){
+		String t1=TypeOf(num1);
+		String t2=TypeOf(num2);
+		if(t1.equals("double")){
+			double nNum1= (double) num1;
+		}else if (t1.equals("long")){
+			long nNum2= (long) num1;
+		}else if (t1.equals("integer")){
+			int nNum1= (int) num1;
+		}else if (t1.equals("float")){
+			float nNum1= (float) num1;
+		}
+		if(t2.equals("double")){
+			double nNum2= (double) num2;
+		}else if (t2.equals("long")){
+			long nNum2= (long) num2;
+		}else if (t2.equals("integer")){
+			int nNum2= (int) num2;
+		}else if (t2.equals("float")){
+			float nNum2= (float) num2;
+		}
+		
+		return null;
+	}
+	
+	public static String TypeOf (Object T){
+		if(T instanceof String){
+			return "string";
+		}else if(T instanceof Integer){
+			return "integer";
+		}else if(T instanceof Double){
+			return "double";
+		}else if (T instanceof Float){
+			return "float";
+		}else{
+			return "long";
+		}
 	}
 }

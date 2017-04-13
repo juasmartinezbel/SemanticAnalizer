@@ -1,0 +1,49 @@
+package classes;
+import java.io.File;
+import java.io.FileInputStream;
+
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.*;
+
+public class Interpreter {
+
+	public static void main(String [] args) throws Exception{
+		/*System.setIn(new FileInputStream(new File("input.txt")));
+		ANTLRInputStream input = new ANTLRInputStream(System.in);
+		MyLanguageLexer lexer = new MyLanguageLexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		MyLanguageParser parser = new MyLanguageParser(tokens);
+		ParseTree tree = parser.qb64();
+
+
+		MyVisitor<Object> loader = new MyVisitor<Object>();
+		loader.visit(tree);*/
+	  Integer j= 89;
+	  Float   u= 8999f;
+	  //Object [] v = (Object[]) operand(j, u);
+	  Object v=operand(3,4);
+	  System.out.println(v.getClass().getName());
+	}
+
+	public static Object operand(Object num1, Object num2){
+		String t1=TypeOf(num1);
+		String t2=TypeOf(num2);
+		double i= 8.99;
+		return i;
+		
+	}
+	
+	public static String TypeOf (Object T){
+		if(T instanceof String){
+			return "string";
+		}else if(T instanceof Integer){
+			return "integer";
+		}else if(T instanceof Double){
+			return "double";
+		}else if (T instanceof Float){
+			return "float";
+		}else{
+			return "long";
+		}
+	}
+}
