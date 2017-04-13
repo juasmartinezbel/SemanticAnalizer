@@ -194,27 +194,15 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					}
 				}
 			}
-			
-			
-		/*
-		 * 
-		 * Operadores binarios
-		 * 	
-		*/	
 		// ^		
 		}else{ 
 		int line1=ctx.expr(1).getToken(0,0).getSymbol().getLine();
 		int col1= ctx.expr(1).getToken(0,0).getSymbol().getCharPositionInLine();
-		Object i=visitExpr(ctx.expr(0));
-		Object j=visitExpr(ctx.expr(1));	
-		String ti=TypeOf(i);
-		String tj=TypeOf(j);
-		Object [] ope = new Object [2];
-		String operand;
-		Integer ans;
-		
 		if(ctx.POT()!=null){
-			String op=ctx.POT().getText();
+			Object i=visitExpr(ctx.expr(0));
+			Object j=visitExpr(ctx.expr(1));	
+			String ti=TypeOf(i);
+			String tj=TypeOf(j);
 			if (ti.equals("string")||tj.equals("string")){
 				String [] should={"double", "integer", "long", "single"};
 				if (ti.equals("string"))
@@ -223,26 +211,28 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					error_types("string", should, line1, col1);
 
 			}else{
-				ope = operand(i, j);
-				operand= TypeOfOperands(ope);
+				Object [] op = operand(i, j);
+				String operand= TypeOfOperands(op);
 				if(operand.equals("integer")){
-					Integer potencia= (int)Math.pow(((int)ope[0]),((int)ope[1]));
+					Integer potencia= (int)Math.pow(((int)op[0]),((int)op[1]));
 					return (T) potencia;
 				}else if(operand.equals("long")){
-					Long potencia= (long) Math.pow(((long)ope[0]),((long)ope[1]));
+					Long potencia= (long) Math.pow(((long)op[0]),((long)op[1]));
 					return (T) potencia;
 				}else if(operand.equals("float")){
-					Float potencia=(float) Math.pow(((float)ope[0]),((float)ope[1]));
+					Float potencia=(float) Math.pow(((float)op[0]),((float)op[1]));
 					return (T) potencia;
 				}else{
-					Double potencia=(double) Math.pow(((double)ope[0]),((double)ope[1]));
+					Double potencia=(double) Math.pow(((double)op[0]),((double)op[1]));
 					return (T) potencia;
 				}
 			}
 		//Mult
 		}else if(ctx.MULT()!=null){
-			String op=ctx.MULT().getText();
-			
+			Object i=visitExpr(ctx.expr(0));
+			Object j=visitExpr(ctx.expr(1));	
+			String ti=TypeOf(i);
+			String tj=TypeOf(j);
 			if (ti.equals("string")||tj.equals("string")){
 				String [] should={"double", "integer", "long", "single"};
 				if (ti.equals("string"))
@@ -250,8 +240,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				else if(tj.equals("string"))
 					error_types("string", should, line1, col1);
 			}else{
-				ope = operand(i, j);
-				operand= TypeOfOperands(ope);
+				String op=ctx.MULT().getText();
+				Object [] ope = operand(i, j);
+				String operand= TypeOfOperands(ope);
 				switch(op){
 					case "*":
 						if(operand.equals("integer")){
@@ -317,6 +308,13 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		}else if(ctx.addi()!=null){
 			String op=ctx.addi().getText();
 
+				
+			Object i=visitExpr(ctx.expr(0));
+			Object j=visitExpr(ctx.expr(1));	
+			String ti=TypeOf(i);
+			String tj=TypeOf(j);
+			Object [] ope = new Object [2];
+			String operand;
 			switch(op){
 				case "+":
 					if (ti.equals("string") && tj.equals("string")){
@@ -377,10 +375,16 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			
 		//Relational
 		}else if(ctx.REL()!=null){
+			String op=ctx.REL().getText();
+			Object i=visitExpr(ctx.expr(0));
+			Object j=visitExpr(ctx.expr(1));	
+			String ti=TypeOf(i);
+			String tj=TypeOf(j);
+			Object [] ope = new Object [2];
+			String operand;
+			Integer ans;
 			//a.comparedTo(b)
 			//a>b=-1	
-			String op=ctx.REL().getText();
-
 			switch(op){
 			case ">":
 				//Para Strings
@@ -559,183 +563,6 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				System.out.println("What");
 				System.exit(-1);
 				break;
-			}
-			
-			
-			
-			
-		///= and <>
-		}else if (ctx.equdi()!=null){
-			String op=ctx.equdi().getText();
-			switch(op){
-				case "=":
-					//Para Strings
-					if (ti.equals("string") && tj.equals("string")){
-
-						boolean res=(i.toString()).equals(j.toString());
-						ans= boolQB64(res);
-						return (T) ans;
-					}else if (ti.equals("string")){
-						String[] u={"string"};
-						error_types(QB64Type(tj), u, line1, col1);
-					}else if (tj.equals("string")){
-						String [] should={"double", "integer", "long", "single"};
-						error_types(QB64Type(tj), should, line0, col0);
-					}
-
-					ope = operand(i, j);
-					operand= TypeOfOperands(ope);
-					
-					if(operand.equals("integer")){
-						boolean sub= (((int)ope[0])==((int)ope[1]));
-						Integer res= boolQB64(sub);
-						return (T) res;
-					}else if(operand.equals("long")){
-						boolean sub= (((long)ope[0])==((long)ope[1]));
-						Integer res= boolQB64(sub);
-						return (T) res;
-					}else if(operand.equals("float")){
-						boolean sub=(((float)ope[0])==((float)ope[1]));
-						Integer res= boolQB64(sub);
-						return (T) res;
-					}else if(operand.equals("double")){
-						boolean sub=(((double)ope[0])==((double)ope[1]));
-						Integer res= boolQB64(sub);
-						return (T) res;
-					}
-					
-					System.out.println("What");
-					System.exit(-1);
-					break;
-				case "<>":
-					if (ti.equals("string") && tj.equals("string")){
-						boolean res=(i.toString()).equals(j.toString());
-						ans= boolQB64(!res);
-						return (T) ans;
-					}else if (ti.equals("string")){
-						String[] u={"string"};
-						error_types(QB64Type(tj), u, line1, col1);
-					}else if (tj.equals("string")){
-						String [] should={"double", "integer", "long", "single"};
-						error_types(QB64Type(tj), should, line0, col0);
-					}
-					
-
-					ope = operand(i, j);
-					operand= TypeOfOperands(ope);
-					
-					if(operand.equals("integer")){
-						boolean sub= (((int)ope[0])!=((int)ope[1]));
-						Integer res= boolQB64(sub);
-						return (T) res;
-					}else if(operand.equals("long")){
-						boolean sub= (((long)ope[0])!=((long)ope[1]));
-						Integer res= boolQB64(sub);
-						return (T) res;
-					}else if(operand.equals("float")){
-						boolean sub=(((float)ope[0])!=((float)ope[1]));
-						Integer res= boolQB64(sub);
-						return (T) res;
-					}else if(operand.equals("double")){
-						boolean sub=(((double)ope[0])!=((double)ope[1]));
-						Integer res= boolQB64(sub);
-						return (T) res;
-					}
-					
-					System.out.println("What");
-					System.exit(-1);
-					break;
-			}
-		
-		///and
-		}else if (ctx.AND()!=null){
-			String [] should={"double", "integer", "long", "single"};
-			if (ti.equals("string")){
-				error_types("string", should, line0, col0);
-			}else if (tj.equals("string")){
-				error_types("string", should, line1, col1);				
-			}
-			
-			ope = operand(i, j);
-			operand= TypeOfOperands(ope);
-			
-			if(operand.equals("integer")){
-				int sub= (((int)ope[0])&((int)ope[1]));
-				Integer and=sub;
-				return (T) and;
-			}else if(operand.equals("long")){
-				long sub= (((long)ope[0])&((long)ope[1]));
-				Long and=sub;
-				return (T) and;
-			}else if(operand.equals("float")){
-				int sub=((int)((float)ope[0])&((int)(float)ope[1]));
-				Integer and=sub;
-				return (T) and;
-			}else if(operand.equals("double")){
-				long sub=(((long)(double)ope[0])&((long)(double)ope[1]));
-				Long and=sub;
-				return (T) and;
-			}else{
-				System.out.println("What");
-				System.exit(-1);
-			}
-			
-			
-			
-		//XOR y OR
-		}else if(ctx.OR()!=null){
-			String [] should={"double", "integer", "long", "single"};
-			if (ti.equals("string")){
-				error_types("string", should, line0, col0);
-			}else if (tj.equals("string")){
-				error_types("string", should, line1, col1);				
-			}
-			String op=ctx.OR().getText();
-			ope = operand(i, j);
-			operand= TypeOfOperands(ope);
-			switch(op){
-				case("or"):
-					if(operand.equals("integer")){
-						int sub= (((int)ope[0])|((int)ope[1]));
-						Integer and=sub;
-						return (T) and;
-					}else if(operand.equals("long")){
-						long sub= (((long)ope[0])|((long)ope[1]));
-						Long and=sub;
-						return (T) and;
-					}else if(operand.equals("float")){
-						int sub=((int)((float)ope[0])|((int)(float)ope[1]));
-						Integer and=sub;
-						return (T) and;
-					}else if(operand.equals("double")){
-						long sub=(((long)(double)ope[0])|((long)(double)ope[1]));
-						Long and=sub;
-						return (T) and;
-					}else{
-						System.out.println("What");
-						System.exit(-1);
-					}
-				case("xor"):
-					if(operand.equals("integer")){
-						int sub= (((int)ope[0])^((int)ope[1]));
-						Integer and=sub;
-						return (T) and;
-					}else if(operand.equals("long")){
-						long sub= (((long)ope[0])^((long)ope[1]));
-						Long and=sub;
-						return (T) and;
-					}else if(operand.equals("float")){
-						int sub=((int)((float)ope[0])^((int)(float)ope[1]));
-						Integer and=sub;
-						return (T) and;
-					}else if(operand.equals("double")){
-						long sub=(((long)(double)ope[0])^((long)(double)ope[1]));
-						Long and=sub;
-						return (T) and;
-					}else{
-						System.out.println("What");
-						System.exit(-1);
-					}
 			}
 		}
 		

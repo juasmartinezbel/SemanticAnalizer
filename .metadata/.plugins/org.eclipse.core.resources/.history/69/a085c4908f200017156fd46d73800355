@@ -18,5 +18,6 @@ public class Interpreter {
 
 		MyVisitor<Object> loader = new MyVisitor<Object>();
 		loader.visit(tree);*/
+		System.out.println(7&&8);
 	}
 }

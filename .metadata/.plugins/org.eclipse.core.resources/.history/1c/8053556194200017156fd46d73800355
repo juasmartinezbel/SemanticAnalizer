@@ -242,7 +242,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		//Mult
 		}else if(ctx.MULT()!=null){
 			String op=ctx.MULT().getText();
-			
+
 			if (ti.equals("string")||tj.equals("string")){
 				String [] should={"double", "integer", "long", "single"};
 				if (ti.equals("string"))
@@ -250,8 +250,6 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				else if(tj.equals("string"))
 					error_types("string", should, line1, col1);
 			}else{
-				ope = operand(i, j);
-				operand= TypeOfOperands(ope);
 				switch(op){
 					case "*":
 						if(operand.equals("integer")){
