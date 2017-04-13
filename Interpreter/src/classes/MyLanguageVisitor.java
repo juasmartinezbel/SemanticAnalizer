@@ -47,6 +47,12 @@ public interface MyLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIdim(MyLanguageParser.IdimContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MyLanguageParser#idimnext}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdimnext(MyLanguageParser.IdimnextContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MyLanguageParser#shared}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -82,6 +88,12 @@ public interface MyLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPar(MyLanguageParser.ParContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLanguageParser#postn}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPostn(MyLanguageParser.PostnContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MyLanguageParser#pos}.
 	 * @param ctx the parse tree

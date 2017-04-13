@@ -1,0 +1,20 @@
+package classes;
+
+import classes.MyLanguageParser.*;
+
+public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
+	
+	@Override
+	public T visitQb64 (MyLanguageParser.Qb64Context ctx) {
+	    List<MyLanguageParser.InstructionContext> instruction = ctx.instruction();
+	    List<MyLanguageParser.FunctionSubContext> functionSub = ctx.functionSub();
+
+	    for (MyLanguageParser.FunctionSubContext f : functionSub)
+	        visit(f);
+
+	    for (MyLanguageParser.InstructionContext i : instruction)
+	        visit(i);
+
+	    return null;
+	}​
+}

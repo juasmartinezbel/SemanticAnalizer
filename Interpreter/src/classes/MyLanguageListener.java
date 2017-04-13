@@ -68,6 +68,16 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitIdim(MyLanguageParser.IdimContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#idimnext}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdimnext(MyLanguageParser.IdimnextContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#idimnext}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdimnext(MyLanguageParser.IdimnextContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#shared}.
 	 * @param ctx the parse tree
 	 */
@@ -127,6 +137,16 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPar(MyLanguageParser.ParContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#postn}.
+	 * @param ctx the parse tree
+	 */
+	void enterPostn(MyLanguageParser.PostnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#postn}.
+	 * @param ctx the parse tree
+	 */
+	void exitPostn(MyLanguageParser.PostnContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#pos}.
 	 * @param ctx the parse tree

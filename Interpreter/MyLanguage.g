@@ -15,13 +15,16 @@ functionsub : fun
 
 decl		: dim | 'const' sufdecl | sufdecl;
 dim			: 'dim' shared idim 'as' TYPE;
-idim 		: ID par (COMMA ID par)*;
+idim 		: ID par idimnext*;
+idimnext	: COMMA ID par;
 shared		: 'shared'| ;
+
 sufdecl		: idn EQUAL expr;
 idn			: ID suf;
 suf 		: sufix (par);
 sufix 		: (SUFN | SUFS |);
-par 		: (PIZQ pos (COMMA pos)* PDER)|;
+par 		: (PIZQ pos postn* PDER)|;
+postn		: COMMA pos ;
 pos			: expr;
 
 print		: 'print' toprintfst ;
@@ -79,6 +82,7 @@ expr:	PIZQ expr PDER
     | 	expr OR expr
     |	value
     ;
+    
 equdi 	: (EQUAL|DIF);
 neg 	: (NEG|MINUS);
 addi	: (ADD|MINUS);

@@ -1,0 +1,53 @@
+package classes;
+
+import java.util.HashMap;
+import java.util.List;
+
+import classes.MyLanguageParser.*;
+
+public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
+	HashMap<HashMap,HashMap> table = new HashMap<>();
+	//HashMap<String, Object> type = new HashMap<>();
+	@Override
+	public T visitQb64 (MyLanguageParser.Qb64Context ctx) {
+	    List<MyLanguageParser.InstrContext> instruction = ctx.instr();
+	    //List<MyLanguageParser.FunctionsubContext> functionSub = ctx.functionsub();
+
+	    //for (MyLanguageParser.FunctionsubContext f : functionSub)
+	    //    visit(f);
+
+	    for (MyLanguageParser.InstrContext i : instruction)
+	        visit(i);
+
+	    return null;
+	}
+	
+	@Override
+	public T visitInstr(MyLanguageParser.InstrContext ctx) {
+		return visitChildren(ctx);
+	}
+	
+	@Override
+	public T visitDecl(MyLanguageParser.DeclContext ctx) {
+		return visitChildren(ctx);
+	}
+	
+	@Override
+	public T visitDim(MyLanguageParser.DimContext ctx){
+		String typeVar="variable";
+		if(ctx.shared()!=null){
+			typeVar="global";
+		}
+		
+		String valType= new String(ctx.TYPE().getText());
+		System.out.print(valType);
+		String[] myTypeArray = new String[2];
+		visitIdim(ctx.idim(), myTypeArray);
+		return visitChildren(ctx);
+	}
+	
+	public T visitIdim(MyLanguageParser.IdimContext ctx, String[]typeVar) {
+		
+		return null;
+	}
+}
