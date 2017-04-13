@@ -9,4 +9,6 @@
 <fullyQualifiedTypeName name="classes.MyLanguageParser.DimContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.ToprintfstContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.ToprintContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.ValueContext"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
 </qualifiedTypeNameHistroy>

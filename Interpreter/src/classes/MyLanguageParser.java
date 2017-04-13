@@ -23,7 +23,7 @@ public class MyLanguageParser extends Parser {
 		COMMENT=25, WS=26, PIZQ=27, PDER=28, NEG=29, MINUS=30, POT=31, MULT=32, 
 		ADD=33, REL=34, EQUAL=35, DIF=36, AND=37, OR=38, PYC=39, COMMA=40, SUFS=41, 
 		SUFN=42, TYPE=43, INTEGER=44, LONG=45, SINGLE=46, DOUBLE=47, STRING=48, 
-		ID=49;
+		VALID=49, ID=50;
 	public static final int
 		RULE_qb64 = 0, RULE_instr = 1, RULE_functionsub = 2, RULE_decl = 3, RULE_dim = 4, 
 		RULE_idim = 5, RULE_idimnext = 6, RULE_shared = 7, RULE_sufdecl = 8, RULE_idn = 9, 
@@ -59,7 +59,7 @@ public class MyLanguageParser extends Parser {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, "COMMENT", "WS", "PIZQ", "PDER", "NEG", "MINUS", "POT", "MULT", 
 		"ADD", "REL", "EQUAL", "DIF", "AND", "OR", "PYC", "COMMA", "SUFS", "SUFN", 
-		"TYPE", "INTEGER", "LONG", "SINGLE", "DOUBLE", "STRING", "ID"
+		"TYPE", "INTEGER", "LONG", "SINGLE", "DOUBLE", "STRING", "VALID", "ID"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -3478,13 +3478,10 @@ public class MyLanguageParser extends Parser {
 	}
 
 	public static class ValuevContext extends ParserRuleContext {
-		public List<TerminalNode> INTEGER() { return getTokens(MyLanguageParser.INTEGER); }
-		public TerminalNode INTEGER(int i) {
-			return getToken(MyLanguageParser.INTEGER, i);
-		}
+		public TerminalNode INTEGER() { return getToken(MyLanguageParser.INTEGER, 0); }
 		public TerminalNode LONG() { return getToken(MyLanguageParser.LONG, 0); }
-		public TerminalNode DOUBLE() { return getToken(MyLanguageParser.DOUBLE, 0); }
 		public TerminalNode SINGLE() { return getToken(MyLanguageParser.SINGLE, 0); }
+		public TerminalNode DOUBLE() { return getToken(MyLanguageParser.DOUBLE, 0); }
 		public TerminalNode STRING() { return getToken(MyLanguageParser.STRING, 0); }
 		public ValuevContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3704,7 +3701,7 @@ public class MyLanguageParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\63\u01f5\4\2\t\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\64\u01f5\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -3767,13 +3764,13 @@ public class MyLanguageParser extends Parser {
 		"\5\22\n\2\u008d\u0089\3\2\2\2\u008d\u008a\3\2\2\2\u008d\u008c\3\2\2\2"+
 		"\u008e\t\3\2\2\2\u008f\u0090\7\4\2\2\u0090\u0091\5\20\t\2\u0091\u0092"+
 		"\5\f\7\2\u0092\u0093\7\5\2\2\u0093\u0094\7-\2\2\u0094\13\3\2\2\2\u0095"+
-		"\u0096\7\63\2\2\u0096\u009a\5\32\16\2\u0097\u0099\5\16\b\2\u0098\u0097"+
+		"\u0096\7\64\2\2\u0096\u009a\5\32\16\2\u0097\u0099\5\16\b\2\u0098\u0097"+
 		"\3\2\2\2\u0099\u009c\3\2\2\2\u009a\u0098\3\2\2\2\u009a\u009b\3\2\2\2\u009b"+
-		"\r\3\2\2\2\u009c\u009a\3\2\2\2\u009d\u009e\7*\2\2\u009e\u009f\7\63\2\2"+
+		"\r\3\2\2\2\u009c\u009a\3\2\2\2\u009d\u009e\7*\2\2\u009e\u009f\7\64\2\2"+
 		"\u009f\u00a0\5\32\16\2\u00a0\17\3\2\2\2\u00a1\u00a4\7\6\2\2\u00a2\u00a4"+
 		"\3\2\2\2\u00a3\u00a1\3\2\2\2\u00a3\u00a2\3\2\2\2\u00a4\21\3\2\2\2\u00a5"+
 		"\u00a6\5\24\13\2\u00a6\u00a7\7%\2\2\u00a7\u00a8\5^\60\2\u00a8\23\3\2\2"+
-		"\2\u00a9\u00aa\7\63\2\2\u00aa\u00ab\5\26\f\2\u00ab\25\3\2\2\2\u00ac\u00ad"+
+		"\2\u00a9\u00aa\7\64\2\2\u00aa\u00ab\5\26\f\2\u00ab\25\3\2\2\2\u00ac\u00ad"+
 		"\5\30\r\2\u00ad\u00ae\5\32\16\2\u00ae\27\3\2\2\2\u00af\u00b3\7,\2\2\u00b0"+
 		"\u00b3\7+\2\2\u00b1\u00b3\3\2\2\2\u00b2\u00af\3\2\2\2\u00b2\u00b0\3\2"+
 		"\2\2\u00b2\u00b1\3\2\2\2\u00b3\31\3\2\2\2\u00b4\u00b5\7\35\2\2\u00b5\u00b9"+
@@ -3811,7 +3808,7 @@ public class MyLanguageParser extends Parser {
 		"\2\u0118\u0119\58\35\2\u0119\u011d\5:\36\2\u011a\u011c\5\4\3\2\u011b\u011a"+
 		"\3\2\2\2\u011c\u011f\3\2\2\2\u011d\u011b\3\2\2\2\u011d\u011e\3\2\2\2\u011e"+
 		"\u0120\3\2\2\2\u011f\u011d\3\2\2\2\u0120\u0121\7\17\2\2\u0121\61\3\2\2"+
-		"\2\u0122\u0123\7\63\2\2\u0123\u0124\5\64\33\2\u0124\u0125\7%\2\2\u0125"+
+		"\2\u0122\u0123\7\64\2\2\u0123\u0124\5\64\33\2\u0124\u0125\7%\2\2\u0125"+
 		"\u0126\5\66\34\2\u0126\63\3\2\2\2\u0127\u012a\7,\2\2\u0128\u012a\3\2\2"+
 		"\2\u0129\u0127\3\2\2\2\u0129\u0128\3\2\2\2\u012a\65\3\2\2\2\u012b\u012c"+
 		"\5^\60\2\u012c\67\3\2\2\2\u012d\u012e\7\20\2\2\u012e\u012f\5\66\34\2\u012f"+
@@ -3837,22 +3834,22 @@ public class MyLanguageParser extends Parser {
 		"\u016d\u0171\5J&\2\u016e\u0170\5\4\3\2\u016f\u016e\3\2\2\2\u0170\u0173"+
 		"\3\2\2\2\u0171\u016f\3\2\2\2\u0171\u0172\3\2\2\2\u0172\u0174\3\2\2\2\u0173"+
 		"\u0171\3\2\2\2\u0174\u0175\7\r\2\2\u0175\u0176\7\31\2\2\u0176I\3\2\2\2"+
-		"\u0177\u0178\7\63\2\2\u0178\u0179\5\30\r\2\u0179\u017a\5P)\2\u017aK\3"+
+		"\u0177\u0178\7\64\2\2\u0178\u0179\5\30\r\2\u0179\u017a\5P)\2\u017aK\3"+
 		"\2\2\2\u017b\u017c\7\32\2\2\u017c\u0180\5N(\2\u017d\u017f\5\4\3\2\u017e"+
 		"\u017d\3\2\2\2\u017f\u0182\3\2\2\2\u0180\u017e\3\2\2\2\u0180\u0181\3\2"+
 		"\2\2\u0181\u0183\3\2\2\2\u0182\u0180\3\2\2\2\u0183\u0184\7\r\2\2\u0184"+
-		"\u0185\7\32\2\2\u0185M\3\2\2\2\u0186\u0187\7\63\2\2\u0187\u0188\5P)\2"+
+		"\u0185\7\32\2\2\u0185M\3\2\2\2\u0186\u0187\7\64\2\2\u0187\u0188\5P)\2"+
 		"\u0188O\3\2\2\2\u0189\u018a\7\35\2\2\u018a\u018b\5R*\2\u018b\u018c\7\36"+
 		"\2\2\u018c\u018f\3\2\2\2\u018d\u018f\3\2\2\2\u018e\u0189\3\2\2\2\u018e"+
-		"\u018d\3\2\2\2\u018fQ\3\2\2\2\u0190\u0191\7\63\2\2\u0191\u0195\5\30\r"+
-		"\2\u0192\u0193\7\63\2\2\u0193\u0195\5T+\2\u0194\u0190\3\2\2\2\u0194\u0192"+
+		"\u018d\3\2\2\2\u018fQ\3\2\2\2\u0190\u0191\7\64\2\2\u0191\u0195\5\30\r"+
+		"\2\u0192\u0193\7\64\2\2\u0193\u0195\5T+\2\u0194\u0190\3\2\2\2\u0194\u0192"+
 		"\3\2\2\2\u0195\u019a\3\2\2\2\u0196\u0197\7*\2\2\u0197\u0199\5R*\2\u0198"+
 		"\u0196\3\2\2\2\u0199\u019c\3\2\2\2\u019a\u0198\3\2\2\2\u019a\u019b\3\2"+
 		"\2\2\u019bS\3\2\2\2\u019c\u019a\3\2\2\2\u019d\u019e\7\35\2\2\u019e\u01a5"+
 		"\7\36\2\2\u019f\u01a2\7\5\2\2\u01a0\u01a3\7-\2\2\u01a1\u01a3\3\2\2\2\u01a2"+
 		"\u01a0\3\2\2\2\u01a2\u01a1\3\2\2\2\u01a3\u01a6\3\2\2\2\u01a4\u01a6\3\2"+
 		"\2\2\u01a5\u019f\3\2\2\2\u01a5\u01a4\3\2\2\2\u01a6U\3\2\2\2\u01a7\u01a8"+
-		"\7*\2\2\u01a8W\3\2\2\2\u01a9\u01aa\7\63\2\2\u01aa\u01ab\5Z.\2\u01abY\3"+
+		"\7*\2\2\u01a8W\3\2\2\2\u01a9\u01aa\7\64\2\2\u01aa\u01ab\5Z.\2\u01abY\3"+
 		"\2\2\2\u01ac\u01b0\5^\60\2\u01ad\u01af\5\\/\2\u01ae\u01ad\3\2\2\2\u01af"+
 		"\u01b2\3\2\2\2\u01b0\u01ae\3\2\2\2\u01b0\u01b1\3\2\2\2\u01b1\u01b5\3\2"+
 		"\2\2\u01b2\u01b0\3\2\2\2\u01b3\u01b5\3\2\2\2\u01b4\u01ac\3\2\2\2\u01b4"+
@@ -3874,7 +3871,7 @@ public class MyLanguageParser extends Parser {
 		"\t\3\2\2\u01e1a\3\2\2\2\u01e2\u01e3\t\4\2\2\u01e3c\3\2\2\2\u01e4\u01e5"+
 		"\t\5\2\2\u01e5e\3\2\2\2\u01e6\u01e7\t\6\2\2\u01e7g\3\2\2\2\u01e8\u01eb"+
 		"\5f\64\2\u01e9\u01eb\5j\66\2\u01ea\u01e8\3\2\2\2\u01ea\u01e9\3\2\2\2\u01eb"+
-		"i\3\2\2\2\u01ec\u01ed\7\63\2\2\u01ed\u01f2\5\30\r\2\u01ee\u01f3\5\32\16"+
+		"i\3\2\2\2\u01ec\u01ed\7\64\2\2\u01ed\u01f2\5\30\r\2\u01ee\u01f3\5\32\16"+
 		"\2\u01ef\u01f0\7\35\2\2\u01f0\u01f3\7\36\2\2\u01f1\u01f3\3\2\2\2\u01f2"+
 		"\u01ee\3\2\2\2\u01f2\u01ef\3\2\2\2\u01f2\u01f1\3\2\2\2\u01f3k\3\2\2\2"+
 		"-ou\u0083\u0087\u008d\u009a\u00a3\u00b2\u00b9\u00bf\u00cc\u00d3\u00d6"+

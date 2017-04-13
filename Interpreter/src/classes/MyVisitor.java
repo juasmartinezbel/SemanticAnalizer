@@ -134,9 +134,49 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	 * 
 	 */
 	@Override
+	public T visitValue(MyLanguageParser.ValueContext ctx){
+		if (ctx.valuev()!=null){
+			return visitValuev(ctx.valuev());
+		}
+		System.out.println("Nigga, esto no debe pasar");
+		System.exit(-1);
+		return null;
+	}
+	
+	@Override
+	public T visitValuev(MyLanguageParser.ValuevContext ctx){
+		if (ctx.INTEGER()!=null){
+			Integer ans = new Integer(ctx.INTEGER().getText());
+			return (T) ans;
+		}else if(ctx.LONG()!=null){
+			Long ans = new Long(ctx.LONG().getText());
+			return (T) ans;
+		}else if(ctx.DOUBLE()!=null){
+			Double ans = new Double(ctx.DOUBLE().getText());
+			return (T) ans;
+		}else if(ctx.SINGLE()!=null){
+			Float ans = new Float(ctx.SINGLE().getText());
+			return (T) ans;
+		}else if(ctx.STRING()!=null){
+			String ans = new String(ctx.STRING().getText());
+			ans= ans.substring(1, ans.length()-1);
+			return (T) ans;
+		}
+		System.err.println("Error en los valores. Algo salió mal");
+		System.exit(-1);
+		return null;
+		
+	}
+	
+	@Override
 	public T visitExpr(MyLanguageParser.ExprContext ctx) {
-		int line0=ctx.expr(0).getToken(0,0).getSymbol().getLine();
-		int col0= ctx.expr(0).getToken(0,0).getSymbol().getCharPositionInLine();
+		
+		if(ctx.value()!=null){
+			return visitValue(ctx.value());
+		}
+		System.out.println()      ;
+		int line0=ctx.expr(0).getStart().getLine();
+		int col0= ctx.expr(0).getStart().getCharPositionInLine()+1;
 		// ()
 		if (ctx.PIZQ()!=null && ctx.PDER()!=null){
 			return visitExpr(ctx.expr(0));
@@ -203,8 +243,8 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		*/	
 		// ^		
 		}else{ 
-		int line1=ctx.expr(1).getToken(0,0).getSymbol().getLine();
-		int col1= ctx.expr(1).getToken(0,0).getSymbol().getCharPositionInLine();
+		int line1=ctx.expr(1).getStart().getLine();
+		int col1= ctx.expr(1).getStart().getCharPositionInLine()+1;
 		Object i=visitExpr(ctx.expr(0));
 		Object j=visitExpr(ctx.expr(1));	
 		String ti=TypeOf(i);
@@ -242,13 +282,20 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		//Mult
 		}else if(ctx.MULT()!=null){
 			String op=ctx.MULT().getText();
-			
 			if (ti.equals("string")||tj.equals("string")){
-				String [] should={"double", "integer", "long", "single"};
-				if (ti.equals("string"))
-					error_types("string", should, line0, col0);
-				else if(tj.equals("string"))
-					error_types("string", should, line1, col1);
+				if (op.equals("mod")){
+					String [] should={"integer", "long"};
+					if (ti.equals("string"))
+						error_types("string", should, line0, col0);
+					else if(tj.equals("string"))
+						error_types("string", should, line1, col1);
+				}else{
+					String [] should={"double", "integer", "long", "single"};
+					if (ti.equals("string"))
+						error_types("string", should, line0, col0);
+					else if(tj.equals("string"))
+						error_types("string", should, line1, col1);
+				}
 			}else{
 				ope = operand(i, j);
 				operand= TypeOfOperands(ope);
@@ -737,16 +784,15 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 						System.exit(-1);
 					}
 			}
-		}
+	
+		/*
+		 * 
+		 * 
+		 * Valores
+		 * 
+		 */
 		
-		
-		
-		
-		
-		
-		
-		
-		
+		}	
 		}
 		return null;
 	}
@@ -758,12 +804,14 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		}
 		return T;
 	}
+	
 	public int boolQB64(boolean result){
 		if (result)
 			return 0;
 		else
 			return -1;
 	}
+	
 	public Object [] operand(Object num1, Object num2){
 		String t1=TypeOf(num1);
 		String t2=TypeOf(num2);
@@ -829,7 +877,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				}
 			}else if(t2.equals("float")){
 				Float[] numbers=new Float [2];
-				Float cnum2= (float) num1;
+				Float cnum2= (float) num2;
 				numbers[1]=cnum2;
 				if (t1.equals("long")){
 					float cnum1= (float)(long) num1;
@@ -876,7 +924,6 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		return null;
 	}
 	
-	
 	public String TypeOf (Object T){
 		if(T instanceof String){
 			return "string";
@@ -902,18 +949,16 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			return "long";
 		}
 	}
-	
-	
-	
+		
 	public String error_types(String found, String[] should, int line, int col){
 		String Error="Error semantico: tipos de datos incompatibles. Se esperaba:";
 		for (int i = 0; i < should.length; i++) {
-			Error+=" "+should[0];
-			if ((i+1)>should.length)
+			Error+=" "+should[i];
+			if ((i+1)<should.length)
 				Error+=",";
 		}
-		Error=(Error+";se encontro: "+found+".\n");
-		System.err.printf("<%d,%d>"+Error, line, col);
+		Error=(Error+"; se encontro: "+found+".\n");
+		System.err.printf("<%d,%d> "+Error, line, col);
 		System.exit(-1);
 		return Error;
 	}
