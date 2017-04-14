@@ -1,2 +1,2 @@
-u=1
-print ;u;"aaaaaaa";u and 8
+i%(2,2)=3
+print ;u%;"aaaaaaa";i%(2,2) + 8

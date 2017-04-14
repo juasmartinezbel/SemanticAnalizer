@@ -238,10 +238,10 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				}
 
 			}
-			//System.out.println("\n---------------------\n"+Variable);
-			//for (int i = 0; i < w.length; i++) {
-			//	System.out.print(w[i].toString()+", ");
-			//}
+			System.out.println("\n---------------------\n"+Variable);
+			for (int i = 0; i < w.length; i++) {
+				System.out.print(w[i].toString()+", ");
+			}
 			return null;
 			
 			
