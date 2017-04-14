@@ -1092,48 +1092,6 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	@Override
 	public T visitDoc(MyLanguageParser.DocContext ctx) {
-		String theDo=(ctx.tdoc().getStart().getText());
-		int loop;
-		if (theDo.equals("while")){
-			loop=0;
-		}else{
-			loop=-1;
-		}
-		
-		
-		
-		Object dow=visitExpr(ctx.tdoc().expr());
-		int line=ctx.tdoc().expr().getStart().getLine();
-		int col=ctx.tdoc().expr().getStart().getCharPositionInLine()+1;
-		String tydow=TypeOf(dow);
-		if (!tydow.equals("integer")){
-			if (tydow.equals("long")){
-				dow=(long)dow;
-			}else{
-				String [] should={"integer"};
-				error_types(QB64Type(tydow), should, line, col);
-			}
-		}
-
-		do{
-		    List<MyLanguageParser.InstrContext> instruction = ctx.instr();
-		    for (MyLanguageParser.InstrContext i : instruction){
-		        visitInstr(i);
-		    }
-		    dow=visitExpr(ctx.tdoc().expr());
-		
-		    
-			tydow=TypeOf(dow);
-			if (!tydow.equals("integer")){
-				if (tydow.equals("long")){
-					dow=(long)dow;
-				}else{
-					String [] should={"integer"};
-					error_types(QB64Type(tydow), should, line, col);
-				}
-			}
-		}while (((int)dow)!=loop);
-				
 		return null;
 	}
 	

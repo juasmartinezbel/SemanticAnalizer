@@ -1,0 +1,6 @@
+u%=3
+
+do
+print u%
+u%=u%-1
+loop while u%>0

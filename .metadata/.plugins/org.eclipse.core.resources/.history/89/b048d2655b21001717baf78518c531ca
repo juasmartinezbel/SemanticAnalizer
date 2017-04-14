@@ -8,5 +8,5 @@ do
 		g%=g%-1
 		print g%
 		print "U inside loop "; u%
-	loop while g%>0
+	loop while g>0
 loop until u%<0
