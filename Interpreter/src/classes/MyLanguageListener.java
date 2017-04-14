@@ -178,16 +178,6 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitInpara(MyLanguageParser.InparaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MyLanguageParser#inpn}.
-	 * @param ctx the parse tree
-	 */
-	void enterInpn(MyLanguageParser.InpnContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MyLanguageParser#inpn}.
-	 * @param ctx the parse tree
-	 */
-	void exitInpn(MyLanguageParser.InpnContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#ifc}.
 	 * @param ctx the parse tree
 	 */

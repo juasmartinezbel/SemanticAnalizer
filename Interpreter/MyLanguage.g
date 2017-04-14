@@ -29,8 +29,7 @@ toprintfst	: expr toprint* | toprint* ;
 toprint 	: PYC expr;
 
 input		: 'input' inpara;
-inpara		: (STRING COMMA idn (inpn)* | idn (inpn)*);
-inpn		: COMMA idn;
+inpara		: (idn (COMMA idn)*|STRING COMMA idn (COMMA idn)* );
 
 ifc 		: 'if' expr 'then' instr* ifter;
 ifter		: 'elseif' expr 'then' instr* ifter 

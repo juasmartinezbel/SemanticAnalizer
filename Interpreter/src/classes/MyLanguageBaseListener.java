@@ -220,18 +220,6 @@ public class MyLanguageBaseListener implements MyLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInpn(MyLanguageParser.InpnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInpn(MyLanguageParser.InpnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterIfc(MyLanguageParser.IfcContext ctx) { }
 	/**
 	 * {@inheritDoc}

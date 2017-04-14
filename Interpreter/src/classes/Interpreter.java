@@ -1,11 +1,15 @@
 package classes;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.DOTTreeGenerator;
@@ -17,8 +21,9 @@ import org.stringtemplate.v4.gui.JTreeScopeStackModel.StringTree;
 public class Interpreter {
 
 	public static void main(String [] args) throws Exception{
-		System.setIn(new FileInputStream(new File("input.txt")));
-		ANTLRInputStream input = new ANTLRInputStream(System.in);
+		//System.setIn(new FileInputStream(new File("input.txt")));
+		BufferedReader br = new BufferedReader(new FileReader("input.txt"));
+		ANTLRInputStream input = new ANTLRInputStream(br);
 		MyLanguageLexer lexer = new MyLanguageLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		MyLanguageParser parser = new MyLanguageParser(tokens);
@@ -36,6 +41,7 @@ public class Interpreter {
         frame.setVisible(true);
 		MyVisitor<Object> loader = new MyVisitor <Object>();
 		loader.visit(tree);
+
 		/*String str="1,2,3,4,5";
 		List<String> elephantList = Arrays.asList(str.split(","));
 		for (Iterator iterator = elephantList.iterator(); iterator.hasNext();) {
@@ -43,4 +49,6 @@ public class Interpreter {
 			System.out.println(string);
 		}*/
 	}
+	
+
 }

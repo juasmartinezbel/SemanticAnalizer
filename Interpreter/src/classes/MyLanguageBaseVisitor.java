@@ -136,13 +136,6 @@ public class MyLanguageBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitInpn(MyLanguageParser.InpnContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitIfc(MyLanguageParser.IfcContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

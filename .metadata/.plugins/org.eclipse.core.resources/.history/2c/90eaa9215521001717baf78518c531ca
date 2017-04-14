@@ -1,0 +1,4 @@
+i%(2,2)=3
+input "Inserte dos números: ", u, j
+print "U es: "; u$
+print "J es: "; j$

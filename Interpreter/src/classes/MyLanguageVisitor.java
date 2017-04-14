@@ -113,12 +113,6 @@ public interface MyLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInpara(MyLanguageParser.InparaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MyLanguageParser#inpn}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitInpn(MyLanguageParser.InpnContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MyLanguageParser#ifc}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
