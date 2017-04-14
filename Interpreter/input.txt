@@ -1,3 +1,3 @@
-'dim u, j(9, 8, 8+9, "memazo"), i as integer
-dim u, u(9, 7, 9) as integer
-dim u(1) as integer
+dim u as string
+u="aaaaaaaa"
+u="memazo"+" roca"

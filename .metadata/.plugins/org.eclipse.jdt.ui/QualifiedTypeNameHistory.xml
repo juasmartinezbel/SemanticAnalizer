@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="classes.MyLanguageParser"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.Qb64Context"/>
 <fullyQualifiedTypeName name="java.awt.List"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
@@ -17,4 +16,9 @@
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="org.antlr.v4.parse.ANTLRParser.id_return"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.ParContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.IdimContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.PosContext"/>
+<fullyQualifiedTypeName name="classes.MyVisitor.CharArr"/>
 </qualifiedTypeNameHistroy>

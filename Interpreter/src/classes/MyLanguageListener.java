@@ -98,16 +98,6 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitIdn(MyLanguageParser.IdnContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MyLanguageParser#suf}.
-	 * @param ctx the parse tree
-	 */
-	void enterSuf(MyLanguageParser.SufContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MyLanguageParser#suf}.
-	 * @param ctx the parse tree
-	 */
-	void exitSuf(MyLanguageParser.SufContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#sufix}.
 	 * @param ctx the parse tree
 	 */

@@ -19,8 +19,7 @@ shared		: 'shared'| ;
 idim 		:  ID par;
 
 sufdecl		: idn EQUAL expr;
-idn			: ID suf;
-suf 		: sufix (par);
+idn			: ID sufix (par);
 sufix 		: (SUFN | SUFS |);
 par 		: (PIZQ pos (COMMA pos)* PDER)|;
 pos			: expr;

@@ -36,7 +36,6 @@ public class Interpreter {
         frame.setVisible(true);
 		MyVisitor<Object> loader = new MyVisitor <Object>();
 		loader.visit(tree);
-		
 		/*String str="1,2,3,4,5";
 		List<String> elephantList = Arrays.asList(str.split(","));
 		for (Iterator iterator = elephantList.iterator(); iterator.hasNext();) {

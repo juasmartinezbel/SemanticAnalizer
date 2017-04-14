@@ -1,0 +1,8 @@
+print 5 * 1/3
+print 5.0 * 1/3
+print not 13
+print not 13.3333
+print "abc" < "abcd"
+print "abc" = "abcd"
+print "abc" = "abc"
+print "abcd" <> "abc"

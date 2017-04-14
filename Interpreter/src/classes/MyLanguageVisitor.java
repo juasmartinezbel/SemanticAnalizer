@@ -65,12 +65,6 @@ public interface MyLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIdn(MyLanguageParser.IdnContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MyLanguageParser#suf}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSuf(MyLanguageParser.SufContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MyLanguageParser#sufix}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

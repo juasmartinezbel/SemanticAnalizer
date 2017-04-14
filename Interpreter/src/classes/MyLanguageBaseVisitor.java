@@ -80,13 +80,6 @@ public class MyLanguageBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSuf(MyLanguageParser.SufContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitSufix(MyLanguageParser.SufixContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
