@@ -128,16 +128,6 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitPar(MyLanguageParser.ParContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MyLanguageParser#postn}.
-	 * @param ctx the parse tree
-	 */
-	void enterPostn(MyLanguageParser.PostnContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MyLanguageParser#postn}.
-	 * @param ctx the parse tree
-	 */
-	void exitPostn(MyLanguageParser.PostnContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#pos}.
 	 * @param ctx the parse tree
 	 */

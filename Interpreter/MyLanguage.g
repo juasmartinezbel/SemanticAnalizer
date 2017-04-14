@@ -22,8 +22,7 @@ sufdecl		: idn EQUAL expr;
 idn			: ID suf;
 suf 		: sufix (par);
 sufix 		: (SUFN | SUFS |);
-par 		: (PIZQ pos postn* PDER)|;
-postn		: COMMA pos ;
+par 		: (PIZQ pos (COMMA pos)* PDER)|;
 pos			: expr;
 
 print		: 'print' toprintfst ;
