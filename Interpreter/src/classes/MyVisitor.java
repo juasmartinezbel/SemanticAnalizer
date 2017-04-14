@@ -239,10 +239,11 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				}
 
 			}
-			//System.out.println("\n---------------------\n"+Variable);
-			//for (int i = 0; i < w.length; i++) {
-			//	System.out.print(w[i].toString()+", ");
-			//}
+			System.out.println("\n---------------------\n"+Variable);
+			for (int i = 0; i < w.length; i++) {
+				System.out.print(w[i].toString()+", ");
+			}
+			System.out.println("\n"+Posicion);
 			return null;
 			
 			
@@ -1137,11 +1138,186 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		return null;
 	}
 	
+	/*
+	 * 
+	 * For method
+	 * 
+	 * 
+	 */	
 	
+	@Override 
+	public T visitForc(MyLanguageParser.ForcContext ctx) {
+		String step=ctx.step().getStart().getText();
+		String i=visitForexpr(ctx.forexpr()).toString();
+		Object vali=(Number)(tableVar.get(i).x);
+		String typei=tableVar.get(i).y;
+		String z=tableVar.get(i).z;
+		//System.out.println(tableVar.get(i).toString());
+		Object to=visitExpr(ctx.tofor().tothis().expr());
+		String typeTo=TypeOf(to);
+		int line0=ctx.tofor().tothis().expr().getStart().getLine();
+		int col0=ctx.tofor().tothis().expr().getStart().getCharPositionInLine()+1;
+		
+		
+		
+	    
+	    int line1=-1;
+	    int col1=-1;
+	    Object stepex=(Integer) 1;
+		if(step.equals("step")){
+			stepex=visitExpr(ctx.step().tothis().expr());
+			line1=ctx.step().tothis().expr().getStart().getLine();
+			col1=ctx.step().tothis().expr().getStart().getCharPositionInLine()+1;
+		}
+		String typeStep=TypeOf(stepex);
+		
+		List<MyLanguageParser.InstrContext> instruction = ctx.instr();
+		if (typei.equals("integer")){
+			int tod=(Integer) casting("integer",  QB64Type(typeTo), to, line0, col0);
+			int std=(Integer)casting("integer", QB64Type(typeStep), stepex, line1, col1);
+			int j= (int) vali; // j=j+tod;
+			CharVar<Object, String, String> newVar;		 
+			do {
+			    for (MyLanguageParser.InstrContext ins : instruction){
+			        visitInstr(ins);
+			    }
+			    newVar=new CharVar(j+std, "integer", z);
+			    tableVar.put(i, newVar);
+			    vali=(Number)(tableVar.get(i).x);
+			    j= (int) vali;
+			}while(j < tod);
+		}else if (typei.equals("long")){
+			long tod=(Long) casting("long",  QB64Type(typeTo), to, line0, col0);
+			long std=(Long)casting("long", QB64Type(typeStep), stepex, line1, col1);
+			long j= (long) vali; // j=j+tod;
+			CharVar<Object, String, String> newVar;		 
+			do {
+			    for (MyLanguageParser.InstrContext ins : instruction){
+			        visitInstr(ins);
+			    }
+			    newVar=new CharVar(j+std, "long", z);
+			    tableVar.put(i, newVar);
+			    vali=(Number)(tableVar.get(i).x);
+			    j= (long) vali;
+			}while(j < tod); 
+		}else if (typei.equals("single")){
+			float tod=(Float) casting("single",  QB64Type(typeTo), to, line0, col0);
+			float std=(Float)casting("single", QB64Type(typeStep), stepex, line1, col1);
+			float j= (float) vali; // j=j+tod;
+			CharVar<Object, String, String> newVar;		 
+			do {
+			    for (MyLanguageParser.InstrContext ins : instruction){
+			        visitInstr(ins);
+			    }
+			    newVar=new CharVar(j+std, "single", z);
+			    tableVar.put(i, newVar);
+			    vali=(Number)(tableVar.get(i).x);
+			    j= (float) vali;
+			}while(j < tod); 
+		}else if (typei.equals("double")){
+			double tod=(Double) casting("double",  QB64Type(typeTo), to, line0, col0);
+			double std=(Double)casting("double", QB64Type(typeStep), stepex, line1, col1);
+			double j= (double) vali; // j=j+tod;
+			CharVar<Object, String, String> newVar;		 
+			do {
+			    for (MyLanguageParser.InstrContext ins : instruction){
+			        visitInstr(ins);
+			    }
+			    newVar=new CharVar(j+std, "double", z);
+			    tableVar.put(i, newVar);
+			    vali=(Number)(tableVar.get(i).x);
+			    j= (double) vali;
+			}while(j < tod); 
+		}else{
+			System.err.print("Error en esta vaina del for");
+			System.exit(-1);
+		}
+		
+		return null;
+	}
 	
+	@Override
+	public T visitForexpr(MyLanguageParser.ForexprContext ctx) {
+		String name=ctx.ID().getText();
+		int line=ctx.ID().getSymbol().getLine();
+		int col=ctx.ID().getSymbol().getCharPositionInLine()+1;
+		
+		String suffix=ctx.forsuf().getText();
+		Object res=(Object) visitTothis(ctx.tothis());
+		String typeRes=TypeOf(res);
+		int line0=ctx.tothis().getStart().getLine();
+		int col0=ctx.ID().getSymbol().getCharPositionInLine()+1;
+		
+		String type_var="variable";
+		String varClass="";
+		if(!suffix.equals("")){
+			varClass=varClass(suffix);
+		}
+		String variable="";
+		
+		if(varExists(name, varClass)){
+			check_ConstantVar(name, line, col, type_var);
+			variable=name;
+		}else if (varExists(name+suffix, varClass)){
+			check_ConstantVar(name+suffix, line, col, type_var);
+			variable=name+suffix;
+		}else{
+			if (type_var.equals("")){
+				type_var="variable";
+			}
+			CharVar<Object, String, String> newVar;
+			if (suffix=="")
+				varClass="single";
+			Object vari=define(varClass, null);
+			if (suffix.equals("!") || suffix.equals("")){
+				newVar=new CharVar(vari, varClass, type_var);
+				variable=name;
+				tableVar.put(variable, newVar);
+			}else{
+				newVar=new CharVar(vari, varClass, type_var);
+				variable=name+suffix;
+				tableVar.put(variable, newVar);
+			}
+		}
+		if(variable.equals("")){
+			System.err.print("FOR NOOOOO");
+			System.exit(-1);
+		}
+		CharVar<Object, String, String> newVar;
+		String y=tableVar.get(variable).y;
+		
+		if(y.equals("integer")){
+			Integer vari= (Integer) casting(y, QB64Type(typeRes), res, line0, col0);
+			newVar=new CharVar(vari, y, type_var);
+			tableVar.put(variable, newVar);
+		}else if(y.equals("double")){
+			Double vari= (Double) casting(y, QB64Type(typeRes), res, line0, col0);
+			newVar=new CharVar(vari, y, type_var);
+			tableVar.put(variable, newVar);
+		}else if(y.equals("single")){
+			Float vari= (Float) casting(y, QB64Type(typeRes), res, line0, col0);
+			newVar=new CharVar(vari, y, type_var);
+			tableVar.put(variable, newVar);
+		}else if(y.equals("long")){
+			Long vari= (Long) casting(y, QB64Type(typeRes), res, line0, col0);
+			newVar=new CharVar(vari, y, type_var);
+			tableVar.put(variable, newVar);
+		}
+		
+		return (T)variable;
+	}
 	
-	
-	
+	@Override
+	public T visitTothis(MyLanguageParser.TothisContext ctx){
+		Object expr=visitExpr(ctx.expr());
+		int line=ctx.expr().getStart().getLine();
+		int col=ctx.expr().getStart().getLine();
+		if (expr instanceof String){
+			String should[]={"double", "integer", "long", "single"};
+			error_types("String", should, line, col);
+		}
+		return (T) expr;
+	}
 	
 	
 	
@@ -2087,7 +2263,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	public Object casting(String typeVar, String typeRes, Object res, int line, int col){
 		if (typeVar.equals("integer")){
-			Integer resu;
+			Integer resu=0;
 			if (typeRes.equals("long")){
 				resu=(int)(long) res;
 				if (Math.abs(resu)>32767){
@@ -2106,6 +2282,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					resu=-25536;
 				}
 				return resu;
+			}else if(typeVar.equals(typeRes)){
+				resu=(int) res;
+				return resu;
 			}else{
 				error_casting();
 			}
@@ -2119,6 +2298,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				return resu;
 			}else if (typeRes.equals("single")){
 				resu=(long)(float) res;
+				return resu;
+			}else if(typeVar.equals(typeRes)){
+				resu=(long) res;
 				return resu;
 			}else{
 				error_casting();
@@ -2146,6 +2328,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}else if (typeRes.equals("long")){
 				resu=(float)(long) res;
 				return resu;
+			}else if(typeVar.equals(typeRes)){
+				resu=(float) res;
+				return resu;
 			}else{
 				error_casting();
 			}
@@ -2159,6 +2344,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				return resu;
 			}else if (typeRes.equals("single")){
 				resu=(double)(float) res;
+				return resu;
+			}else if(typeVar.equals(typeRes)){
+				resu=(double) res;
 				return resu;
 			}else{
 				error_casting();

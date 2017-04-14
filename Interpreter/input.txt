@@ -1,12 +1,4 @@
-u%=3
-do
-	print "Current u: "; u%
-	u%=u%-3
-	g%=2
-	do
-		u%=u%+1
-		g%=g%-1
-		print g%
-		print "U inside loop "; u%
-	loop while g%>0
-loop until u%<0
+'dim t as integer
+for t=1 to 8 step 2
+	print "meme";t
+next
