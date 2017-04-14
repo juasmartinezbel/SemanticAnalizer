@@ -1065,18 +1065,6 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		    for (MyLanguageParser.InstrContext i : instruction){
 		        visitInstr(i);
 		    }
-		    dow=visitExpr(ctx.expr());
-		
-		    
-			tydow=TypeOf(dow);
-			if (!tydow.equals("integer")){
-				if (tydow.equals("long")){
-					dow=(long)dow;
-				}else{
-					String [] should={"integer"};
-					error_types(QB64Type(tydow), should, line, col);
-				}
-			}
 		}while (((int)dow)!=0);
 				
 		return null;

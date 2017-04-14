@@ -1,0 +1,5 @@
+i%(2,2)=3
+i%(1,2)=3
+print "i+i es: "; i%(1,2)+i%(2,2)
+input "Inserte dos números: ", i%(1,2), j
+print "U+j es: "; i%(1,2)+i%(2,2)

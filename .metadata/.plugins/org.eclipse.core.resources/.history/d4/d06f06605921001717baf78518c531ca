@@ -1,0 +1,8 @@
+u%=3
+print u%>0
+u%=-1
+print u%>0
+while u%>0
+u%=u%-1
+print u%
+wend 
