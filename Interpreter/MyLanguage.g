@@ -25,7 +25,7 @@ par 		: (PIZQ pos (COMMA pos)* PDER)|;
 pos			: expr;
 
 print		: 'print' toprintfst ;
-toprintfst	: toprint* | expr toprint* ;
+toprintfst	: expr toprint* | toprint* ;
 toprint 	: PYC expr;
 
 input		: 'input' inpara;
@@ -85,7 +85,7 @@ neg 	: (NEG|MINUS);
 addi	: (ADD|MINUS);
 valuev	: (INTEGER|LONG|SINGLE|DOUBLE|STRING);
 value	: (valuev|idnp);
-idnp	: ID sufix (par);
+idnp	: idn;
 
 COMMENT 	:'\'' ~[\r\n]* -> skip;
 WS			: [ \t\r\n]+ -> skip ;
