@@ -1,0 +1,2 @@
+dim u(8) as string
+u = 9

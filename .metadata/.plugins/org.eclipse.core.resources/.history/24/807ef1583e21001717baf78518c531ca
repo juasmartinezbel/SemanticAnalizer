@@ -1,0 +1,2 @@
+dim u(2,2) as integer
+u (0,0) = 9

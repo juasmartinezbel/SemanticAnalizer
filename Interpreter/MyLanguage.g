@@ -85,7 +85,7 @@ neg 	: (NEG|MINUS);
 addi	: (ADD|MINUS);
 valuev	: (INTEGER|LONG|SINGLE|DOUBLE|STRING);
 value	: (valuev|idnp);
-idnp	: ID sufix (par|PIZQ PDER|);
+idnp	: ID sufix (par);
 
 COMMENT 	:'\'' ~[\r\n]* -> skip;
 WS			: [ \t\r\n]+ -> skip ;

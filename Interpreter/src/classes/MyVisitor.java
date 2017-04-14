@@ -101,6 +101,8 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 						 //Valor     Tipo  Local/Variable/Global   
 	HashMap<String, CharVar<Object, String, String>> tableVar = new HashMap<>();
+	
+						 //Valores    Tipo     L/V/G  Posiciones 
 	HashMap<String, CharArr<Object [], String, String, Integer[]>> tableArr = new HashMap<>();
 	//HashMap<String, Object> variable = new HashMap<>();
 	
@@ -146,25 +148,110 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		}
 	}
 	
+	
+	/*
+	 * 
+	 * 
+	 * Con sufijos
+	 * 
+	 * 
+	 */
 	public T visitSufdecl(MyLanguageParser.SufdeclContext ctx, String type_var){
-		Object Variable=visitIdn(ctx.idn(), type_var);
+		Object res= visitExpr(ctx.expr());
+		String tyr=TypeOf(res);
+		int line= ctx.expr().getStart().getLine();
+		int col= ctx.expr().getStart().getCharPositionInLine()+1;
+		String[] shouldg={"double","integer","long","single"};
+
 		if(ctx.idn().par().PIZQ()!=null){
-			System.out.print("REEEEEEEEEEEEEEEEEE");
-			System.exit(-1);
+			Object[] Variables= (Object[]) visitIdn(ctx.idn(), type_var);
+			CharArr<Object[], String, String, Integer[]> changedVar;
+			String Variable=Variables[0].toString();
+			Integer Posicion=(Integer)Variables[1];
+			
+			String tyv= tableArr.get(Variable).x;
+			String y= tableArr.get(Variable).y;
+			Integer[] z= tableArr.get(Variable).z;
+			Object[] w = tableArr.get(Variable).w;
+			if (tyv.equals("string")){
+				String[] should={"string"};
+				if (tyr.equals("string")){
+					w[Posicion]=res.toString();
+					changedVar=new CharArr(w, tyv, y, z);
+					tableArr.put(Variable.toString(), changedVar);
+				}else{
+					error_types(QB64Type(tyr), should, line, col);
+				}
+			}else if(tyv.equals("integer")){
+				if (tyr.equals("integer")){
+					w[Posicion]= (Integer) (int) res;
+					changedVar=new CharArr(w, tyv, y, z);
+					tableArr.put(Variable.toString(), changedVar);
+				}else if (tyr.equals("string")){
+					error_types(QB64Type(tyr), shouldg, line, col);
+				}else{
+					w[Posicion]=(Integer) casting("integer", QB64Type(tyr), res, line, col);
+					changedVar=new CharArr(w, tyv, y, z);
+					tableArr.put(Variable.toString(), changedVar);
+				}
+			}else if(tyv.equals("long")){
+				if (tyr.equals("long")){
+					w[Posicion]= (Long) (long) res;
+					changedVar=new CharArr(w, tyv, y, z);
+					tableArr.put(Variable.toString(), changedVar);
+				}else if (tyr.equals("string")){
+					error_types(QB64Type(tyr), shouldg, line, col);
+				}else{
+					w[Posicion]= (Long) casting("long", QB64Type(tyr), res, line, col);
+					changedVar=new CharArr(w, tyv, y, z);
+					tableArr.put(Variable.toString(), changedVar);
+				}
+			}else if(tyv.equals("single")){
+				if (tyr.equals("float")){
+					w[Posicion]= (Float) (float) res;
+					changedVar=new CharArr(w, tyv, y, z);
+					tableArr.put(Variable.toString(), changedVar);
+				}else if (tyr.equals("string")){
+					error_types(QB64Type(tyr), shouldg, line, col);
+				}else{
+					w[Posicion]=(Float) casting("single", QB64Type(tyr), res, line, col);
+					changedVar=new CharArr(w, tyv, y, z);
+					tableArr.put(Variable.toString(), changedVar);
+				}
+			}else if(tyv.equals("double")){
+				if (tyr.equals("double")){
+					w[Posicion]=(Double) (double) res;
+					changedVar=new CharArr(w, tyv, y, z);
+					tableArr.put(Variable.toString(), changedVar);
+				}else if (tyr.equals("string")){
+					error_types(QB64Type(tyr), shouldg, line, col);
+				}else{
+					w[Posicion]= (Double)(double) casting("double", QB64Type(tyr), res, line, col);
+					changedVar=new CharArr(w, tyv, y, z);
+					tableArr.put(Variable.toString(), changedVar);
+				}
+
+			}
+			/*System.out.println("---------------------\n"+Variable);
+			for (int i = 0; i < w.length; i++) {
+				System.out.print(w[i].toString()+"");
+			}*/
+			return null;
+			
+			
+			
+			
+			
+			
+			
 			
 			
 		//Variables NO arreglos
 		}else{
-			Object res= visitExpr(ctx.expr());
-			String tyr=TypeOf(res);
-			int line= ctx.expr().getStart().getLine();
-			int col= ctx.expr().getStart().getCharPositionInLine()+1;
+			Object Variable=visitIdn(ctx.idn(), type_var);
 			String tyv=tableVar.get(Variable).y;
 			CharVar<Object, String, String> changedVar;
 			String z= tableVar.get(Variable).z;
-			String[] shouldg={"double","integer","long","single"};
-			System.out.println(tyv);
-			System.out.println(tyr);
 			if (tyv.equals("string")){
 				String[] should={"string"};
 				if (tyr.equals("string")){
@@ -223,102 +310,11 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					tableVar.put(Variable.toString(), changedVar);
 				}
 			}
+
+			//System.out.println("--------------------------\n"+Variable);
+			//System.out.println(tableVar.get(Variable).toString());
 		}
-		System.out.println("--------------------------\n"+Variable);
-		System.out.println(tableVar.get(Variable).toString());
-		
 		return null;
-	}
-	
-	public Object casting(String typeVar, String typeRes, Object res, int line, int col){
-		if (typeVar.equals("integer")){
-			Integer resu;
-			if (typeRes.equals("long")){
-				resu=(int)(long) res;
-				if (resu>32767){
-					String [] should={"integer"};
-					error_types(typeRes, should, line, col);
-				}
-				return resu;
-			}else if (typeRes.equals("double")){
-				resu=(int)(double)res;
-				if (resu>32767){
-					String [] should={"integer"};
-					error_types(typeRes, should, line, col);
-				}
-				return resu;
-			}else if (typeRes.equals("single")){
-				resu=(int)(float) res;
-				if (resu>32767){
-					String [] should={"integer"};
-					error_types(typeRes, should, line, col);
-				}
-				return resu;
-			}else{
-				error_casting();
-			}
-		}else if(typeVar.equals("long")){
-			Long resu;
-			if (typeRes.equals("integer")){
-				resu=(long)(int) res;
-				return resu;
-			}else if (typeRes.equals("double")){
-				resu=(long)(double)res;
-				return resu;
-			}else if (typeRes.equals("single")){
-				resu=(long)(float) res;
-				return resu;
-			}else{
-				error_casting();
-			}
-		}else if(typeVar.equals("single")){
-			Float resu;
-			if (typeRes.equals("integer")){
-				resu=(float)(int) res;
-				return resu;
-			}else if (typeRes.equals("double")){
-				double tempRes=(double)res;
-				Double d=tempRes;
-				String decimal=d.toString();
-				List<String> doublenum = Arrays.asList(decimal.split("."));
-				String decimalPart=doublenum.get(1);
-				if (decimalPart.length()>5){
-					String singlepart = decimal.substring(0,5);
-					String number= doublenum.get(0)+'.'+singlepart;
-					Double tmp= Double.parseDouble(number);
-					resu=(float)(double) tmp;
-				}else{
-					resu=(float) tempRes;
-				}
-				return resu;
-			}else if (typeRes.equals("long")){
-				resu=(float)(long) res;
-				return resu;
-			}else{
-				error_casting();
-			}
-		}else if(typeVar.equals("double")){
-			Double resu;
-			if (typeRes.equals("integer")){
-				resu=(double)(int) res;
-				return resu;
-			}else if (typeRes.equals("long")){
-				resu=(double)(long)res;
-				return resu;
-			}else if (typeRes.equals("single")){
-				resu=(double)(float) res;
-				return resu;
-			}else{
-				error_casting();
-			}
-		}
-		error_casting();
-		return null;
-	}
-	
-	public void error_casting(){
-		System.err.print("Está haciendo mal el casting");
-		System.exit(-1);
 	}
 	
 	public T visitIdn(MyLanguageParser.IdnContext ctx, String type_var){
@@ -334,8 +330,78 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			suffix=ctx.sufix().SUFS().getText();
 			varClass=varClass(suffix);
 		}
+		//Arreglos
 		if (ctx.par().PIZQ()!=null){
-			System.err.print("NO. PARENTESIS. TODAVÍA CONCHE TU MADRE");
+			Integer[] arguments= (Integer[]) visitPar(ctx.par());
+			if(arrExists(name, varClass)){
+				check_ConstantArr(name, line, col, type_var);
+				check_accurate_size(name, arguments, line, col);
+				Integer[] real= tableArr.get(name).z;
+				for (int i = 0; i < arguments.length; i++) {
+					if(real[i]<arguments[i]){
+						int line0= ctx.par().pos(i).getStart().getLine();
+						int col0= ctx.par().pos(i).getStart().getCharPositionInLine()+1;
+						error_tiempo_exe(arguments[i]-1, line0, col0);
+					}
+				}
+				Object [] variables= new Object[2];
+				variables[0]=name;
+				variables[1]=posicion(arguments, real);
+				return (T) variables;
+			}else if (arrExists(name+suffix, varClass)){
+				String variable=name+suffix;
+				check_ConstantArr(variable, line, col, type_var);
+				check_accurate_size(variable, arguments, line, col);
+				Integer[] real= tableArr.get(name).z;
+				for (int i = 0; i < arguments.length; i++) {
+					if(real[i]>arguments[i]){
+						int line0= ctx.par().pos(i).getStart().getLine();
+						int col0= ctx.par().pos(i).getStart().getCharPositionInLine()+1;
+						error_tiempo_exe(arguments[i], line, col);
+					}
+				}
+				Object [] variables= new Object[2];
+				variables[0]=name;
+				variables[1]=posicion(arguments, real);
+				return (T) variables;
+			}else{
+				CharArr<Object[], String, String, Integer[]> newVar;
+				String variable;
+				if (suffix=="")
+					varClass="single";
+				int size=arguments[0];
+				for (int i = 1; i < arguments.length; i++) {
+					size=(int)size*arguments[i];
+				}
+				Object [] vari= new Object[size];
+				for (int i = 0; i < size; i++) {
+					vari[i]=define(varClass, null);
+				}
+				//Object vari=define(varClass, null);
+				if (suffix.equals("!") || suffix.equals("")){
+					newVar=new CharArr(vari, varClass, type_var, arguments);
+					variable=name;
+					tableArr.put(variable, newVar);
+					Object [] variables= new Object[2];
+					variables[0]=variable;
+					variables[1]=posicion(arguments, arguments);
+					return (T) variables;
+				}else{
+					newVar=new CharArr(vari, varClass, type_var, arguments);
+					variable=name+suffix;
+					tableArr.put(variable, newVar);
+					Object [] variables= new Object[2];
+					variables[0]=variable;
+					variables[1]=posicion(arguments, arguments);
+					return (T) variables;
+				}
+			}
+
+			
+			
+			
+			
+		//Variables
 		}else{
 			//Me verifica si está modificando.
 			if(varExists(name, varClass)){
@@ -367,9 +433,21 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}
 		}
 		
-		return null;
 	}
-	
+	public boolean arrExists(String var, String varClass){
+		if (tableArr.containsKey(var)){
+			String reserved=tableArr.get(var).x;
+			if (varClass.equals("")){
+				return true;
+			}else if (varClass.equals(reserved)){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
 	public boolean varExists(String var, String varClass){
 		if (tableVar.containsKey(var)){
 			String reserved=tableVar.get(var).y;
@@ -382,6 +460,32 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}
 		}else{
 			return false;
+		}
+	}
+	
+	public Integer posicion(Integer [] arguments, Integer[] real){
+		int posi=0;
+		for (int i=(arguments.length-1); i>=0; i--){
+			int pos=arguments[i]-1;
+			
+			for (int j=i+1; j<arguments.length; j++){
+				pos=pos*real[j];
+			}
+			posi+=pos;
+		}
+		return posi;
+	}
+	public void check_ConstantArr(String name, int line, int col, String type_var){
+		if(type_var.equals("const")){
+			error_red_var(name, line, col);
+		}
+		if(tableArr.containsKey(name)){
+			String local=tableArr.get(name).y;
+			if(local.equals("const"))
+				error_constant(name, line, col);
+		}else{
+			System.err.print("How arr");
+			System.exit(-1);
 		}
 	}
 	
@@ -399,7 +503,13 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		}
 	}
 	
-
+	public void check_accurate_size(String name, Object [] arguments, int line, int col){
+		Object[] arre_var=tableArr.get(name).z;
+		if(arguments.length!=arre_var.length){
+			error_red_arr(name, line, col);
+		}
+	}
+	
 	
 	public String varClass(String suffix){
 		if (suffix.equals("%")){
@@ -418,6 +528,14 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		return null;
 	}
 	
+	
+	/*
+	 * 
+	 * 
+	 * Con DIM
+	 * 
+	 * 
+	 */
 	@Override
 	public T visitDim(MyLanguageParser.DimContext ctx){
 		String[] myTypeArray = new String[2];
@@ -478,6 +596,8 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		return null;
 	}
 
+
+	
 	public T visitIdim(MyLanguageParser.IdimContext ctx, String[]typeVar) {
 		String name = ctx.ID().getText();
 		int line = ctx.ID().getSymbol().getLine();
@@ -620,6 +740,32 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		System.exit(-1);
 		return null;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	/*
@@ -1576,6 +1722,96 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		System.exit(-1);
 		return Error;
 	}
+	
+	
+	public Object casting(String typeVar, String typeRes, Object res, int line, int col){
+		if (typeVar.equals("integer")){
+			Integer resu;
+			if (typeRes.equals("long")){
+				resu=(int)(long) res;
+				if (Math.abs(resu)>32767){
+					resu=-25536;
+				}
+				return resu;
+			}else if (typeRes.equals("double")){
+				resu=(int)(double)res;
+				if (Math.abs(resu)>32767){
+					resu=-25536;
+				}
+				return resu;
+			}else if (typeRes.equals("single")){
+				resu=(int)(float) res;
+				if (Math.abs(resu)>32767){
+					resu=-25536;
+				}
+				return resu;
+			}else{
+				error_casting();
+			}
+		}else if(typeVar.equals("long")){
+			Long resu;
+			if (typeRes.equals("integer")){
+				resu=(long)(int) res;
+				return resu;
+			}else if (typeRes.equals("double")){
+				resu=(long)(double)res;
+				return resu;
+			}else if (typeRes.equals("single")){
+				resu=(long)(float) res;
+				return resu;
+			}else{
+				error_casting();
+			}
+		}else if(typeVar.equals("single")){
+			Float resu;
+			if (typeRes.equals("integer")){
+				resu=(float)(int) res;
+				return resu;
+			}else if (typeRes.equals("double")){
+				double tempRes=(double)res;
+				Double d=tempRes;
+				String decimal=d.toString();
+				List<String> doublenum = Arrays.asList(decimal.split("."));
+				String decimalPart=doublenum.get(1);
+				if (decimalPart.length()>5){
+					String singlepart = decimal.substring(0,5);
+					String number= doublenum.get(0)+'.'+singlepart;
+					Double tmp= Double.parseDouble(number);
+					resu=(float)(double) tmp;
+				}else{
+					resu=(float) tempRes;
+				}
+				return resu;
+			}else if (typeRes.equals("long")){
+				resu=(float)(long) res;
+				return resu;
+			}else{
+				error_casting();
+			}
+		}else if(typeVar.equals("double")){
+			Double resu;
+			if (typeRes.equals("integer")){
+				resu=(double)(int) res;
+				return resu;
+			}else if (typeRes.equals("long")){
+				resu=(double)(long)res;
+				return resu;
+			}else if (typeRes.equals("single")){
+				resu=(double)(float) res;
+				return resu;
+			}else{
+				error_casting();
+			}
+		}
+		error_casting();
+		return null;
+	}
+	
+	public void error_casting(){
+		System.err.print("Está haciendo mal el casting");
+		System.exit(-1);
+	}
+
 	
 	public void error_tiempo_exe(int pos, int line, int col){
 		System.err.printf("<%d:%d> Error en tiempo de ejecución: Se accedio a una posicion no valida del arreglo: "+pos,line,col);
