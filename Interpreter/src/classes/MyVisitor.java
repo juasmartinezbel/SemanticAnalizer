@@ -1,50 +1,106 @@
 package classes;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import org.antlr.v4.parse.ANTLRParser.id_return;
 
 import classes.MyLanguageParser.*;
 
 public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
-	HashMap<HashMap, String[]> table = new HashMap<>();
-
-	//HashMap<String, Object> variable = new HashMap<>();
 	
-	public Object define(String type, Object obj){
-		switch(type){
-			case "string":
-				if (obj==null){
-					return "";
-				}else{
-					return obj.toString();
-				}
-			case "double":
-				if (obj==null){
-					return 0.0;
-				}else{
-					return (Double) obj;
-				}
-			case "single":
-				if (obj==null){
-					return 0.0;
-				}else{
-					return (Double) obj;
-				}
-			case "long":
-				if (obj==null){
-					return 0;
-				}else{
-					return (Long) obj;
-				}
-			case "integer":
-				if (obj==null){
-					return 0;
-				}else{
-					return (Integer) obj;
-				}
-		}
-		return null;
+	public class CharVar <X, Y, Z>{
+		public final X x; 
+	    public final Y y;
+	    public final Z z;
+	    public CharVar(X x, Y y, Z z){ 
+	        this.x = x; 
+	        this.y = y;
+	        this.z = z;
+	    }
+
+	    @Override
+	    public String toString() {
+	        return "(" + x + "," + y + ","+ z + ")";
+	    }
+
+	    @Override
+	    public boolean equals(Object other) {
+	        if (other == this) {
+	            return true;
+	        }
+
+	        if (!(other instanceof CharVar)){
+	            return false;
+	        }
+
+	        CharVar<X,Y,Z> other_ = (CharVar<X,Y,Z>) other;
+
+	        // this may cause NPE if nulls are valid values for x or y. The logic may be improved to handle nulls properly, if needed.
+	        return other_.x.equals(this.x) && other_.y.equals(this.y) && other_.z.equals(this.z);
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        final int prime = 31;
+	        int result = 1;
+	        result = prime * result + ((x == null) ? 0 : x.hashCode());
+	        result = prime * result + ((y == null) ? 0 : y.hashCode());
+	        result = prime * result + ((z == null) ? 0 : z.hashCode());
+	        return result;
+	    }
 	}
+	
+	
+	public class CharArr <W, X, Y, Z>{
+		public final W w;
+		public final X x; 
+	    public final Y y;
+	    public final Z z;
+	    public CharArr(W w, X x, Y y, Z z){ 
+	        this.w = w;
+	    	this.x = x; 
+	        this.y = y;
+	        this.z = z;
+	    }
+
+	    @Override
+	    public String toString() {
+	        return "(" +w+ ","+ x + "," + y + ","+ z + ")";
+	    }
+
+	    @Override
+	    public boolean equals(Object other) {
+	        if (other == this) {
+	            return true;
+	        }
+
+	        if (!(other instanceof CharVar)){
+	            return false;
+	        }
+
+	        CharArr<W,X,Y,Z> other_ = (CharArr<W,X,Y,Z>) other;
+
+	        // this may cause NPE if nulls are valid values for x or y. The logic may be improved to handle nulls properly, if needed.
+	        return other_.w.equals(this.w) && other_.x.equals(this.x) && other_.y.equals(this.y) && other_.z.equals(this.z);
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        final int prime = 31;
+	        int result = 1;
+	        result = prime * result + ((x == null) ? 0 : x.hashCode());
+	        result = prime * result + ((y == null) ? 0 : y.hashCode());
+	        return result;
+	    }
+	}
+	
+						 //Valor     Tipo  Local/Variable/Global   
+	HashMap<String, CharVar<Object, String, String>> tableVar = new HashMap<>();
+	HashMap<String, CharArr<Object [], String, String, Long[]>> tableArr = new HashMap<>();
+	//HashMap<String, Object> variable = new HashMap<>();
 	
 	@Override
 	public T visitQb64 (MyLanguageParser.Qb64Context ctx) {
@@ -66,9 +122,24 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		return visitChildren(ctx);
 	}
 	
+	/*
+	 * 
+	 * 
+	 * 
+	 * Funciones para declaraciones
+	 * 
+	 * 
+	 */
+	
 	@Override
 	public T visitDecl(MyLanguageParser.DeclContext ctx) {
-		return visitChildren(ctx);
+		if (ctx.dim()!=null){
+			return visitDim(ctx.dim());
+		}else{
+			System.err.print("AAAAAAAAAAAAA");
+			System.exit(-1);
+			return null;
+		}
 	}
 	
 	@Override
@@ -80,20 +151,113 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		}
 		myTypeArray[0]=typeVar;
 		String valType= new String(ctx.TYPE().getText());
-		System.out.print(valType);
 		myTypeArray[1]=valType;
-		visitIdim(ctx.idim(), myTypeArray);
+		
+		List<MyLanguageParser.IdimContext> idims = ctx.idim();
+	    for (MyLanguageParser.IdimContext i : idims)
+	        visitIdim(i, myTypeArray);
 		return null;
 	}
 
 	public T visitIdim(MyLanguageParser.IdimContext ctx, String[]typeVar) {
 		String name = ctx.ID().getText();
-		HashMap<String, Object> variable = new HashMap<>();
-		Object vari=define(typeVar[0],null);
-		System.out.println(vari);
+		int line = ctx.ID().getSymbol().getLine();
+		int col = ctx.ID().getSymbol().getCharPositionInLine()+1;
+		if (ctx.par().PIZQ()!=null){
+			System.err.print("DUDE, NO PARENTESIS TODAVÍA");
+			System.exit(-1);
+			//String paren= visitPar(ctx.par()).toString();
+		}else{
+			CharVar <Object, String, String> variable;
+			Object vari=define(typeVar[1],null);
+			check_Error_var(name, line, col);
+			if(typeVar[1].equals("integer")){
+				Integer v= (int)vari;
+				variable= new CharVar(v,typeVar[0], typeVar[1]);
+				tableVar.put(name, variable);
+			}else if(typeVar[1].equals("double")){
+				Double v= (double) vari;
+				variable= new CharVar(v,typeVar[0], typeVar[1]);
+				tableVar.put(name, variable);
+			}else if (typeVar[1].equals("single")){
+				Float v= (float)vari;
+				variable= new CharVar(v,typeVar[0], typeVar[1]);
+				tableVar.put(name, variable);
+			}else if (typeVar[1].equals("long")){
+				Long v= (long)vari;
+				variable= new CharVar(v,typeVar[0], typeVar[1]);
+				tableVar.put(name, variable);
+			}else if (typeVar[1].equals("string")){
+				String v= vari.toString();
+				variable= new CharVar(v,typeVar[0], typeVar[1]);
+				tableVar.put(name, variable);
+			}else{
+				System.err.print("Ehm... Está asignando un tipo que no debería");
+				System.exit(-1);
+			}
+		}
+		/*System.out.println("-----------------------------");
+		for (String string : tableVar.keySet()) {
+			System.out.println("--Key---");
+			System.out.println(string);
+			System.out.println(tableVar.get(string).toString());
+			
+		}*/
+
+		return null;
+	}
+	
+	public void check_Error_var(String name, int line, int col){
+		if (tableVar.containsKey(name)){
+			System.err.printf("\n<%d,%d> Error semantico: '"+name+"' ya ha sido declarado.",line,col);
+			System.exit(-1);
+		}
+	}
+	
+	@Override
+	public T visitPar(MyLanguageParser.ParContext ctx) {
 		
 		return null;
 	}
+	public Object define(String type, Object obj){
+		switch(type){
+			case "string":
+				if (obj==null){
+					return "";
+				}else{
+					return obj.toString();
+				}
+			case "double":
+				if (obj==null){
+					return 0.0;
+				}else{
+					return (Double) obj;
+				}
+			case "single":
+				if (obj==null){
+					return (float)0.0;
+				}else{
+					return (Float) obj;
+				}
+			case "long":
+				if (obj==null){
+					return 0;
+				}else{
+					return (Long) obj;
+				}
+			case "integer":
+				if (obj==null){
+					return 0;
+				}else{
+					return (Integer) obj;
+				}
+		}
+		System.err.print("Nope, ninguno de estos casos");
+		System.exit(-1);
+		return null;
+	}
+	
+	
 	/*
 	 * 
 	 * Print Methods

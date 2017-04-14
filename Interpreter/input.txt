@@ -1,1 +1,1 @@
-print "memes" mod 5
+dim u, j, i, o, u as single

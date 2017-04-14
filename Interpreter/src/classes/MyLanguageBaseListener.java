@@ -76,30 +76,6 @@ public class MyLanguageBaseListener implements MyLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdim(MyLanguageParser.IdimContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIdim(MyLanguageParser.IdimContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIdimnext(MyLanguageParser.IdimnextContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIdimnext(MyLanguageParser.IdimnextContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterShared(MyLanguageParser.SharedContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -107,6 +83,18 @@ public class MyLanguageBaseListener implements MyLanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitShared(MyLanguageParser.SharedContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIdim(MyLanguageParser.IdimContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIdim(MyLanguageParser.IdimContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

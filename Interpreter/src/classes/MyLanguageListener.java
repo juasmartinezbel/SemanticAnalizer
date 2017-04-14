@@ -58,26 +58,6 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitDim(MyLanguageParser.DimContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MyLanguageParser#idim}.
-	 * @param ctx the parse tree
-	 */
-	void enterIdim(MyLanguageParser.IdimContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MyLanguageParser#idim}.
-	 * @param ctx the parse tree
-	 */
-	void exitIdim(MyLanguageParser.IdimContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MyLanguageParser#idimnext}.
-	 * @param ctx the parse tree
-	 */
-	void enterIdimnext(MyLanguageParser.IdimnextContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MyLanguageParser#idimnext}.
-	 * @param ctx the parse tree
-	 */
-	void exitIdimnext(MyLanguageParser.IdimnextContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#shared}.
 	 * @param ctx the parse tree
 	 */
@@ -87,6 +67,16 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitShared(MyLanguageParser.SharedContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#idim}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdim(MyLanguageParser.IdimContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#idim}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdim(MyLanguageParser.IdimContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#sufdecl}.
 	 * @param ctx the parse tree

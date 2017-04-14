@@ -3,12 +3,18 @@
 <fullyQualifiedTypeName name="classes.MyLanguageParser"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.Qb64Context"/>
 <fullyQualifiedTypeName name="java.awt.List"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.DeclContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.DimContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.ToprintfstContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.ToprintContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.ValueContext"/>
+<fullyQualifiedTypeName name="org.antlr.runtime.tree.DOTTreeGenerator"/>
+<fullyQualifiedTypeName name="org.stringtemplate.v4.gui.JTreeScopeStackModel.StringTree"/>
+<fullyQualifiedTypeName name="org.antlr.runtime.tree.CommonTree"/>
+<fullyQualifiedTypeName name="org.antlr.v4.gui.TreeViewer"/>
+<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="org.antlr.v4.parse.ANTLRParser.id_return"/>
 </qualifiedTypeNameHistroy>

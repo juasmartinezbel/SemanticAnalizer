@@ -14,10 +14,9 @@ functionsub : fun
 			| sub;
 
 decl		: dim | 'const' sufdecl | sufdecl;
-dim			: 'dim' shared idim 'as' TYPE;
-idim 		: ID par idimnext*;
-idimnext	: COMMA ID par;
+dim			: 'dim' shared idim (COMMA idim)* 'as' TYPE;
 shared		: 'shared'| ;
+idim 		:  ID par;
 
 sufdecl		: idn EQUAL expr;
 idn			: ID suf;
@@ -90,7 +89,6 @@ valuev	: (INTEGER|LONG|SINGLE|DOUBLE|STRING);
 value	: (valuev|idnp);
 idnp	: ID sufix (par|PIZQ PDER|);
 
-
 COMMENT 	:'\'' ~[\r\n]* -> skip;
 WS			: [ \t\r\n]+ -> skip ;
 PIZQ		: '(';
@@ -110,10 +108,9 @@ COMMA		: ',';
 SUFS 		: '$';
 SUFN 		: ('&'|'!'|'%'|'#');
 TYPE		: ('string'|'double'|'single'|'long'|'integer') ;
+STRING		: '\"' ~[\r\n\"]* '\"';
 INTEGER		: ([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]|[0-3][0-2][0-7][0-6][0-7]);
 LONG		: [0-9]+;
 SINGLE		: [0-9]+[.] ([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]|[0-9][0-9][0-9][0-9][0-9]);
 DOUBLE		: [0-9]+[.]([0-9]+);
-STRING		: '\"' VALID* '\"';
-VALID		: ~[\r\n\"];
-ID			: [a-zA-Z][a-zA-Z0-9_]*;
+ID			: ([a-z]|[A-Z]|[a-zA-Z][a-zA-Z0-9_]*);

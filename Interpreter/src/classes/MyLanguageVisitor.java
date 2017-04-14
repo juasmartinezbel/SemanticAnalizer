@@ -41,23 +41,17 @@ public interface MyLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDim(MyLanguageParser.DimContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MyLanguageParser#idim}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdim(MyLanguageParser.IdimContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyLanguageParser#idimnext}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdimnext(MyLanguageParser.IdimnextContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MyLanguageParser#shared}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitShared(MyLanguageParser.SharedContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLanguageParser#idim}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdim(MyLanguageParser.IdimContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MyLanguageParser#sufdecl}.
 	 * @param ctx the parse tree
