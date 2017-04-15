@@ -279,7 +279,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				if (tyr.equalsIgnoreCase("string")){
 					w[Posicion]=res.toString();
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}else{
 					error_types(QB64Type(tyr), should, line, col);
 				}
@@ -287,49 +287,49 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				if (tyr.equalsIgnoreCase("integer")){
 					w[Posicion]= (Integer) (int) res;
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					w[Posicion]=(Integer) casting("integer", QB64Type(tyr), res, line, col);
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(),changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("long")){
 				if (tyr.equalsIgnoreCase("long")){
 					w[Posicion]= (Long) (long) res;
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					w[Posicion]= (Long) casting("long", QB64Type(tyr), res, line, col);
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("single")){
 				if (tyr.equalsIgnoreCase("float")){
 					w[Posicion]= (Float) (float) res;
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					w[Posicion]=(Float) casting("single", QB64Type(tyr), res, line, col);
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("double")){
 				if (tyr.equalsIgnoreCase("double")){
 					w[Posicion]=(Double) (double) res;
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					w[Posicion]= (Double)(double) casting("double", QB64Type(tyr), res, line, col);
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}
 
 			}
@@ -363,7 +363,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				if (tyr.equalsIgnoreCase("string")){
 					String x=res.toString();
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}else{
 					error_types(QB64Type(tyr), should, line, col);
 				}
@@ -371,49 +371,49 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				if (tyr.equalsIgnoreCase("integer")){
 					Integer x= (int) res;
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					Integer x=(Integer) casting("integer", QB64Type(tyr), res, line, col);
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("long")){
 				if (tyr.equalsIgnoreCase("long")){
 					Long x= (long) res;
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					Long x=(Long) casting("long", QB64Type(tyr), res, line, col);
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("single")){
 				if (tyr.equalsIgnoreCase("float")){
 					Float x= (float) res;
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					Float x=(Float) casting("single", QB64Type(tyr), res, line, col);
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("double")){
 				if (tyr.equalsIgnoreCase("double")){
 					Double x= (double) res;
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					Double x=(double) casting("double", QB64Type(tyr), res, line, col);
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}
 			}
 
@@ -501,7 +501,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				if (suffix.equalsIgnoreCase("!") || suffix.equalsIgnoreCase("")){
 					newVar=new CharArr(vari, varClass, type_var, arguments);
 					variable=name;
-					tableArr.put(variable.toString().toLowerCase(), newVar);
+					tableArr.put(variable, newVar);
 					Object [] variables= new Object[2];
 					variables[0]=variable;
 					variables[1]=posicion(arguments, arguments);
@@ -509,7 +509,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				}else{
 					newVar=new CharArr(vari, varClass, type_var, arguments);
 					variable=name+suffix;
-					tableArr.put(variable.toString().toLowerCase(), newVar);
+					tableArr.put(variable, newVar);
 					Object [] variables= new Object[2];
 					variables[0]=variable;
 					variables[1]=posicion(arguments, arguments);
@@ -545,12 +545,12 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				if (suffix.equalsIgnoreCase("!") || suffix.equalsIgnoreCase("")){
 					newVar=new CharVar(vari, varClass, type_var);
 					variable=name;
-					tableVar.put(variable.toString().toLowerCase(), newVar);
+					tableVar.put(variable, newVar);
 					return (T) variable;
 				}else{
 					newVar=new CharVar(vari, varClass, type_var);
 					variable=name+suffix;
-					tableVar.put(variable.toString().toLowerCase(), newVar);
+					tableVar.put(variable, newVar);
 					return (T) variable;
 				}
 			}
@@ -784,7 +784,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					vari[i]=(int)define(typeVar[1],null);
 				}
 				variable= new CharArr(vari,typeVar[1], typeVar[0], arguments);
-				tableArr.put(name.toString().toLowerCase(), variable);
+				tableArr.put(name, variable);
 				//tableArr.put(name+'%', variable);
 			}else if(typeVar[1].equalsIgnoreCase("double")){
 				Double [] vari = new Double[size];
@@ -792,7 +792,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					vari[i]=(double)define(typeVar[1],null);
 				}
 				variable= new CharArr(vari,typeVar[1], typeVar[0], arguments);
-				tableArr.put(name.toString().toLowerCase(), variable);
+				tableArr.put(name, variable);
 				//tableArr.put(name+'#', variable);
 			}else if (typeVar[1].equalsIgnoreCase("single")){
 				Float [] vari = new Float[size];
@@ -800,7 +800,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					vari[i]=(float)define(typeVar[1],null);
 				}
 				variable= new CharArr(vari,typeVar[1], typeVar[0], arguments);
-				tableArr.put(name.toString().toLowerCase(), variable);
+				tableArr.put(name, variable);
 				//tableArr.put(name+'!', variable);
 			}else if (typeVar[1].equalsIgnoreCase("long")){
 				Long [] vari = new Long[size];
@@ -808,7 +808,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					vari[i]=(long)define(typeVar[1],null);
 				}
 				variable= new CharArr(vari,typeVar[1], typeVar[0], arguments);
-				tableArr.put(name.toString().toLowerCase(), variable);
+				tableArr.put(name, variable);
 				//tableArr.put(name+'&', variable);
 			}else if (typeVar[1].equalsIgnoreCase("string")){
 				String [] vari = new String[size];
@@ -816,7 +816,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					vari[i]=define(typeVar[1],null).toString();
 				}
 				variable= new CharArr(vari,typeVar[1], typeVar[0], arguments);
-				tableArr.put(name.toString().toLowerCase(), variable);
+				tableArr.put(name, variable);
 				//tableArr.put(name+'$', variable);
 			}else{
 				System.err.print("Ehm... Está asignando un tipo que no debería");
@@ -832,27 +832,27 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			if(typeVar[1].equalsIgnoreCase("integer")){
 				Integer v= (int)vari;
 				variable= new CharVar(v,typeVar[1], typeVar[0]);
-				tableVar.put(name.toString().toLowerCase(), variable);
+				tableVar.put(name, variable);
 				//tableVar.put(name+'%', variable);
 			}else if(typeVar[1].equalsIgnoreCase("double")){
 				Double v= (double) vari;
 				variable= new CharVar(v,typeVar[1], typeVar[0]);
-				tableVar.put(name.toString().toLowerCase(), variable);
+				tableVar.put(name, variable);
 				//tableVar.put(name+'#', variable);
 			}else if (typeVar[1].equalsIgnoreCase("single")){
 				Float v= (float)vari;
 				variable= new CharVar(v,typeVar[1], typeVar[0]);
-				tableVar.put(name.toString().toLowerCase(), variable);
+				tableVar.put(name, variable);
 				//tableVar.put(name+'!', variable);
 			}else if (typeVar[1].equalsIgnoreCase("long")){
 				Long v= (long)vari;
 				variable= new CharVar(v,typeVar[1], typeVar[0]);
-				tableVar.put(name.toString().toLowerCase(), variable);
+				tableVar.put(name, variable);
 				//tableVar.put(name+'&', variable);
 			}else if (typeVar[1].equalsIgnoreCase("string")){
 				String v= vari.toString();
 				variable= new CharVar(v,typeVar[1], typeVar[0]);
-				tableVar.put(name.toString().toLowerCase(), variable);
+				tableVar.put(name, variable);
 				//tableVar.put(name+'$', variable);
 			}else{
 				System.err.print("Ehm... Está asignando un tipo que no debería");
@@ -1034,54 +1034,54 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			if (tyv.equalsIgnoreCase("string")){
 				w[Posicion]=re.toString();
 				changedVar=new CharArr(w, tyv, y, z);
-				tableArr.put(Variable.toString().toLowerCase(), changedVar);
+				tableArr.put(Variable.toString(), changedVar);
 			}else if(tyv.equalsIgnoreCase("integer")){
 				if (tyr.equalsIgnoreCase("integer")){
 					w[Posicion]= (Integer) (int) res;
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					w[Posicion]=(Integer) casting("integer", QB64Type(tyr), res, line, col);
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("long")){
 				if (tyr.equalsIgnoreCase("long")){
 					w[Posicion]= (Long) (long) res;
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					w[Posicion]= (Long) casting("long", QB64Type(tyr), res, line, col);
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("single")){
 				if (tyr.equalsIgnoreCase("float")){
 					w[Posicion]= (Float) (float) res;
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					w[Posicion]=(Float) casting("single", QB64Type(tyr), res, line, col);
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("double")){
 				if (tyr.equalsIgnoreCase("double")){
 					w[Posicion]=(Double) (double) res;
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					w[Posicion]= (Double)(double) casting("double", QB64Type(tyr), res, line, col);
 					changedVar=new CharArr(w, tyv, y, z);
-					tableArr.put(Variable.toString().toLowerCase(), changedVar);
+					tableArr.put(Variable.toString(), changedVar);
 				}
 
 			}
@@ -1107,54 +1107,54 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			if (tyv.equalsIgnoreCase("string")){
 				String x=re.toString();
 				changedVar=new CharVar(x, tyv, z);
-				tableVar.put(Variable.toString().toLowerCase(), changedVar);
+				tableVar.put(Variable.toString(), changedVar);
 			}else if(tyv.equalsIgnoreCase("integer")){
 				if (tyr.equalsIgnoreCase("integer")){
 					Integer x= (int) res;
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					Integer x=(Integer) casting("integer", QB64Type(tyr), res, line, col);
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("long")){
 				if (tyr.equalsIgnoreCase("long")){
 					Long x= (long) res;
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					Long x=(Long) casting("long", QB64Type(tyr), res, line, col);
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("single")){
 				if (tyr.equalsIgnoreCase("float")){
 					Float x= (float) res;
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					Float x=(Float) casting("single", QB64Type(tyr), res, line, col);
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}
 			}else if(tyv.equalsIgnoreCase("double")){
 				if (tyr.equalsIgnoreCase("double")){
 					Double x= (double) res;
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
 					error_types(QB64Type(tyr), shouldg, line, col);
 				}else{
 					Double x=(double) casting("double", QB64Type(tyr), res, line, col);
 					changedVar=new CharVar(x, tyv, z);
-					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
+					tableVar.put(Variable.toString(), changedVar);
 				}
 			}
 
@@ -1329,7 +1329,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			        visitInstr(ins);
 			    }
 			    newVar=new CharVar(j+std, "integer", z);
-			    tableVar.put(i.toString().toLowerCase(), newVar);
+			    tableVar.put(i, newVar);
 			    vali=(Number)(tableVar.get(i).x);
 			    j= (int) vali;
 			}while(j <= tod);
@@ -1343,7 +1343,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			        visitInstr(ins);
 			    }
 			    newVar=new CharVar(j+std, "long", z);
-			    tableVar.put(i.toString().toLowerCase(), newVar);
+			    tableVar.put(i, newVar);
 			    vali=(Number)(tableVar.get(i).x);
 			    j= (long) vali;
 			}while(j <= tod); 
@@ -1357,7 +1357,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			        visitInstr(ins);
 			    }
 			    newVar=new CharVar(j+std, "single", z);
-			    tableVar.put(i.toString().toLowerCase(), newVar);
+			    tableVar.put(i, newVar);
 			    vali=(Number)(tableVar.get(i).x);
 			    j= (float) vali;
 			}while(j <= tod); 
@@ -1371,7 +1371,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			        visitInstr(ins);
 			    }
 			    newVar=new CharVar(j+std, "double", z);
-			    tableVar.put(i.toString().toLowerCase(), newVar);
+			    tableVar.put(i, newVar);
 			    vali=(Number)(tableVar.get(i).x);
 			    j= (double) vali;
 			}while(j <= tod); 
@@ -1419,11 +1419,11 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			if (suffix.equalsIgnoreCase("%") || suffix.equalsIgnoreCase("")){
 				newVar=new CharVar(vari, varClass, type_var);
 				variable=name;
-				tableVar.put(variable.toString().toLowerCase(), newVar);
+				tableVar.put(variable, newVar);
 			}else{
 				newVar=new CharVar(vari, varClass, type_var);
 				variable=name+suffix;
-				tableVar.put(variable.toString().toLowerCase(), newVar);
+				tableVar.put(variable, newVar);
 			}
 		}
 		if(variable.equalsIgnoreCase("")){
@@ -1436,19 +1436,19 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		if(y.equalsIgnoreCase("integer")){
 			Integer vari= (Integer) casting(y, QB64Type(typeRes), res, line0, col0);
 			newVar=new CharVar(vari, y, type_var);
-			tableVar.put(variable.toString().toLowerCase(), newVar);
+			tableVar.put(variable, newVar);
 		}else if(y.equalsIgnoreCase("double")){
 			Double vari= (Double) casting(y, QB64Type(typeRes), res, line0, col0);
 			newVar=new CharVar(vari, y, type_var);
-			tableVar.put(variable.toString().toLowerCase(), newVar);
+			tableVar.put(variable, newVar);
 		}else if(y.equalsIgnoreCase("single")){
 			Float vari= (Float) casting(y, QB64Type(typeRes), res, line0, col0);
 			newVar=new CharVar(vari, y, type_var);
-			tableVar.put(variable.toString().toLowerCase(), newVar);
+			tableVar.put(variable, newVar);
 		}else if(y.equalsIgnoreCase("long")){
 			Long vari= (Long) casting(y, QB64Type(typeRes), res, line0, col0);
 			newVar=new CharVar(vari, y, type_var);
-			tableVar.put(variable.toString().toLowerCase(), newVar);
+			tableVar.put(variable, newVar);
 		}
 		
 		return (T)variable;

@@ -1,0 +1,12 @@
+u=3
+
+j=u
+
+sub y
+end sub
+
+function g
+end function
+
+function u
+end function
