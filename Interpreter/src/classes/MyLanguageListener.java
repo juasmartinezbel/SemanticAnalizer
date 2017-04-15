@@ -497,4 +497,14 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIdnp(MyLanguageParser.IdnpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLanguageParser#ids}.
+	 * @param ctx the parse tree
+	 */
+	void enterIds(MyLanguageParser.IdsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLanguageParser#ids}.
+	 * @param ctx the parse tree
+	 */
+	void exitIds(MyLanguageParser.IdsContext ctx);
 }

@@ -304,4 +304,10 @@ public interface MyLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIdnp(MyLanguageParser.IdnpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLanguageParser#ids}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIds(MyLanguageParser.IdsContext ctx);
 }

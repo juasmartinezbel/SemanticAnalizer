@@ -1,0 +1,5 @@
+t$="meme"
+select case t$
+case 5
+case "u"
+end case

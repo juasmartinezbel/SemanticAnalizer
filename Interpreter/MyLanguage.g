@@ -13,9 +13,9 @@ instr		: decl
 functionsub : fun
 			| sub;
 
-decl		: dim | 'const' sufdecl | sufdecl;
-dim			: 'dim' shared idim (COMMA idim)* 'as' TYPE;
-shared		: 'shared'| ;
+decl		: dim | ('const'|'CONST') sufdecl | sufdecl;
+dim			: ('dim'|'DIM') shared idim (COMMA idim)* ('as'|'AS') TYPE;
+shared		: 'shared'|'SHARED'| ;
 idim 		:  ID par;
 
 sufdecl		: idn EQUAL expr;
@@ -24,38 +24,38 @@ sufix 		: (SUFN | SUFS |);
 par 		: (PIZQ pos (COMMA pos)* PDER)|;
 pos			: expr;
 
-print		: 'print' toprintfst ;
+print		: ('print'|'PRINT') toprintfst ;
 toprintfst	: expr toprint* | toprint* ;
 toprint 	: PYC expr;
 
-input		: 'input' inpara;
+input		: ('input'|'INPUT') inpara;
 inpara		: (idn (COMMA idn)*|STRING COMMA idn (COMMA idn)* );
 
-ifc 		: 'if' expr 'then' instr* ifter;
-ifter		: 'elseif' expr 'then' instr* ifter 
-			| 'else' instr* 'end' 'if'
-			| 'end' 'if';
+ifc 		: ('if'|'IF') expr ('then'|'THEN') instr* ifter;
+ifter		: ('elseif'|'ELSEIF') expr ('then'|'THEN') instr* ifter 
+			| ('ELSE'|'else') instr* ('end'|'END') ('if'|'IF')
+			| ('end'|'END') ('if'|'IF');
 
-forc		: 'for'	forexpr tofor step instr* 'next';
+forc		: ('for'|'FOR')	forexpr tofor step instr* ('next'|'NEXT');
 forexpr		: ID forsuf EQUAL tothis;
 forsuf		: (SUFN|);
 tothis		: expr;
-tofor 		: 'to' tothis;
-step		: ('step' tothis|);
+tofor 		: ('to'|'TO') tothis;
+step		: (('step'|'STEP') tothis|);
 
-selectc		: 'select' 'case' idn cases* caselse 'end' 'select';
-cases		: 'case' valuev instr*;
-caselse		: ('case' 'else' instr*| );
+selectc		: ('select'|'SELECT') ('case'|'CASE') idn cases* caselse ('end'|'END') ('select'|'SELECT');
+cases		: ('case'|'CASE') valuev instr*;
+caselse		: (('case'|'CASE') ('else'|'ELSE') instr*| );
 
 whilec		: 'while' expr instr* 'wend';
 
 doc			: 'do' instr* 'loop' tdoc;
-tdoc		: ('while'|'until')expr;
+tdoc		: ('while'|'until'|'WHILE'|'UNTIL')expr;
 
-fun			: 'function' funidn instr* 'end' 'function';
+fun			: ('function'|'FUNCTION') funidn instr* ('end'|'END') ('function'|'FUNCTION');
 funidn		: ID sufix parfu;
 
-sub			:'sub' subidn instr* 'end' 'sub';
+sub			:('sub'|'SUB') subidn instr* ('end'|'END') ('sub'|'SUB');
 subidn 		: ID parfu;
 
 parfu		: (PIZQ arg PDER|);
@@ -84,27 +84,28 @@ neg 	: (NEG|MINUS);
 addi	: (ADD|MINUS);
 valuev	: (INTEGER|LONG|SINGLE|DOUBLE|STRING);
 value	: (valuev|idnp);
-idnp	: idn;
+idnp	: idn|ids;
+ids		: ID PIZQ PDER;
 
 COMMENT 	:'\'' ~[\r\n]* -> skip;
 WS			: [ \t\r\n]+ -> skip ;
 PIZQ		: '(';
 PDER		: ')';
-NEG			: 'not';
+NEG			: 'not'|'NOT';
 MINUS		: '-';
 POT			: '^' ;
-MULT		: '*'|'/'|'mod';
+MULT		: '*'|'/'|'mod'|'MOD';
 ADD			: '+';
 REL			: ( '<' | '<=' | '>' | '>=');
 EQUAL		: '=';
 DIF			: '<>';
-AND			: 'and';
-OR			: ('or'|'xor');
+AND			: 'and'|'AND';
+OR			: ('or'|'xor'|'OR'|'XOR');
 PYC			: ';';
 COMMA		: ',';
 SUFS 		: '$';
 SUFN 		: ('&'|'!'|'%'|'#');
-TYPE		: ('string'|'double'|'single'|'long'|'integer') ;
+TYPE		: ('string'|'double'|'single'|'long'|'integer'|'INTEGER'|'LONG'|'SINGLE'|'DOUBLE'|'STRING') ;
 STRING		: '\"' ~[\r\n\"]* '\"';
 INTEGER		: ([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9]|[0-3][0-2][0-7][0-6][0-7]);
 LONG		: [0-9]+;

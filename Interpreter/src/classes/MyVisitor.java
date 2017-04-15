@@ -142,7 +142,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			return visitDim(ctx.dim());
 		}else{
 			String type_var="variable";
-			if(ctx.getStart().getText().equals("const")){
+			if(ctx.getStart().getText().equalsIgnoreCase("const")){
 				type_var="const";
 			}
 			return visitSufdecl(ctx.sufdecl(), type_var);
@@ -563,11 +563,12 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	public T visitDim(MyLanguageParser.DimContext ctx){
 		String[] myTypeArray = new String[2];
 		String typeVar="variable";
-		if(ctx.shared().getStart().getText().equals("shared")){
+		if(ctx.shared().getStart().getText().equalsIgnoreCase("shared")){
 			typeVar="global";
 		}
 		myTypeArray[0]=typeVar;
 		String valType= new String(ctx.TYPE().getText());
+		valType=valType.toLowerCase();
 		myTypeArray[1]=valType;
 		
 		List<MyLanguageParser.IdimContext> idims = ctx.idim();
@@ -1188,7 +1189,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			    tableVar.put(i, newVar);
 			    vali=(Number)(tableVar.get(i).x);
 			    j= (int) vali;
-			}while(j < tod);
+			}while(j <= tod);
 		}else if (typei.equals("long")){
 			long tod=(Long) casting("long",  QB64Type(typeTo), to, line0, col0);
 			long std=(Long)casting("long", QB64Type(typeStep), stepex, line1, col1);
@@ -1202,7 +1203,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			    tableVar.put(i, newVar);
 			    vali=(Number)(tableVar.get(i).x);
 			    j= (long) vali;
-			}while(j < tod); 
+			}while(j <= tod); 
 		}else if (typei.equals("single")){
 			float tod=(Float) casting("single",  QB64Type(typeTo), to, line0, col0);
 			float std=(Float)casting("single", QB64Type(typeStep), stepex, line1, col1);
@@ -1216,7 +1217,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			    tableVar.put(i, newVar);
 			    vali=(Number)(tableVar.get(i).x);
 			    j= (float) vali;
-			}while(j < tod); 
+			}while(j <= tod); 
 		}else if (typei.equals("double")){
 			double tod=(Double) casting("double",  QB64Type(typeTo), to, line0, col0);
 			double std=(Double)casting("double", QB64Type(typeStep), stepex, line1, col1);
@@ -1230,7 +1231,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			    tableVar.put(i, newVar);
 			    vali=(Number)(tableVar.get(i).x);
 			    j= (double) vali;
-			}while(j < tod); 
+			}while(j <= tod); 
 		}else{
 			System.err.print("Error en esta vaina del for");
 			System.exit(-1);
@@ -1270,9 +1271,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}
 			CharVar<Object, String, String> newVar;
 			if (suffix=="")
-				varClass="single";
+				varClass="integer";
 			Object vari=define(varClass, null);
-			if (suffix.equals("!") || suffix.equals("")){
+			if (suffix.equals("%") || suffix.equals("")){
 				newVar=new CharVar(vari, varClass, type_var);
 				variable=name;
 				tableVar.put(variable, newVar);
@@ -1446,7 +1447,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	    }
 		
 		if (!found){
-			if((ctx.caselse().getStart().getText()).equals("case")){
+			if((ctx.caselse().getStart().getText()).equalsIgnoreCase("case")){
 				List<MyLanguageParser.InstrContext> casesi = ctx.caselse().instr();
 				for (MyLanguageParser.InstrContext c : casesi){
 			        visitInstr(c);
@@ -1553,17 +1554,23 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	@Override
 	public T visitIdnp(MyLanguageParser.IdnpContext ctx) {
-		if(ctx.idn().par().PIZQ()!=null){
-			Object[] Variables= (Object[]) visitIdn(ctx.idn(), "");
-			CharArr<Object[], String, String, Integer[]> changedVar;
-			String Variable=Variables[0].toString();
-			Integer Posicion=(Integer)Variables[1];
-			
-			Object[] w = tableArr.get(Variable).w;
-			return (T) w[Posicion];
+		if(ctx.idn()!=null){
+			if(ctx.idn().par().PIZQ()!=null){
+				Object[] Variables= (Object[]) visitIdn(ctx.idn(), "");
+				CharArr<Object[], String, String, Integer[]> changedVar;
+				String Variable=Variables[0].toString();
+				Integer Posicion=(Integer)Variables[1];
+				
+				Object[] w = tableArr.get(Variable).w;
+				return (T) w[Posicion];
+			}else{
+				Object Variable=visitIdn(ctx.idn(), "");
+				return (T) tableVar.get(Variable).x;
+			}
 		}else{
-			Object Variable=visitIdn(ctx.idn(), "");
-			return (T) tableVar.get(Variable).x;
+			System.err.println("Isn't that just quacking crazy?");
+			System.exit(-1);
+			return null;
 		}
 	}
 	
@@ -1751,6 +1758,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		//Mult
 		}else if(ctx.MULT()!=null){
 			String op=ctx.MULT().getText();
+			op=op.toLowerCase();
 			if (ti.equals("string")||tj.equals("string")){
 				if (op.equals("mod")){
 					String [] should={"integer", "long"};
@@ -2205,6 +2213,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				error_types("string", should, line1, col1);				
 			}
 			String op=ctx.OR().getText();
+			op=op.toLowerCase();
 			ope = operand(i, j);
 			operand= TypeOfOperands(ope);
 			switch(op){
