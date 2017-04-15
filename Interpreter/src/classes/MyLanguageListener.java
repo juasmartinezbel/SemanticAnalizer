@@ -408,26 +408,6 @@ public interface MyLanguageListener extends ParseTreeListener {
 	 */
 	void exitCall(MyLanguageParser.CallContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MyLanguageParser#callarg}.
-	 * @param ctx the parse tree
-	 */
-	void enterCallarg(MyLanguageParser.CallargContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MyLanguageParser#callarg}.
-	 * @param ctx the parse tree
-	 */
-	void exitCallarg(MyLanguageParser.CallargContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MyLanguageParser#calln}.
-	 * @param ctx the parse tree
-	 */
-	void enterCalln(MyLanguageParser.CallnContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MyLanguageParser#calln}.
-	 * @param ctx the parse tree
-	 */
-	void exitCalln(MyLanguageParser.CallnContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MyLanguageParser#expr}.
 	 * @param ctx the parse tree
 	 */

@@ -1,0 +1,19 @@
+DIM SHARED a AS INTEGER
+a = 1
+b = 1
+c = 1
+PRINT a
+increase b, c
+PRINT a
+increase b, c
+PRINT a
+increase b, c
+PRINT a
+increase b, c
+PRINT a
+print "Finalmente, C es: "; c
+SUB increase( j, k )
+	a = a + j
+	k= j+k
+	print "C es: "; k
+END SUB

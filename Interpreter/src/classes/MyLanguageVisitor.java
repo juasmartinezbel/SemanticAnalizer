@@ -251,18 +251,6 @@ public interface MyLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCall(MyLanguageParser.CallContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MyLanguageParser#callarg}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCallarg(MyLanguageParser.CallargContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MyLanguageParser#calln}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCalln(MyLanguageParser.CallnContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MyLanguageParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

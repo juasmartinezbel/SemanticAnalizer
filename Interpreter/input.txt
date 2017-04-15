@@ -1,11 +1,24 @@
-g= k+8
-'j=9
+DIM SHARED a AS INTEGER
+a = 1
+b = 1
+c = 1
+PRINT a
+increase b, c
+PRINT a
+increase b, c
+PRINT a
+increase b, c
+PRINT a
+increase b, c
+PRINT a
+print "Finalmente, C es: "; c
+SUB increase( j, k )
+	a = a + 1
+	k= j+k
+	pot
+	print "C es: "; k
+END SUB
 
-function j(i, k, j$, l() as integer)
-end function
-
-sub k(u&, j$, l() as string)
-end sub
-
-function k$
-end function
+SUB pot
+  a=a*a
+END SUB

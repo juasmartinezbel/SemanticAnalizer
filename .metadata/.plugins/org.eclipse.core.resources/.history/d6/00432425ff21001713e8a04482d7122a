@@ -1,0 +1,18 @@
+DIM SHARED a AS INTEGER
+a = 1
+b = 1
+c = 1
+PRINT a
+increase b, c
+PRINT a
+increase b, c
+PRINT a
+increase b, c
+PRINT a
+increase b, c
+PRINT a
+
+SUB increase( b, c )
+	a = a + 2
+	print 
+END SUB

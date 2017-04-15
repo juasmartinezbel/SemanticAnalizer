@@ -187,10 +187,12 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 						 //Valores    Tipo     L/V/G  Posiciones 
 	HashMap<String, CharArr<Object [], String, String, Integer[]>> tableArr = new HashMap<>();	
-							 //Tipo  //Valor   //Tipo argumentos
-	HashMap<String, CharFun<String, Integer, String[]>> tableFun = new HashMap<>();
+							 //Tipo  //N_Arg   //Tipo argumentos
+	HashMap<String, CharFun<String, String[], String[]>> tableFun = new HashMap<>();
 						
-	HashMap<String, String[]> tableSub = new HashMap<>(); 
+	HashMap<String, CharSub<String[], String[]>> tableSub = new HashMap<>(); 
+	
+	public String[] firstDeclarations; 
 	public MyLanguageParser.Qb64Context root;
 	
  	@Override
@@ -199,10 +201,16 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
  		List<MyLanguageParser.InstrContext> instruction = ctx.instr();
 	    
 	    List<MyLanguageParser.FunctionsubContext> functionSub = ctx.functionsub();
+	    firstDeclarations=new String[functionSub.size()];
 	    
-	    for (MyLanguageParser.FunctionsubContext f : functionSub)
-	        visitToSave(f);
-
+	    int count=0;
+	    for (MyLanguageParser.FunctionsubContext f : functionSub){
+	        setFirs(f, count);
+	        count++;
+	    }
+	    for (MyLanguageParser.FunctionsubContext f : functionSub){
+	    	visitToSave(f);
+	    }
 	    for (MyLanguageParser.InstrContext i : instruction)
 	        visit(i);
 
@@ -213,18 +221,28 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		return null;
 	}
  	
-	public T getSub(MyLanguageParser.Qb64Context ctx){
-		return null;
+
+	public void setFirs(MyLanguageParser.FunctionsubContext ctx, int Count){
+		if(ctx.fun()!=null){	
+			String name=ctx.fun().funidn().ID().getText();
+			firstDeclarations[Count]=name;
+		}else{
+			String name=ctx.sub().subidn().ID().getText();
+			firstDeclarations[Count]=name;
+		}
 	}
 	
  	public void visitToSave(MyLanguageParser.FunctionsubContext ctx){
 		int count=0;
  		if(ctx.fun()!=null){
+ 			
 			String name=ctx.fun().funidn().ID().getText();
 			String classVar= ctx.fun().funidn().sufix().getText();
 			name=name+classVar;
 			if (classVar.equals("")){
 				classVar="single";
+			}else{
+				classVar=varClass(classVar);
 			}
 			int line= ctx.fun().funidn().ID().getSymbol().getLine();
 			int col= ctx.fun().funidn().ID().getSymbol().getCharPositionInLine()+1;
@@ -234,21 +252,30 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			//System.out.println("Fun: "+name);
 			
 			String[] arguments;
+			String[] argumentsN;
 			if (ctx.fun().funidn().parfu().PIZQ()!=null){
 			    List<MyLanguageParser.ArgContext> argu = ctx.fun().funidn().parfu().arg();
 			    arguments=new String [argu.size()];
+			    argumentsN=new String [argu.size()];
 			    for (MyLanguageParser.ArgContext f : argu){
-			    	String argument=parfu(f);
-			    	arguments[count]=argument;
+			    	String [] argument=parfu(f);
+			    	arguments[count]=argument[0];
+			    	argumentsN[count]=argument[1].toLowerCase();
 			    	//System.out.println(argument);
 			    	count++;
 			    }
 			}else{
 				arguments = new String[0];
+				argumentsN= new String[0];
 			}
-			CharFun<String, Integer, String[]> newFun;
-			newFun= new CharFun(classVar, 0, arguments);
+			Object d=define(classVar, null);
+			CharFun<String, String[], String[]> newFun;
+			newFun= new CharFun(classVar, argumentsN, arguments);
 			tableFun.put(name, newFun);
+			CharVar<Object, String, String> newVar;
+			
+			newVar= new CharVar(d, classVar, "global");
+			tableVar.put(name, newVar);
 		}else if (ctx.sub()!=null){
 			String name=ctx.sub().subidn().ID().getText();
 			int line= ctx.sub().subidn().ID().getSymbol().getLine();
@@ -258,36 +285,54 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}
 			//System.out.println("Sub: "+name);
 			String[] arguments;
+			String[] argumentsN;
 			if (ctx.sub().subidn().parfu().PIZQ()!=null){
 			    List<MyLanguageParser.ArgContext> argu = ctx.sub().subidn().parfu().arg();
 			    arguments=new String [argu.size()];
+			    argumentsN=new String [argu.size()];
 			    for (MyLanguageParser.ArgContext f : argu){
-			    	String argument=parfu(f);
-			    	arguments[count]=argument;
+			    	String [] argument=parfu(f);
+			    	arguments[count]=argument[0];
+			    	argumentsN[count]=argument[1].toLowerCase();
 			    	//System.out.println(argument);
 			    	count++;
 			    }
 			}else{
 				arguments = new String[0];
+				argumentsN = new String[0];
 			}
-			tableSub.put(name, arguments);
+			CharSub<String[], String[]> newSu;
+			newSu= new CharSub(arguments, argumentsN);
+			tableSub.put(name, newSu);
 		}
 	}
  	
- 	public String parfu(MyLanguageParser.ArgContext ctx){
- 		String argname= ctx.ID().getText();
+ 	public String[] parfu(MyLanguageParser.ArgContext ctx){
+ 		String argname= ctx.ID().getText().toLowerCase();
+ 		int line=ctx.ID().getSymbol().getLine();
+ 		int col=ctx.ID().getSymbol().getCharPositionInLine()+1;
  		if (ctx.sufix()!=null){
  			String suffix=ctx.sufix().getText();
+ 			String suffix2=suffix;
  			if (suffix.equals("")){
- 				suffix="!";
+ 				suffix2="!";
  			}
- 			return varClass(suffix).toLowerCase();
+ 			String varClass= varClass(suffix2).toLowerCase();
+ 			String [] FA={varClass, argname+suffix};
+ 			if(Arrays.asList(firstDeclarations).contains(argname+suffix)){
+ 				error_red_var(argname, line, col);
+ 			}
+ 			return FA;
  		}else{
  			String varClass= ctx.argpa().TYPE().toString().toLowerCase();
  			if (varClass.equals("")){
  				varClass="single";
  			}
- 			return varClass+"[]";
+ 			String [] FA={varClass.toLowerCase()+"[]", argname};
+ 			if(Arrays.asList(firstDeclarations).contains(argname)){
+ 				error_red_var(argname, line, col);
+ 			}
+ 			return FA;
  		}
  	}
 	
@@ -951,6 +996,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 
 	public Object define(String type, Object obj){
+		type=type.toLowerCase();
 		switch(type){
 			case "string":
 				if (obj==null){
@@ -965,6 +1011,13 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					return (Double) obj;
 				}
 			case "single":
+
+				if (obj==null){
+					return (float)0.0;
+				}else{
+					return (Float) obj;
+				}
+			case "float":
 				if (obj==null){
 					return (float)0.0;
 				}else{
@@ -983,6 +1036,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					return (Integer) obj;
 				}
 		}
+		
 		System.err.print("Nope, ninguno de estos casos");
 		System.exit(-1);
 		return null;
@@ -1817,16 +1871,160 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	 *--------------------------------------------------------------------
 	 *--------------------------------------------------------------------
 	 */
+	@Override 
+	public T visitCall(MyLanguageParser.CallContext ctx) {
+		String name= ctx.ID().getText();
+		int linename= ctx.ID().getSymbol().getLine();
+		int colname=ctx.ID().getSymbol().getCharPositionInLine()+1;
+		if(!tableSub.containsKey(name)){
+			err_sub_n(name, linename, colname);
+		}
+		String[] argumentsN= tableSub.get(name).y;
+		String[] arguments= tableSub.get(name).x;
+		
+		List<MyLanguageParser.ExprContext> args = ctx.expr();
+	    
+	    if (args.size()!=arguments.length){
+	    	err_sub_args(name, linename, colname);
+	    }
+	    int count=0;
+	    HashMap<String, CharVar<Object, String, String>> tmpVar = new HashMap<>(tableVar);
+	    
+	    //System.out.println(tmpVar.toString());
+	    //System.out.println(tableVar.toString());
+	    HashMap<String, CharArr<Object [], String, String, Integer[]>> tmpArr = new HashMap<>(tableArr);	
+	    
+	    HashMap<String, CharVar<Object, String, String>> subVar = new HashMap<>();
+	    HashMap<String, CharArr<Object [], String, String, Integer[]>> subArr = new HashMap<>();	
+
+	    for (MyLanguageParser.ExprContext a : args){
+	    	int line=a.getStart().getLine();
+	    	int col=a.getStart().getCharPositionInLine()+1;
+	    	String should = arguments[count];
+	    	String [] Should= argsFun(should);
+	    	if(a.value().idnp().ids()!=null){
+	    		String res=a.value().idnp().ids().ID().getText();
+	    		if (!Should[0].equals("arreglo")){
+	    			error_types("arreglo", Should, line, col);
+	    		}
+	    		Should = argsFun(should.substring(0, should.length()-2));
+	    		String type= tableArr.get(res).x;
+
+	    		if (!Arrays.asList(Should).contains(type)){
+	    			error_types(type, Should, line, col);
+	    		}
+	    		CharArr<Object[], String, String, Integer[]> newArr;
+	    		newArr=new CharArr(tableArr.get(res).w, tableArr.get(res).x, "variable", tableArr.get(res).z);
+	    		subArr.put(argumentsN[count], newArr);
+	    	}else{
+	    		
+	    		Object res = visitExpr(a);
+	    		String type= QB64Type(TypeOf(res));
+	    		if(!Arrays.asList(Should).contains(type)){
+	    			error_types(type, Should, line, col);
+	    		}
+	    		CharVar<Object, String, String> newVar;
+	    		newVar=new CharVar(res, type, "variable");
+	    		subVar.put(argumentsN[count], newVar);
+	    	}
+	    	count++;
+	    }
+	    for (String variable : tableVar.keySet()) {
+	    	CharVar<Object, String, String> Var;
+    		Var=tableVar.get(variable);
+    		//System.out.println(variable);
+    		if (Var.z.equalsIgnoreCase("global")){
+    			if (!Arrays.asList(argumentsN).contains(variable)){
+    				subVar.put(variable, Var);
+    			}
+    		}
+    		
+		}
+	    
+	    for (String variable : tableArr.keySet()) {
+	    	CharArr<Object [], String, String, Integer[]> Var;
+    		Var=tableArr.get(variable);
+    		//System.out.println(variable);
+    		if (Var.y.equalsIgnoreCase("global")){
+    			if (!Arrays.asList(argumentsN).contains(variable)){
+    				subArr.put(variable, Var);
+    			}
+    		}
+		}
+	    
+	    tableVar.clear();
+	    tableVar=new HashMap<>(subVar);
+	    tableArr.clear();
+	    tableArr=new HashMap<>(subArr);
+	    //System.out.println(tmpVar.toString());
+	    //System.out.println(tableVar.toString());
+		
+	    getSub(root, name);
+	    
+	    
+	    for (String variable : tableVar.keySet()) {
+	    	CharVar<Object, String, String> Var;
+    		Var=tableVar.get(variable);
+    		//System.out.println(variable);
+    		if (Var.z.equalsIgnoreCase("global")){
+    			if (!Arrays.asList(argumentsN).contains(variable)){
+    				tmpVar.put(variable, Var);
+    			}
+    		}
+    		
+		}
+	    
+	    for (String variable : tableArr.keySet()) {
+	    	CharArr<Object [], String, String, Integer[]> Var;
+    		Var=tableArr.get(variable);
+    		//System.out.println(variable);
+    		if (Var.y.equalsIgnoreCase("global")){
+    			tmpArr.put(variable, Var);
+    		}
+		}
+		
+	    tableVar.clear();
+	    tableVar=new HashMap<>(tmpVar);
+	    tableArr.clear();
+	    tableArr=new HashMap<>(tmpArr);
+		
+	    return null;
+	}
+	
+
+	
+	public String [] argsFun (String should){
+    	if (should.charAt(should.length()-1)==']'){
+    		String [] Should ={"arreglo"};
+    		return Should;
+    	}else if (should.equalsIgnoreCase("integer")||should.equalsIgnoreCase("single")||
+    			should.equalsIgnoreCase("long")||should.equalsIgnoreCase("double")){
+    		String [] Should ={"integer", "double", "long", "single"};
+    		return Should;
+    	}else{
+    		String [] Should={"string"};
+    		return Should;
+    	}
+	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
+	public T getSub(MyLanguageParser.Qb64Context ctx, String ID){
+		List<MyLanguageParser.FunctionsubContext> functionSub = ctx.functionsub();
+	    
+	    for (MyLanguageParser.FunctionsubContext f : functionSub){
+	        if(f.sub()!=null){
+	        	String sub=f.sub().subidn().ID().getText();
+	        	if (sub.equalsIgnoreCase(ID)){
+	        		List<MyLanguageParser.InstrContext> ins = f.sub().instr();
+	        		for (MyLanguageParser.InstrContext i : ins)
+	        			visitInstr(i);
+	        		break;
+		        }
+	        }
+	    }
+	    return null;
+	}
 	
 	
 	
@@ -3013,5 +3211,19 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
 		System.exit(-1);
 	}
+	
+	public void err_sub_n(String name, int line, int col){
+		String err= "Error semantico: el procedimiento '"+name+"' no ha sido declarado.";
+		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
+		System.exit(-1);
+	}
+	
+	public void err_sub_args(String name, int line, int col){
+		
+		String err= "Error semantico: numero incorrecto de parametros al llamar el procedimiento '"+name+"'";
+		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
+		System.exit(-1);
+	}
+	
 
 }
