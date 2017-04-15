@@ -1,0 +1,6 @@
+j$="Memazo"
+print j$
+j%=len(j$)
+print j%
+print left$(j$, 3)
+left$="23"

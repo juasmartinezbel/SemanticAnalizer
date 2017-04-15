@@ -1,0 +1,7 @@
+j$="Memazo"
+print j$
+j%=len(j$)
+print j%
+print left$(j$, 3)
+print right$(j$, 3)
+print mid$(j$, 1, 1)

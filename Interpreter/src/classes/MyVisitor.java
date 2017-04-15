@@ -195,32 +195,71 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	public String[] firstDeclarations; 
 	public MyLanguageParser.Qb64Context root;
-	
  	@Override
 	public T visitQb64 (MyLanguageParser.Qb64Context ctx) {
 	    root=ctx;
  		List<MyLanguageParser.InstrContext> instruction = ctx.instr();
 	    
 	    List<MyLanguageParser.FunctionsubContext> functionSub = ctx.functionsub();
-	    firstDeclarations=new String[functionSub.size()];
+	    firstDeclarations=new String[functionSub.size()+4];
 	    
 	    int count=0;
 	    for (MyLanguageParser.FunctionsubContext f : functionSub){
 	        setFirs(f, count);
+	        
 	        count++;
 	    }
+	    firstDeclarations[count]="len";
+	    firstDeclarations[count+1]="left$";
+	    firstDeclarations[count+2]="right$";
+	    firstDeclarations[count+3]="mid$";
 	    for (MyLanguageParser.FunctionsubContext f : functionSub){
 	    	visitToSave(f);
 	    }
+	    
+	    CharFun<String, String[], String[]> newFun;
+	    String name="len";
+	    String[] argumentsN={"str$"};
+	    String[] arguments={"string"};
+	    String classVar="integer";
+		newFun= new CharFun(name, argumentsN, arguments);
+		tableFun.put(name, newFun);
+		CharVar<Object, String, String> newVar;
+		newVar= new CharVar(0, classVar, "global");
+		tableVar.put(name, newVar);
+		
+		name="left$";
+	    String [] argumentsN1={"str$", "to%"};
+	    String [] arguments1={"string", "integer"};
+	    classVar="string";
+		newFun= new CharFun(name, argumentsN1, arguments1);
+		tableFun.put(name, newFun);
+		newVar= new CharVar("", classVar, "global");
+		tableVar.put(name, newVar);
+		
+		name="right$";
+	    String [] argumentsN2={"str$", "from%"};
+	    String [] arguments2={"string", "integer"};
+	    classVar="string";
+		newFun= new CharFun(name, argumentsN2, arguments2);
+		tableFun.put(name, newFun);
+		newVar= new CharVar("", classVar, "global");
+		tableVar.put(name, newVar);
+		
+		name="mid$";
+	    String [] argumentsN3={"str$", "from%", "to%"};
+	    String [] arguments3={"string", "integer","integer"};
+	    classVar="string";
+		newFun= new CharFun(name, argumentsN3, arguments3);
+		tableFun.put(name, newFun);
+		newVar= new CharVar("", classVar, "global");
+		tableVar.put(name, newVar);
 	    for (MyLanguageParser.InstrContext i : instruction)
 	        visit(i);
 
 	    return null;
 	}
 	
-	public T getFunction(MyLanguageParser.Qb64Context ctx){
-		return null;
-	}
  	
 
 	public void setFirs(MyLanguageParser.FunctionsubContext ctx, int Count){
@@ -571,24 +610,23 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		Object[] toR=new Object[2];
 		if (!inFunction){
 			if (ctx.par().PIZQ()==null){
-				if(funExists(name, type_var, col, line)){
+				if(funExists(name, type_var, suffix, col, line)){
 					toR[0]=visitFuc(ctx, name);
-					
 					return (T)toR[0];
 				}else if(suffix.equals("$")){
-					if(funExists(name+suffix, type_var, col, line)){
+					if(funExists(name+suffix, type_var,"",col, line)){
 						toR[0]=visitFuc(ctx, name+suffix);
 						return (T)toR[0];
 					}
 				}
 				
 			}
-			if(funExists(name, type_var, col, line)){
+			if(funExists(name, type_var, suffix, col, line)){
 				toR[0]=visitFuc(ctx, name);
 				toR[1]= (-1);
 				return (T)toR;
 			}else if(suffix.equals("$")){
-				if(funExists(name+suffix, type_var, col, line)){
+				if(funExists(name+suffix, type_var, "", col, line)){
 					toR[0]=visitFuc(ctx, name+suffix);
 					toR[1]= (-1);
 					return (T)toR;
@@ -606,23 +644,23 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				
 			}else{
 				if (ctx.par().PIZQ()==null){
-					if(funExists(name, type_var, col, line)){
+					if(funExists(name, type_var, suffix, col, line)){
 						toR[0]=visitFuc(ctx, name);
 						return (T)toR[0];
 					}else if(suffix.equals("$")){
-						if(funExists(name+suffix, type_var, col, line)){
+						if(funExists(name+suffix, type_var, "", col, line)){
 							toR[0]=visitFuc(ctx, name+suffix);
 							return (T)toR[0];
 						}
 					}
 					
 				}
-				if(funExists(name, type_var, col, line)){
+				if(funExists(name, type_var, suffix, col, line)){
 					toR[0]=visitFuc(ctx, name);
 					toR[1]= (-1);
 					return (T)toR;
 				}else if(suffix.equals("$")){
-					if(funExists(name+suffix, type_var, col, line)){
+					if(funExists(name+suffix, type_var, "", col, line)){
 						toR[0]=visitFuc(ctx, name+suffix);
 						toR[1]= (-1);
 						return (T)toR;
@@ -785,17 +823,31 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	}
 	
 	
-	public boolean funExists(String name, String var_type, int col, int line){
+	public boolean funExists(String name, String var_type, String suffix, int col, int line){
+		
 		if (var_type.equalsIgnoreCase("")){
 			if (tableFun.containsKey(name)){
-				return true;
+				if(suffix.equals("")){
+					return true;
+				}else if(tableFun.containsKey(name+suffix)){
+					return true;
+				}else{
+					return false;
+				}
 			}else{
 				return false;
 			}
 		}else{
 			if (tableFun.containsKey(name)){
-				error_red_var(name, line, col);
-				return true;
+				if(suffix.equals("")){
+					error_red_var(name, line, col);
+					return true;
+				}else if(tableFun.containsKey(name+suffix)){
+					error_red_var(name, line, col);
+					return true;
+				}else{
+					return false;
+				}
 			}else{
 				return false;
 			}
@@ -2317,6 +2369,8 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	Stack<String> CurrentFunction = new Stack();
 
 	public T getFun(MyLanguageParser.Qb64Context ctx, String ID){
+		inFunction=true;
+		CurrentFunction.push(ID);
 		for (String variable : tableVar.keySet()) {
 			String Type=tableVar.get(variable).y;
 			Object f= tableVar.get(variable).x;
@@ -2351,25 +2405,57 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	    		}
 			}
 		}
-		
-		List<MyLanguageParser.FunctionsubContext> functionSub = ctx.functionsub();
-		inFunction=true;
-		CurrentFunction.push(ID);
-	    for (MyLanguageParser.FunctionsubContext f : functionSub){
-	        if(f.fun()!=null){
-	        	String sub=f.fun().funidn().ID().getText();
-	        	if (sub.equalsIgnoreCase(ID)){
-	        		List<MyLanguageParser.InstrContext> ins = f.fun().instr();
-	        		for (MyLanguageParser.InstrContext i : ins){
-	        			visitInstr(i);
-	        		}
-	        		break;
-	        		
+		CharVar<Object, String, String> newVar;
+		if(ID.equalsIgnoreCase("len")){
+			System.out.println(tableVar.get("str$").x.toString());
+			int len=(tableVar.get("str$").x.toString().length());
+			Integer lens=(Integer)len;
+			newVar= new CharVar(lens, tableVar.get("len").y, "global");
+			tableVar.put("len", newVar);
+		}else if(ID.equalsIgnoreCase("right$")){
+			String str=tableVar.get("str$").x.toString();
+			int len=(tableVar.get("str$").x.toString().length());
+			int from=(int)tableVar.get("from%").x;
+			
+			String T=(str.substring(len-from, len));
+			newVar= new CharVar(T, "string", "global");
+			tableVar.put("right$", newVar);
+		}else if(ID.equalsIgnoreCase("left$")){
+			String str=tableVar.get("str$").x.toString();
+			int len=(tableVar.get("str$").x.toString().length());
+			int to=(int)tableVar.get("to%").x;
+			String T= (str.substring(0, to));
+			newVar= new CharVar(T, "string", "global");
+			tableVar.put("left$", newVar);
+		}else if(ID.equalsIgnoreCase("mid$")){
+			String str=tableVar.get("str$").x.toString();
+			int len=(tableVar.get("str$").x.toString().length());
+			int to=(int)tableVar.get("to%").x;
+			int from=(int)tableVar.get("from%").x;
+			String T=(str.substring(from, len-to));
+			newVar= new CharVar(T, "string", "global");
+			tableVar.put("mid$", newVar);
+		}else{
+			
+			List<MyLanguageParser.FunctionsubContext> functionSub = ctx.functionsub();
 
+		    for (MyLanguageParser.FunctionsubContext f : functionSub){
+		        if(f.fun()!=null){
+		        	String sub=f.fun().funidn().ID().getText();
+		        	if (sub.equalsIgnoreCase(ID)){
+		        		List<MyLanguageParser.InstrContext> ins = f.fun().instr();
+		        		for (MyLanguageParser.InstrContext i : ins){
+		        			visitInstr(i);
+		        		}
+		        		break;
+		        		
+	
+			        }
 		        }
-	        }
-	    }
-	    CurrentFunction.pop();
+		    }
+		  
+		}
+		CurrentFunction.pop();
 	    inFunction=false;
 	    return null;
 	}

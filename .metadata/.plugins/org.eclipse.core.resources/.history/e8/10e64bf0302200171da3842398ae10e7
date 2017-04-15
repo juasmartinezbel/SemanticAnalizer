@@ -1,0 +1,12 @@
+print f * 2
+print f! * 2
+f$="sesamo"
+FUNCTION f
+f = 3
+f$ = "4"
+END FUNCTION
+
+
+SUB s
+    print "nada"
+END SUB

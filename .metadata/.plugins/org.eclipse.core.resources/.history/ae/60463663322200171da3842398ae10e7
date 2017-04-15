@@ -1,0 +1,5 @@
+j$="Memazo"
+print j$
+j%=len(j$)
+print j%
+print 

@@ -1,0 +1,4 @@
+f$="aa"
+
+function f!(mu)
+end function
