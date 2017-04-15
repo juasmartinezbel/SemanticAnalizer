@@ -1,0 +1,8 @@
+a 
+f 1, 2
+print a
+
+
+sub f (k%, j%)
+	'f=k%+j%
+end sub

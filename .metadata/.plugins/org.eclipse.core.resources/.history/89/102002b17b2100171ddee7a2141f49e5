@@ -1,2 +1,0 @@
-const j%=8
-select case j%

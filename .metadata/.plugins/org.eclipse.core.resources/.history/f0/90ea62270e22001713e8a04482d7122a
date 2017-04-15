@@ -1,0 +1,10 @@
+c=1
+b=2
+a= f(b,c)
+print f(1,2)
+print a
+
+
+function f(k%, j%)
+	f=k%+j%
+end function

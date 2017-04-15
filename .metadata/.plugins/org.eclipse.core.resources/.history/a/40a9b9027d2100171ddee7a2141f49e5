@@ -1,9 +1,0 @@
-const j%=8
-select case j%
-case 8
-	print "siete"
-case 5
-	print "cinco"
-case else
-	print "aaaaaaa"
-end select

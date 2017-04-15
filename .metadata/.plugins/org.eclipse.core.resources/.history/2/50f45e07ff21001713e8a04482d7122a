@@ -1,9 +1,0 @@
-DIM SHARED a AS INTEGER
-a = 1
-PRINT a
-increase
-PRINT a
-
-SUB increase( b )
-	a = a + 1
-END SUB

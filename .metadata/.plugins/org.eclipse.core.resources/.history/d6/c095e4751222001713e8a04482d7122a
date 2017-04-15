@@ -1,0 +1,14 @@
+c=1
+b=2
+a= f(b,c)
+print b; c
+
+
+function f(k%, j%)
+	f=k%+j%
+	f=k%+g(j%)
+end function
+
+function g(j)
+	g=j*2
+end function

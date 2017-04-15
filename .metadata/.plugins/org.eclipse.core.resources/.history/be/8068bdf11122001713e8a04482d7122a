@@ -1,0 +1,15 @@
+c=1
+b=2
+a= f(b,c)
+g 1+7, b
+print a
+
+
+function f(k%, j%)
+	f=k%+j%
+	f=k%+k%
+end function
+
+sub g(k, j)
+	print k+j
+end sub

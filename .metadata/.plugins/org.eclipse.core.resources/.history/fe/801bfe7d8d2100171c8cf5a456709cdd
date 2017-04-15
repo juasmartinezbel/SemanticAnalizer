@@ -1,4 +1,0 @@
-PRINT "Esto debe ser impreso"
-PRINT 5 * 4
-
-a = f(10)

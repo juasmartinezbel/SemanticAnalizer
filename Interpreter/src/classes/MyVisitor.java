@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Stack;
 
 import javax.lang.model.type.DeclaredType;
 
@@ -339,6 +340,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	@Override
 	public T visitInstr(MyLanguageParser.InstrContext ctx) {
 		return visitChildren(ctx);
+		
 	}
 	
 	/*
@@ -544,6 +546,8 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	public T visitIdn(MyLanguageParser.IdnContext ctx, String type_var){
 		String name=ctx.ID().getText();
+
+		
 		name=name.toLowerCase();
 		int line=ctx.ID().getSymbol().getLine();
 		int col = ctx.ID().getSymbol().getCharPositionInLine()+1;
@@ -556,16 +560,62 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			suffix=ctx.sufix().SUFS().getText();
 			varClass=varClass(suffix);
 		}
+		
 		subExists(name+suffix, type_var, col, line);
-		
-		if(funExists(name, type_var, col, line)){
-			System.err.println("Bien, encontraste una funcion");
-			System.exit(-1);
-		}else if(funExists(name+suffix, type_var, col, line)){
-			System.err.println("Bien, encontrste una funcion con sufijo");
-			System.exit(-1);
+		Object[] toR=new Object[2];
+		if (!inFunction){
+			if(funExists(name+suffix, type_var, col, line)){
+				toR[0]=visitFuc(ctx, name+suffix);
+				toR[1]= (-1);
+				return (T)toR;
+			}else if(suffix.equals("")){
+				if(funExists(name+"!", type_var, col, line)){
+					toR[0]=visitFuc(ctx, name+"!");
+					toR[1]= (-1);
+					return (T)toR;
+				}
+			}else if(suffix.equals("!")){
+				if(funExists(name+"", type_var, col, line)){
+					toR[0]=visitFuc(ctx, name+"");
+					toR[1]= (-1);
+					return (T)toR;
+				}
+			}
+		}else{
+			if (!type_var.equals("")){
+				if((name+suffix).equalsIgnoreCase(CurrentFunction.peek())){
+						return (T) (name+suffix);
+				}else if(suffix.equalsIgnoreCase("")){
+					if((name+"!").equalsIgnoreCase(CurrentFunction.peek())){
+						return (T) (name+"!");
+					}
+				}else if(suffix.equalsIgnoreCase("!")){
+					if((name+"").equalsIgnoreCase(CurrentFunction.peek())){
+						return (T) (name+"");
+					}
+				}
+				
+			}else{
+				if(funExists(name+suffix, type_var, col, line)){
+					toR[0]=visitFuc(ctx, name+suffix);
+					toR[1]= (-1);
+					return (T)toR;
+				}else if(suffix.equals("")){
+					if(funExists(name+"!", type_var, col, line)){
+						toR[0]=visitFuc(ctx, name+"!");
+						toR[1]= (-1);
+						return (T)toR;
+					}
+				}else if(suffix.equals("!")){
+					if(funExists(name+"", type_var, col, line)){
+						toR[0]=visitFuc(ctx, name+"");
+						toR[1]= (-1);
+						return (T)toR;
+					}
+				}
+				
+			}
 		}
-		
 		//Arreglos
 		if (ctx.par().PIZQ()!=null){
 			
@@ -602,6 +652,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				variables[1]=posicion(arguments, real);
 				return (T) variables;
 			}else{
+				
 				if (type_var.equalsIgnoreCase("")){
 					type_var="variable";
 				}
@@ -646,12 +697,15 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			
 		//Variables
 		}else{
+
 			//Me verifica si está modificando.
 			if(varExists(name, varClass)){
+				
 				check_ConstantVar(name, line, col, type_var);
 				String variable=name;
 				return (T) variable;
 			}else if (varExists(name+suffix, varClass)){
+				
 				check_ConstantVar(name+suffix, line, col, type_var);
 				String variable=name+suffix;
 				return (T) variable;
@@ -685,7 +739,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	public boolean arrExists(String var, String varClass){
 		if (tableArr.containsKey(var)){
+			
 			String reserved=tableArr.get(var).x;
+			
 			if (varClass.equalsIgnoreCase("")){
 				return true;
 			}else if (varClass.equalsIgnoreCase(reserved)){
@@ -864,7 +920,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		Object v = visitExpr(ctx.expr());
 		String toa=TypeOf(v);
 		int line= ctx.expr().getStart().getLine();
-		int col= ctx.expr().getStart().getCharPositionInLine();
+		int col= ctx.expr().getStart().getCharPositionInLine()+1;
 		if (toa.equalsIgnoreCase("long")){
 			Long uv= (Long) v;
 			Integer end=(int)(long) uv;
@@ -1902,29 +1958,53 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	    	int col=a.getStart().getCharPositionInLine()+1;
 	    	String should = arguments[count];
 	    	String [] Should= argsFun(should);
-	    	if(a.value().idnp().ids()!=null){
-	    		String res=a.value().idnp().ids().ID().getText();
-	    		if (!Should[0].equals("arreglo")){
-	    			error_types("arreglo", Should, line, col);
-	    		}
-	    		Should = argsFun(should.substring(0, should.length()-2));
-	    		String type= tableArr.get(res).x;
-
-	    		if (!Arrays.asList(Should).contains(type)){
-	    			error_types(type, Should, line, col);
-	    		}
-	    		CharArr<Object[], String, String, Integer[]> newArr;
-	    		newArr=new CharArr(tableArr.get(res).w, tableArr.get(res).x, "variable", tableArr.get(res).z);
-	    		subArr.put(argumentsN[count], newArr);
+	    	if(a.value()!=null){
+		    	if(a.value().idnp()!=null){
+			    	if(a.value().idnp().ids()!=null){
+			    		String res=a.value().idnp().ids().ID().getText();
+			    		if (!Should[0].equals("arreglo")){
+			    			error_types("arreglo", Should, line, col);
+			    		}
+			    		Should = argsFun(should.substring(0, should.length()-2));
+			    		String type= tableArr.get(res).x;
+		
+			    		if (!Arrays.asList(Should).contains(type)){
+			    			error_types(type, Should, line, col);
+			    		}
+			    		CharArr<Object[], String, String, Integer[]> newArr;
+			    		newArr=new CharArr(tableArr.get(res).w, should.substring(0, should.length()-2), "variable", tableArr.get(res).z);
+			    		subArr.put(argumentsN[count], newArr);
+			    	}else{
+			    		
+			    		Object res = visitExpr(a);
+			    		String type= QB64Type(TypeOf(res));
+			    		if(!Arrays.asList(Should).contains(type)){
+			    			error_types(type, Should, line, col);
+			    		}
+			    		CharVar<Object, String, String> newVar;
+			    		newVar=new CharVar(res, should, "variable");
+			    		subVar.put(argumentsN[count], newVar);
+			    	}
+		    	}else{
+		    		Object res = visitExpr(a);
+		    		//System.out.println(res);
+		    		String type= QB64Type(TypeOf(res));
+		    		if(!Arrays.asList(Should).contains(type)){
+		    			error_types(type, Should, line, col);
+		    		}
+		    		CharVar<Object, String, String> newVar;
+		    		newVar=new CharVar(res, should, "variable");
+		    		subVar.put(argumentsN[count], newVar);
+		    	}
 	    	}else{
-	    		
 	    		Object res = visitExpr(a);
+	    		//System.out.println(res);
 	    		String type= QB64Type(TypeOf(res));
 	    		if(!Arrays.asList(Should).contains(type)){
 	    			error_types(type, Should, line, col);
 	    		}
 	    		CharVar<Object, String, String> newVar;
-	    		newVar=new CharVar(res, type, "variable");
+	    		newVar=new CharVar(res, should, "variable");
 	    		subVar.put(argumentsN[count], newVar);
 	    	}
 	    	count++;
@@ -2011,7 +2091,43 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	public T getSub(MyLanguageParser.Qb64Context ctx, String ID){
 		List<MyLanguageParser.FunctionsubContext> functionSub = ctx.functionsub();
-	    
+		for (String variable : tableVar.keySet()) {
+			String Type=tableVar.get(variable).y;
+			Object f= tableVar.get(variable).x;
+			String realType=TypeOf(f);
+			//System.out.println(Type);
+			if(tableVar.get(variable).z.toString().equals("variable")){
+	    		if (Type.equals("integer")){
+	    			
+	    			Integer F=(Integer) casting("integer", QB64Type(realType), f, -1, -1);
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}else if(Type.equals("double")) {
+	    			Double F=(Double) casting("double", QB64Type(realType), f, -1, -1);
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}else if (Type.equals("single")){
+	    			Float F=(Float) casting("float", QB64Type(realType), f, -1, -1);
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}else if (Type.equals("long")){
+	    			Long F=(Long) casting("long", QB64Type(realType), f, -1, -1);
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}else{
+	    			String F= f.toString();
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}
+			}
+		}
+		
+		
 	    for (MyLanguageParser.FunctionsubContext f : functionSub){
 	        if(f.sub()!=null){
 	        	String sub=f.sub().subidn().ID().getText();
@@ -2027,12 +2143,218 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	}
 	
 	
+	public T visitFuc(MyLanguageParser.IdnContext ctx, String name) {
+		int linename= ctx.ID().getSymbol().getLine();
+		int colname=ctx.ID().getSymbol().getCharPositionInLine()+1;
+		String[] argumentsN= tableFun.get(name).y;
+		String[] arguments= tableFun.get(name).z;
+		
+		List<MyLanguageParser.PosContext> args = ctx.par().pos();
+	    
+	    if (args.size()!=arguments.length){
+	    	err_fun_args(name, linename, colname);
+	    }
+	    
+
+	    int count=0;
+	    HashMap<String, CharVar<Object, String, String>> tmpVar = new HashMap<>(tableVar);
+	    
+	    //System.out.println(tmpVar.toString());
+	    //System.out.println(tableVar.toString());
+	    HashMap<String, CharArr<Object [], String, String, Integer[]>> tmpArr = new HashMap<>(tableArr);	
+	    
+	    HashMap<String, CharVar<Object, String, String>> subVar = new HashMap<>();
+	    HashMap<String, CharArr<Object [], String, String, Integer[]>> subArr = new HashMap<>();	
+
+	    for (MyLanguageParser.PosContext a : args){
+	    	int line=a.getStart().getLine();
+	    	int col=a.getStart().getCharPositionInLine()+1;
+	    	String should = arguments[count];
+	    	String [] Should= argsFun(should);
+	    	if(a.expr().value()!=null){
+		    	if(a.expr().value().idnp()!=null){
+		    		if(a.expr().value().idnp().ids()!=null){
+			    		String res=a.expr().value().idnp().ids().ID().getText();
+			    		if (!Should[0].equals("arreglo")){
+			    			error_types("arreglo", Should, line, col);
+			    		}
+			    		Should = argsFun(should.substring(0, should.length()-2));
+			    		String type= tableArr.get(res).x;
+		
+			    		if (!Arrays.asList(Should).contains(type)){
+			    			error_types(type, Should, line, col);
+			    		}
+			    		CharArr<Object[], String, String, Integer[]> newArr;
+			    		newArr=new CharArr(tableArr.get(res).w, should.substring(0, should.length()-2), "variable", tableArr.get(res).z);
+			    		subArr.put(argumentsN[count], newArr);
+			    	}else{
+			    		
+			    		Object res = visitPosFuc(a);
+			    		//System.out.println(res);
+			    		String type= QB64Type(TypeOf(res));
+			    		if(!Arrays.asList(Should).contains(type)){
+			    			error_types(type, Should, line, col);
+			    		}
+			    		CharVar<Object, String, String> newVar;
+			    		
+			    		newVar=new CharVar(res, should, "variable");
+			    		subVar.put(argumentsN[count], newVar);
+			    		
+			    	}
+		    	
+		    	}else{
+		    		Object res = visitExpr(a.expr());
+		    		//System.out.println(res);
+		    		String type= QB64Type(TypeOf(res));
+		    		if(!Arrays.asList(Should).contains(type)){
+		    			error_types(type, Should, line, col);
+		    		}
+		    		CharVar<Object, String, String> newVar;
+		    		newVar=new CharVar(res, should, "variable");
+		    		subVar.put(argumentsN[count], newVar);
+		    	}
+	    	}else{
+	    		Object res = visitExpr(a.expr());
+	    		//System.out.println(res);
+	    		String type= QB64Type(TypeOf(res));
+	    		if(!Arrays.asList(Should).contains(type)){
+	    			error_types(type, Should, line, col);
+	    		}
+	    		CharVar<Object, String, String> newVar;
+	    		newVar=new CharVar(res, should, "variable");
+	    		subVar.put(argumentsN[count], newVar);
+	    	}
+	    	count++;
+	    }
+	    for (String variable : tableVar.keySet()) {
+	    	CharVar<Object, String, String> Var;
+    		Var=tableVar.get(variable);
+    		//System.out.println(variable);
+    		if (Var.z.equalsIgnoreCase("global")){
+    			if (!Arrays.asList(argumentsN).contains(variable)){
+    				subVar.put(variable, Var);
+    			}
+    		}
+    		
+		}
+	    
+	    for (String variable : tableArr.keySet()) {
+	    	CharArr<Object [], String, String, Integer[]> Var;
+    		Var=tableArr.get(variable);
+    		//System.out.println(variable);
+    		if (Var.y.equalsIgnoreCase("global")){
+    			if (!Arrays.asList(argumentsN).contains(variable)){
+    				subArr.put(variable, Var);
+    			}
+    		}
+		}
+	    
+	    tableVar.clear();
+	    tableVar=new HashMap<>(subVar);
+	    tableArr.clear();
+	    tableArr=new HashMap<>(subArr);
+	    //System.out.println(tmpVar.toString());
+	    //System.out.println(tableVar.toString());
+	    getFun(root, name);
+	    
+	    for (String variable : tableVar.keySet()) {
+	    	CharVar<Object, String, String> Var;
+    		Var=tableVar.get(variable);
+    		//System.out.println(variable);
+    		if (Var.z.equalsIgnoreCase("global")){
+    			if (!Arrays.asList(argumentsN).contains(variable)){
+    				tmpVar.put(variable, Var);
+    			}
+    		}
+    		
+		}
+	    
+	    for (String variable : tableArr.keySet()) {
+	    	CharArr<Object [], String, String, Integer[]> Var;
+    		Var=tableArr.get(variable);
+    		//System.out.println(variable);
+    		if (Var.y.equalsIgnoreCase("global")){
+    			tmpArr.put(variable, Var);
+    		}
+		}
+		
+	    tableVar.clear();
+	    tableVar=new HashMap<>(tmpVar);
+	    tableArr.clear();
+	    tableArr=new HashMap<>(tmpArr);
+	    
+	    return (T) name;
+	}
 	
 	
+	public boolean inFunction=false;
+	Stack<String> CurrentFunction = new Stack();
+
+	public T getFun(MyLanguageParser.Qb64Context ctx, String ID){
+		for (String variable : tableVar.keySet()) {
+			String Type=tableVar.get(variable).y;
+			Object f= tableVar.get(variable).x;
+			String realType=TypeOf(f);
+			//System.out.println(Type);
+			if(tableVar.get(variable).z.toString().equals("variable")){
+	    		if (Type.equals("integer")){
+	    			Integer F=(Integer) casting("integer", QB64Type(realType), f, -1, -1);
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}else if(Type.equals("double")) {
+	    			Double F=(Double) casting("double", QB64Type(realType), f, -1, -1);
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}else if (Type.equals("single")){
+	    			Float F=(Float) casting("float", QB64Type(realType), f, -1, -1);
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}else if (Type.equals("long")){
+	    			Long F=(Long) casting("long", QB64Type(realType), f, -1, -1);
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}else{
+	    			String F= f.toString();
+	    			CharVar<Object, String, String> newVar;
+	        		newVar=new CharVar(F, Type, "variable");
+	        		tableVar.put(variable, newVar);
+	    		}
+			}
+		}
+		
+		List<MyLanguageParser.FunctionsubContext> functionSub = ctx.functionsub();
+		inFunction=true;
+		CurrentFunction.push(ID);
+	    for (MyLanguageParser.FunctionsubContext f : functionSub){
+	        if(f.fun()!=null){
+	        	String sub=f.fun().funidn().ID().getText();
+	        	if (sub.equalsIgnoreCase(ID)){
+	        		List<MyLanguageParser.InstrContext> ins = f.fun().instr();
+	        		for (MyLanguageParser.InstrContext i : ins){
+	        			visitInstr(i);
+	        		}
+	        		break;
+	        		
+
+		        }
+	        }
+	    }
+	    CurrentFunction.pop();
+	    inFunction=false;
+	    return null;
+	}
 	
-	
-	
-	
+	public T visitPosFuc(MyLanguageParser.PosContext ctx){
+		Object v = visitExpr(ctx.expr());
+		String toa=TypeOf(v);
+		int line= ctx.expr().getStart().getLine();
+		int col= ctx.expr().getStart().getCharPositionInLine()+1;
+		return (T) v;
+	}
 	
 	
 	
@@ -2172,6 +2494,10 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		if(ctx.idn()!=null){
 			if(ctx.idn().par().PIZQ()!=null){
 				Object[] Variables= (Object[]) visitIdn(ctx.idn(), "");
+				if (((int)Variables[1])<0){
+					Object Variable=Variables[0];
+					return (T) tableVar.get(Variable).x;
+				}
 				CharArr<Object[], String, String, Integer[]> changedVar;
 				String Variable=Variables[0].toString();
 				Integer Posicion=(Integer)Variables[1];
@@ -3088,7 +3414,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					resu=-25536;
 				}
 				return resu;
-			}else if (typeRes.equalsIgnoreCase("single")){
+			}else if (typeRes.equalsIgnoreCase("single")||typeRes.equalsIgnoreCase("float")){
 				resu=(int)(float) res;
 				if (Math.abs(resu)>32767){
 					resu=-25536;
@@ -3108,7 +3434,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}else if (typeRes.equalsIgnoreCase("double")){
 				resu=(long)(double)res;
 				return resu;
-			}else if (typeRes.equalsIgnoreCase("single")){
+			}else if (typeRes.equalsIgnoreCase("single")||typeRes.equalsIgnoreCase("float")){
 				resu=(long)(float) res;
 				return resu;
 			}else if(typeVar.equalsIgnoreCase(typeRes)){
@@ -3117,7 +3443,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}else{
 				error_casting();
 			}
-		}else if(typeVar.equalsIgnoreCase("single")){
+		}else if(typeVar.equalsIgnoreCase("single")||typeVar.equalsIgnoreCase("float")){
 			Float resu;
 			if (typeRes.equalsIgnoreCase("integer")){
 				resu=(float)(int) res;
@@ -3140,7 +3466,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}else if (typeRes.equalsIgnoreCase("long")){
 				resu=(float)(long) res;
 				return resu;
-			}else if(typeVar.equalsIgnoreCase(typeRes)){
+			}else if(typeVar.equalsIgnoreCase(typeRes)||typeRes.equalsIgnoreCase("float")||typeRes.equalsIgnoreCase("single")){
 				resu=(float) res;
 				return resu;
 			}else{
@@ -3154,7 +3480,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}else if (typeRes.equalsIgnoreCase("long")){
 				resu=(double)(long)res;
 				return resu;
-			}else if (typeRes.equalsIgnoreCase("single")){
+			}else if (typeRes.equalsIgnoreCase("single")||typeRes.equalsIgnoreCase("float")){
 				resu=(double)(float) res;
 				return resu;
 			}else if(typeVar.equalsIgnoreCase(typeRes)){
@@ -3225,5 +3551,11 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		System.exit(-1);
 	}
 	
-
+	public void err_fun_args(String name, int line, int col){
+		
+		String err= "Error semantico: numero incorrecto de parametros al llamar la funcion '"+name+"'";
+		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
+		System.exit(-1);
+	}
+	
 }

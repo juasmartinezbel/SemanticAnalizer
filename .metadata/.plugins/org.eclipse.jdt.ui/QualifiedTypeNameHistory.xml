@@ -13,13 +13,20 @@
 <fullyQualifiedTypeName name="org.antlr.runtime.tree.CommonTree"/>
 <fullyQualifiedTypeName name="org.antlr.v4.gui.TreeViewer"/>
 <fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="org.antlr.v4.parse.ANTLRParser.id_return"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.ParContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.IdimContext"/>
-<fullyQualifiedTypeName name="classes.MyLanguageParser.PosContext"/>
-<fullyQualifiedTypeName name="classes.MyVisitor.CharArr"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.FunctionsubContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.ParfuContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.SufixContext"/>
+<fullyQualifiedTypeName name="classes.MyVisitor.CharArr"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.ArgContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.ExprContext"/>
+<fullyQualifiedTypeName name="classes.MyVisitor.CharFun"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.InstrContext"/>
+<fullyQualifiedTypeName name="classes.MyLanguageParser.PosContext"/>
+<fullyQualifiedTypeName name="java.util.Stack"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
 </qualifiedTypeNameHistroy>

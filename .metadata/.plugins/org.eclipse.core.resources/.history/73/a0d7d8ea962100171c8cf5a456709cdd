@@ -1,9 +1,0 @@
-dim a as integer
-a% = 1
-print a
-
-dim a(2, 2) as integer
-a%(2, 2) = 2
-print a(2, 2)
-
-dim b, b(3, a) as single

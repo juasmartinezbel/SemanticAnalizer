@@ -1,5 +1,0 @@
-t$="meme"
-SELECT case t$
-case 5
-case "u"
-end select

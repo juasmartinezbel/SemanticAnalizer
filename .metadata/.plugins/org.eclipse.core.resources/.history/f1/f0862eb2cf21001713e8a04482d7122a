@@ -1,3 +1,0 @@
-CONST u% = 4
-U%=3
-print u%
