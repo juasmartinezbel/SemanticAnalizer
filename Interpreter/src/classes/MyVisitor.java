@@ -239,11 +239,11 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				}
 
 			}
-			System.out.println("\n---------------------\n"+Variable);
+			/*System.out.println("\n---------------------\n"+Variable);
 			for (int i = 0; i < w.length; i++) {
 				System.out.print(w[i].toString()+", ");
 			}
-			System.out.println("\n"+Posicion);
+			System.out.println("\n"+Posicion);*/
 			return null;
 			
 			
@@ -510,6 +510,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	}
 	
 	public void check_ConstantVar(String name, int line, int col, String type_var){
+		if (type_var.equals("")){
+			return;
+		}
 		if(type_var.equals("const")){
 			error_red_var(name, line, col);
 		}
@@ -1314,7 +1317,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		int col=ctx.expr().getStart().getLine();
 		if (expr instanceof String){
 			String should[]={"double", "integer", "long", "single"};
-			error_types("String", should, line, col);
+			error_types("string", should, line, col);
 		}
 		return (T) expr;
 	}
@@ -1405,8 +1408,103 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	
 	
+	 
+	/*
+	 * 
+	 * 
+	 * 
+	 * Select Case
+	 * 
+	 * 
+	 * 
+	 */
+	@Override 
+	public T visitSelectc(MyLanguageParser.SelectcContext ctx){
+		String variable="";
+		Object value="";
+		if(ctx.idn().par().PIZQ()!=null){
+			Object [] variables=(Object[]) visitIdn(ctx.idn(), "");
+			variable= variables[0].toString();
+			Object [] var= tableArr.get(variable).w;
+			value=var[(int)variables[1]];
+			
+		}else{
+			variable=visitIdn(ctx.idn(), "").toString();
+			value= tableVar.get(variable).x;
+		}
+		boolean found=false;
+		List<MyLanguageParser.CasesContext> cases = ctx.cases();
+		for (MyLanguageParser.CasesContext c : cases){
+	        if (visitCases(c, value)){
+	        	List<MyLanguageParser.InstrContext> casesi = c.instr();
+				for (MyLanguageParser.InstrContext d : casesi){
+			        visitInstr(d);
+			    }
+	        	found=true;
+	        	break;
+	        }
+	    }
+		
+		if (!found){
+			if((ctx.caselse().getStart().getText()).equals("case")){
+				List<MyLanguageParser.InstrContext> casesi = ctx.caselse().instr();
+				for (MyLanguageParser.InstrContext c : casesi){
+			        visitInstr(c);
+			    }
+				
+			}
+		}
+		
+		return null;
+	}
 	
-	
+	public boolean visitCases(MyLanguageParser.CasesContext ctx, Object value){
+		String tyv=TypeOf(value);
+		Object casev=visitValuev(ctx.valuev());
+		String tyc=TypeOf(casev);
+		int line = ctx.valuev().getStart().getLine();
+		int col = ctx.valuev().getStart().getCharPositionInLine()+1;
+		String[] should={"double", "integer", "long", "single"};
+		if(tyc.equals("string")){
+			if(tyv.equals("string")){
+				String comp = casev.toString();
+				return (comp.equals(value));
+			}else{
+				error_types("string", should, line, col);
+			}
+		}
+		
+		if(tyv.equals("integer")){
+			Integer comp= (Integer) casting(QB64Type(tyv), QB64Type(tyc), casev, line, col);
+			Integer val= (Integer) value;
+			return (comp.equals(value));
+		}else if(tyv.equals("string")){
+			if(tyc.equals("string")){
+				String comp= casev.toString();
+				String val= value.toString();
+				return (comp.equals(value));
+			}else{
+				String[] shouldg={"string"};
+				error_types(QB64Type(tyv), shouldg, line, col);
+			}
+		}else if(tyv.equals("double")){
+			Double comp= (Double) casting(QB64Type(tyv), QB64Type(tyc), casev, line, col);
+			Double val= (Double) value;
+			return (comp.equals(value));
+		}else if(tyv.equals("single")){
+			Float comp= (Float) casting(QB64Type(tyv), QB64Type(tyc), casev, line, col);
+			Float val= (Float) value;
+			return (comp.equals(value));
+		}else if(tyv.equals("long")){
+			Long comp= (Long) casting(QB64Type(tyv), QB64Type(tyc), casev, line, col);
+			Long val= (Long) value;
+			return (comp.equals(value));
+		}else{
+			System.err.println("Error de datos");
+			System.exit(-1);
+		}
+		return false;
+	}
 	
 	
 	
@@ -2454,7 +2552,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 
 	
 	public void error_tiempo_exe(int pos, int line, int col){
-		System.err.printf("<%d:%d> Error en tiempo de ejecución: Se accedio a una posicion no valida del arreglo: "+pos,line,col);
+		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+"> Error en tiempo de ejecución: Se accedio a una posicion no valida del arreglo: "+pos);
 		System.exit(-1);
 	}
 	
@@ -2472,16 +2570,17 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	}
 	
 	public void error_red_var(String name, int line, int col){
-		System.err.printf("\n<%d:%d> Error semantico: '"+name+"' ya ha sido declarado.",line,col);
+		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+"> Error semantico: '"+name+"' ya ha sido declarado.");
 		System.exit(-1);
 	}
 	
 	public void error_red_arr(String name, int line, int col){
-		System.err.printf("\n<%d:%d> Error semantico: El arreglo '"+name+"' ya ha sido declarado.",line,col);
+		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+"> Error semantico: El arreglo '"+name+"' ya ha sido declarado.");
 		System.exit(-1);
 	}
 	public void error_constant(String name, int line, int col){
-		System.err.printf("<%d:%d> Error semantico: '"+name+"' no puede ser modificado.", line, col);
+		String err= "Error semantico: "+name+" no puede ser modificado.";
+		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
 		System.exit(-1);
 	}
 	
