@@ -1,4 +1,4 @@
-j%=8
+j%=7
 if not(j%>4) then
 	print "aaaaaaaaaaaaaaaa"
 	u%=6+3
@@ -10,6 +10,6 @@ elseif not(j%>6) then
 elseif not(j%>7) then
 	print "memes"
 else
-	print"pos bueno"
+	print"pos bueno
 end if
 print u%

@@ -1370,35 +1370,17 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	@Override 
 	public T visitIfter(MyLanguageParser.IfterContext ctx) { 
 		String choice=ctx.getStart().getText();
+		List<MyLanguageParser.InstrContext> instruction = ctx.instr();
+
 		if(choice.equals("else")){
-			List<MyLanguageParser.InstrContext> instruction = ctx.instr();
 			for (MyLanguageParser.InstrContext ins : instruction){
 		        visitInstr(ins);
 		    }
 		}else if(choice.equals("elseif")){
-			Object dow=visitExpr(ctx.expr());
-			int line=ctx.expr().getStart().getLine();
-			int col=ctx.expr().getStart().getCharPositionInLine()+1;
-			String tydow=TypeOf(dow);
-			if (!tydow.equals("integer")){
-				if (tydow.equals("long")){
-					dow=(long)dow;
-				}else{
-					String [] should={"integer"};
-					error_types(QB64Type(tydow), should, line, col);
-				}
-			}
 			List<MyLanguageParser.InstrContext> instruction = ctx.instr();
-		    
-		    
-			if(((int)dow)!=0){
-				for (MyLanguageParser.InstrContext ins : instruction){
-			        visitInstr(ins);
-			    }
-			}else{
-				visitIfter(ctx.ifter());
-			}
-			
+
+		}else if(choice.equals("end")){
+			return null;
 		}
 		return null;
 	}
