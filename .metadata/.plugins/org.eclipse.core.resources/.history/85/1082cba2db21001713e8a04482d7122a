@@ -1,0 +1,20 @@
+function j(i, k, j$, l() as integer)
+end function
+
+sub j(u&, j$, l() as string)
+end sub
+
+sub j(u&, j$, l() as string)
+end sub
+
+sub j(u&, j$, l() as string)
+end sub
+
+sub j(u&, j$, l() as string)
+end sub
+
+sub j(u&, j$, l() as string)
+end sub
+
+function l
+end function

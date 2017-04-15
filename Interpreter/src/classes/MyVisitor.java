@@ -190,14 +190,16 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 							 //Tipo  //Valor   //Tipo argumentos
 	HashMap<String, CharFun<String, Integer, String[]>> tableFun = new HashMap<>();
 						
-	HashMap<String, CharSub<String, String[]>> tableSub = new HashMap<>(); 
+	HashMap<String, String[]> tableSub = new HashMap<>(); 
+	public MyLanguageParser.Qb64Context root;
 	
-	@Override
+ 	@Override
 	public T visitQb64 (MyLanguageParser.Qb64Context ctx) {
-	    List<MyLanguageParser.InstrContext> instruction = ctx.instr();
+	    root=ctx;
+ 		List<MyLanguageParser.InstrContext> instruction = ctx.instr();
 	    
 	    List<MyLanguageParser.FunctionsubContext> functionSub = ctx.functionsub();
-
+	    
 	    for (MyLanguageParser.FunctionsubContext f : functionSub)
 	        visitToSave(f);
 
@@ -207,13 +209,87 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	    return null;
 	}
 	
-	public void visitToSave(MyLanguageParser.FunctionsubContext ctx){
-		if(ctx.fun()!=null){
-			System.out.println(ctx.fun().funidn().ID().getText());
+	public T getFunction(MyLanguageParser.Qb64Context ctx){
+		return null;
+	}
+ 	
+	public T getSub(MyLanguageParser.Qb64Context ctx){
+		return null;
+	}
+	
+ 	public void visitToSave(MyLanguageParser.FunctionsubContext ctx){
+		int count=0;
+ 		if(ctx.fun()!=null){
+			String name=ctx.fun().funidn().ID().getText();
+			String classVar= ctx.fun().funidn().sufix().getText();
+			name=name+classVar;
+			if (classVar.equals("")){
+				classVar="single";
+			}
+			int line= ctx.fun().funidn().ID().getSymbol().getLine();
+			int col= ctx.fun().funidn().ID().getSymbol().getCharPositionInLine()+1;
+			if(tableFun.containsKey(name) || tableSub.containsKey(name)){
+				error_red_var(name, line, col);
+			}
+			//System.out.println("Fun: "+name);
+			
+			String[] arguments;
+			if (ctx.fun().funidn().parfu().PIZQ()!=null){
+			    List<MyLanguageParser.ArgContext> argu = ctx.fun().funidn().parfu().arg();
+			    arguments=new String [argu.size()];
+			    for (MyLanguageParser.ArgContext f : argu){
+			    	String argument=parfu(f);
+			    	arguments[count]=argument;
+			    	//System.out.println(argument);
+			    	count++;
+			    }
+			}else{
+				arguments = new String[0];
+			}
+			CharFun<String, Integer, String[]> newFun;
+			newFun= new CharFun(classVar, 0, arguments);
+			tableFun.put(name, newFun);
 		}else if (ctx.sub()!=null){
-			System.out.println(ctx.sub().subidn().ID().getText());
+			String name=ctx.sub().subidn().ID().getText();
+			int line= ctx.sub().subidn().ID().getSymbol().getLine();
+			int col= ctx.sub().subidn().ID().getSymbol().getCharPositionInLine()+1;
+			if(tableFun.containsKey(name) || tableSub.containsKey(name)){
+				error_red_var(name, line, col);
+			}
+			//System.out.println("Sub: "+name);
+			String[] arguments;
+			if (ctx.sub().subidn().parfu().PIZQ()!=null){
+			    List<MyLanguageParser.ArgContext> argu = ctx.sub().subidn().parfu().arg();
+			    arguments=new String [argu.size()];
+			    for (MyLanguageParser.ArgContext f : argu){
+			    	String argument=parfu(f);
+			    	arguments[count]=argument;
+			    	//System.out.println(argument);
+			    	count++;
+			    }
+			}else{
+				arguments = new String[0];
+			}
+			tableSub.put(name, arguments);
 		}
 	}
+ 	
+ 	public String parfu(MyLanguageParser.ArgContext ctx){
+ 		String argname= ctx.ID().getText();
+ 		if (ctx.sufix()!=null){
+ 			String suffix=ctx.sufix().getText();
+ 			if (suffix.equals("")){
+ 				suffix="!";
+ 			}
+ 			return varClass(suffix).toLowerCase();
+ 		}else{
+ 			String varClass= ctx.argpa().TYPE().toString().toLowerCase();
+ 			if (varClass.equals("")){
+ 				varClass="single";
+ 			}
+ 			return varClass+"[]";
+ 		}
+ 	}
 	
 	@Override
 	public T visitInstr(MyLanguageParser.InstrContext ctx) {
@@ -257,8 +333,6 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	public T visitSufdecl(MyLanguageParser.SufdeclContext ctx, String type_var){
 
 		String[] shouldg={"double","integer","long","single"};
-		
-		
 		
 		if(ctx.idn().par().PIZQ()!=null){
 			Object[] Variables= (Object[]) visitIdn(ctx.idn(), type_var);
@@ -437,7 +511,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			suffix=ctx.sufix().SUFS().getText();
 			varClass=varClass(suffix);
 		}
-		subExists(name, type_var, col, line);
+		subExists(name+suffix, type_var, col, line);
 		
 		if(funExists(name, type_var, col, line)){
 			System.err.println("Bien, encontraste una funcion");
@@ -596,7 +670,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	
 	public boolean funExists(String name, String var_type, int col, int line){
-		if (!var_type.equalsIgnoreCase("")){
+		if (var_type.equalsIgnoreCase("")){
 			if (tableFun.containsKey(name)){
 				return true;
 			}else{
@@ -1017,6 +1091,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	@Override 
 	public T visitInput(MyLanguageParser.InputContext ctx){
 		return visitInpara(ctx.inpara());
+		
 	}
 	
 	@Override
@@ -2936,6 +3011,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	public void err_proc(String name, int col, int line){
 		String err= "'"+name+"' es un procedimiento, no tiene valor de retorno.";
 		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
+		System.exit(-1);
 	}
 
 }

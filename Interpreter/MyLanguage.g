@@ -58,8 +58,8 @@ funidn		: ID sufix parfu;
 sub			:('sub'|'SUB') subidn instr* ('end'|'END') ('sub'|'SUB');
 subidn 		: ID parfu;
 
-parfu		: (PIZQ arg PDER|);
-arg 		: (ID sufix| ID argpa) (COMMA arg)*;
+parfu		: (PIZQ arg (COMMA arg)* PDER|);
+arg 		: (ID sufix| ID argpa);
 argpa 		: PIZQ PDER (('as' (TYPE|))|);
 argn		: COMMA;
 

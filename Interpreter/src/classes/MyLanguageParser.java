@@ -2755,10 +2755,17 @@ public class MyLanguageParser extends Parser {
 
 	public static class ParfuContext extends ParserRuleContext {
 		public TerminalNode PIZQ() { return getToken(MyLanguageParser.PIZQ, 0); }
-		public ArgContext arg() {
-			return getRuleContext(ArgContext.class,0);
+		public List<ArgContext> arg() {
+			return getRuleContexts(ArgContext.class);
+		}
+		public ArgContext arg(int i) {
+			return getRuleContext(ArgContext.class,i);
 		}
 		public TerminalNode PDER() { return getToken(MyLanguageParser.PDER, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MyLanguageParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MyLanguageParser.COMMA, i);
+		}
 		public ParfuContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2781,10 +2788,11 @@ public class MyLanguageParser extends Parser {
 	public final ParfuContext parfu() throws RecognitionException {
 		ParfuContext _localctx = new ParfuContext(_ctx, getState());
 		enterRule(_localctx, 70, RULE_parfu);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(384);
+			setState(391);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case PIZQ:
@@ -2793,7 +2801,23 @@ public class MyLanguageParser extends Parser {
 				match(PIZQ);
 				setState(380);
 				arg();
-				setState(381);
+				setState(385);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				while (_la==COMMA) {
+					{
+					{
+					setState(381);
+					match(COMMA);
+					setState(382);
+					arg();
+					}
+					}
+					setState(387);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				}
+				setState(388);
 				match(PDER);
 				}
 				break;
@@ -2843,16 +2867,6 @@ public class MyLanguageParser extends Parser {
 		public ArgpaContext argpa() {
 			return getRuleContext(ArgpaContext.class,0);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(MyLanguageParser.COMMA); }
-		public TerminalNode COMMA(int i) {
-			return getToken(MyLanguageParser.COMMA, i);
-		}
-		public List<ArgContext> arg() {
-			return getRuleContexts(ArgContext.class);
-		}
-		public ArgContext arg(int i) {
-			return getRuleContext(ArgContext.class,i);
-		}
 		public ArgContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2876,46 +2890,27 @@ public class MyLanguageParser extends Parser {
 		ArgContext _localctx = new ArgContext(_ctx, getState());
 		enterRule(_localctx, 72, RULE_arg);
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(390);
+			setState(397);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,33,_ctx) ) {
 			case 1:
 				{
-				setState(386);
+				setState(393);
 				match(ID);
-				setState(387);
+				setState(394);
 				sufix();
 				}
 				break;
 			case 2:
 				{
-				setState(388);
+				setState(395);
 				match(ID);
-				setState(389);
+				setState(396);
 				argpa();
 				}
 				break;
-			}
-			setState(396);
-			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,33,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					{
-					{
-					setState(392);
-					match(COMMA);
-					setState(393);
-					arg();
-					}
-					} 
-				}
-				setState(398);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,33,_ctx);
 			}
 			}
 		}
@@ -3879,9 +3874,9 @@ public class MyLanguageParser extends Parser {
 		"\7\36\u014d\n\36\f\36\16\36\u0150\13\36\3\36\3\36\3\37\3\37\7\37\u0156"+
 		"\n\37\f\37\16\37\u0159\13\37\3\37\3\37\3\37\3 \3 \3 \3!\3!\3!\7!\u0164"+
 		"\n!\f!\16!\u0167\13!\3!\3!\3!\3\"\3\"\3\"\3\"\3#\3#\3#\7#\u0173\n#\f#"+
-		"\16#\u0176\13#\3#\3#\3#\3$\3$\3$\3%\3%\3%\3%\3%\5%\u0183\n%\3&\3&\3&\3"+
-		"&\5&\u0189\n&\3&\3&\7&\u018d\n&\f&\16&\u0190\13&\3\'\3\'\3\'\3\'\3\'\5"+
-		"\'\u0197\n\'\3\'\5\'\u019a\n\'\3(\3(\3)\3)\3)\3*\3*\7*\u01a3\n*\f*\16"+
+		"\16#\u0176\13#\3#\3#\3#\3$\3$\3$\3%\3%\3%\3%\7%\u0182\n%\f%\16%\u0185"+
+		"\13%\3%\3%\3%\5%\u018a\n%\3&\3&\3&\3&\5&\u0190\n&\3\'\3\'\3\'\3\'\3\'"+
+		"\5\'\u0197\n\'\3\'\5\'\u019a\n\'\3(\3(\3)\3)\3)\3*\3*\7*\u01a3\n*\f*\16"+
 		"*\u01a6\13*\3*\5*\u01a9\n*\3+\3+\3+\3,\3,\3,\3,\3,\3,\3,\3,\3,\5,\u01b7"+
 		"\n,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,\3,"+
 		"\3,\7,\u01d0\n,\f,\16,\u01d3\13,\3-\3-\3.\3.\3/\3/\3\60\3\60\3\61\3\61"+
@@ -3898,7 +3893,7 @@ public class MyLanguageParser extends Parser {
 		"\u011d\3\2\2\2.\u011f\3\2\2\2\60\u0121\3\2\2\2\62\u0127\3\2\2\2\64\u0129"+
 		"\3\2\2\2\66\u0136\3\2\2\28\u0147\3\2\2\2:\u0149\3\2\2\2<\u0153\3\2\2\2"+
 		">\u015d\3\2\2\2@\u0160\3\2\2\2B\u016b\3\2\2\2D\u016f\3\2\2\2F\u017a\3"+
-		"\2\2\2H\u0182\3\2\2\2J\u0188\3\2\2\2L\u0191\3\2\2\2N\u019b\3\2\2\2P\u019d"+
+		"\2\2\2H\u0189\3\2\2\2J\u018f\3\2\2\2L\u0191\3\2\2\2N\u019b\3\2\2\2P\u019d"+
 		"\3\2\2\2R\u01a8\3\2\2\2T\u01aa\3\2\2\2V\u01b6\3\2\2\2X\u01d4\3\2\2\2Z"+
 		"\u01d6\3\2\2\2\\\u01d8\3\2\2\2^\u01da\3\2\2\2`\u01de\3\2\2\2b\u01e2\3"+
 		"\2\2\2d\u01e4\3\2\2\2fh\5\4\3\2gf\3\2\2\2hk\3\2\2\2ig\3\2\2\2ij\3\2\2"+
@@ -3985,12 +3980,12 @@ public class MyLanguageParser extends Parser {
 		"\2\u0174\u0172\3\2\2\2\u0174\u0175\3\2\2\2\u0175\u0177\3\2\2\2\u0176\u0174"+
 		"\3\2\2\2\u0177\u0178\t\13\2\2\u0178\u0179\t\24\2\2\u0179E\3\2\2\2\u017a"+
 		"\u017b\7H\2\2\u017b\u017c\5H%\2\u017cG\3\2\2\2\u017d\u017e\7\62\2\2\u017e"+
-		"\u017f\5J&\2\u017f\u0180\7\63\2\2\u0180\u0183\3\2\2\2\u0181\u0183\3\2"+
-		"\2\2\u0182\u017d\3\2\2\2\u0182\u0181\3\2\2\2\u0183I\3\2\2\2\u0184\u0185"+
-		"\7H\2\2\u0185\u0189\5\24\13\2\u0186\u0187\7H\2\2\u0187\u0189\5L\'\2\u0188"+
-		"\u0184\3\2\2\2\u0188\u0186\3\2\2\2\u0189\u018e\3\2\2\2\u018a\u018b\7?"+
-		"\2\2\u018b\u018d\5J&\2\u018c\u018a\3\2\2\2\u018d\u0190\3\2\2\2\u018e\u018c"+
-		"\3\2\2\2\u018e\u018f\3\2\2\2\u018fK\3\2\2\2\u0190\u018e\3\2\2\2\u0191"+
+		"\u0183\5J&\2\u017f\u0180\7?\2\2\u0180\u0182\5J&\2\u0181\u017f\3\2\2\2"+
+		"\u0182\u0185\3\2\2\2\u0183\u0181\3\2\2\2\u0183\u0184\3\2\2\2\u0184\u0186"+
+		"\3\2\2\2\u0185\u0183\3\2\2\2\u0186\u0187\7\63\2\2\u0187\u018a\3\2\2\2"+
+		"\u0188\u018a\3\2\2\2\u0189\u017d\3\2\2\2\u0189\u0188\3\2\2\2\u018aI\3"+
+		"\2\2\2\u018b\u018c\7H\2\2\u018c\u0190\5\24\13\2\u018d\u018e\7H\2\2\u018e"+
+		"\u0190\5L\'\2\u018f\u018b\3\2\2\2\u018f\u018d\3\2\2\2\u0190K\3\2\2\2\u0191"+
 		"\u0192\7\62\2\2\u0192\u0199\7\63\2\2\u0193\u0196\7\7\2\2\u0194\u0197\7"+
 		"B\2\2\u0195\u0197\3\2\2\2\u0196\u0194\3\2\2\2\u0196\u0195\3\2\2\2\u0197"+
 		"\u019a\3\2\2\2\u0198\u019a\3\2\2\2\u0199\u0193\3\2\2\2\u0199\u0198\3\2"+
@@ -4020,8 +4015,8 @@ public class MyLanguageParser extends Parser {
 		"\3\2\2\2\u01e3c\3\2\2\2\u01e4\u01e5\7H\2\2\u01e5\u01e6\7\62\2\2\u01e6"+
 		"\u01e7\7\63\2\2\u01e7e\3\2\2\2-io}\u0081\u0087\u0090\u0099\u00a9\u00b1"+
 		"\u00b7\u00c2\u00c8\u00cb\u00d8\u00e2\u00e5\u00ed\u00f8\u0101\u0108\u0111"+
-		"\u011d\u0127\u012f\u013b\u0143\u0147\u014e\u0157\u0165\u0174\u0182\u0188"+
-		"\u018e\u0196\u0199\u01a4\u01a8\u01b6\u01cf\u01d1\u01de\u01e2";
+		"\u011d\u0127\u012f\u013b\u0143\u0147\u014e\u0157\u0165\u0174\u0183\u0189"+
+		"\u018f\u0196\u0199\u01a4\u01a8\u01b6\u01cf\u01d1\u01de\u01e2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
