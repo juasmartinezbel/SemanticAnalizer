@@ -1,0 +1,10 @@
+U$="MEMES"
+J$="memes"
+select case u$
+case "aaaa"
+print "aaaaaaaa"
+case "memes"
+print "m"
+case "MEMES"
+print "uuu"
+end select

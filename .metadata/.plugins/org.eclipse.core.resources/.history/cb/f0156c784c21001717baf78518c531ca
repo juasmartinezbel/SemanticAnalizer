@@ -1,3 +1,0 @@
-i%(2,2)=3
-print ;u%;"aaaaaaa";i%(2,2) + 8
-input u, j

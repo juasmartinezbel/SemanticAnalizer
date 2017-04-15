@@ -951,18 +951,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	public T visitToprintfst(MyLanguageParser.ToprintfstContext ctx){
 		String printTo="";
 		if (ctx.expr()!=null){
-			Object expr=visitExpr(ctx.expr());
-			if (!(expr instanceof String)){
-				Double u= Double.parseDouble(expr.toString());
-				Integer v= (int)(double) u;
-				double uv = (double)(int)v;
-				if (String.valueOf(uv).equals(u.toString())){
-					expr=(Object) (int) v;
-				}else{
-					expr=(Object) u;
-				}
-			}
-			printTo+=expr.toString()+" ";
+			printTo+=visitExpr(ctx.expr()).toString()+" ";
 		}
 		
 	    List<MyLanguageParser.ToprintContext> ToPrint = ctx.toprint();
@@ -972,20 +961,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	    //    visit(f);
 
 	    for (MyLanguageParser.ToprintContext i : ToPrint){
-	    	Object expr=visitToprint(i);
-			if (!(expr instanceof String)){
-				Double u= Double.parseDouble(expr.toString());
-				Integer v= (int)(double) u;
-				double uv = (double)(int)v;
-				if (String.valueOf(uv).equals(u.toString())){
-					expr=(Object) (int) v;
-				}else{
-					expr=(Object) u;
-				}
-			}
-	    	printTo+=expr.toString()+" ";
+			printTo+=visitToprint(i).toString()+" ";
 	    }
-		return (T) printTo.substring(0, printTo.length()-1);
+		return (T) printTo;
 	}
 	
 	@Override
@@ -1437,9 +1415,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}
 			CharVar<Object, String, String> newVar;
 			if (suffix=="")
-				varClass="single";
+				varClass="integer";
 			Object vari=define(varClass, null);
-			if (suffix.equalsIgnoreCase("!") || suffix.equalsIgnoreCase("")){
+			if (suffix.equalsIgnoreCase("%") || suffix.equalsIgnoreCase("")){
 				newVar=new CharVar(vari, varClass, type_var);
 				variable=name;
 				tableVar.put(variable.toString().toLowerCase(), newVar);
@@ -1635,7 +1613,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		if(tyc.equalsIgnoreCase("string")){
 			if(tyv.equalsIgnoreCase("string")){
 				String comp = casev.toString();
-				return (comp.equals(value.toString()));
+				return (comp.equalsIgnoreCase(value.toString()));
 			}else{
 				error_types("string", should, line, col);
 			}
@@ -2430,7 +2408,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					//Para Strings
 					if (ti.equalsIgnoreCase("string") && tj.equalsIgnoreCase("string")){
 
-						boolean res=(i.toString()).equals(j.toString());
+						boolean res=(i.toString()).equalsIgnoreCase(j.toString());
 						ans= boolQB64(res);
 						return (T) ans;
 					}else if (ti.equalsIgnoreCase("string")){
@@ -2467,7 +2445,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					break;
 				case "<>":
 					if (ti.equalsIgnoreCase("string") && tj.equalsIgnoreCase("string")){
-						boolean res=(i.toString()).equals(j.toString());
+						boolean res=(i.toString()).equalsIgnoreCase(j.toString());
 						ans= boolQB64(!res);
 						return (T) ans;
 					}else if (ti.equalsIgnoreCase("string")){

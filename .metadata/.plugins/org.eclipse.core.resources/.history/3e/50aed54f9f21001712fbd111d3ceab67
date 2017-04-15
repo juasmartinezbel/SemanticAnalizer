@@ -953,16 +953,17 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		if (ctx.expr()!=null){
 			Object expr=visitExpr(ctx.expr());
 			if (!(expr instanceof String)){
+				System.out.println("aaaaaaa");
 				Double u= Double.parseDouble(expr.toString());
 				Integer v= (int)(double) u;
 				double uv = (double)(int)v;
 				if (String.valueOf(uv).equals(u.toString())){
-					expr=(Object) (int) v;
-				}else{
 					expr=(Object) u;
+				}else{
+					expr=(Object) v;
 				}
 			}
-			printTo+=expr.toString()+" ";
+			printTo+=visitExpr(ctx.expr()).toString()+" ";
 		}
 		
 	    List<MyLanguageParser.ToprintContext> ToPrint = ctx.toprint();
@@ -972,20 +973,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	    //    visit(f);
 
 	    for (MyLanguageParser.ToprintContext i : ToPrint){
-	    	Object expr=visitToprint(i);
-			if (!(expr instanceof String)){
-				Double u= Double.parseDouble(expr.toString());
-				Integer v= (int)(double) u;
-				double uv = (double)(int)v;
-				if (String.valueOf(uv).equals(u.toString())){
-					expr=(Object) (int) v;
-				}else{
-					expr=(Object) u;
-				}
-			}
-	    	printTo+=expr.toString()+" ";
+			printTo+=visitToprint(i).toString()+" ";
 	    }
-		return (T) printTo.substring(0, printTo.length()-1);
+		return (T) printTo;
 	}
 	
 	@Override
@@ -1437,9 +1427,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}
 			CharVar<Object, String, String> newVar;
 			if (suffix=="")
-				varClass="single";
+				varClass="integer";
 			Object vari=define(varClass, null);
-			if (suffix.equalsIgnoreCase("!") || suffix.equalsIgnoreCase("")){
+			if (suffix.equalsIgnoreCase("%") || suffix.equalsIgnoreCase("")){
 				newVar=new CharVar(vari, varClass, type_var);
 				variable=name;
 				tableVar.put(variable.toString().toLowerCase(), newVar);

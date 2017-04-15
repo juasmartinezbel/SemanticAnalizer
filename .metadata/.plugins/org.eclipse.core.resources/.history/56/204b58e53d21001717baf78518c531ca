@@ -1,2 +1,0 @@
-dim u(3,3) as integer
-u (3,3) = 9

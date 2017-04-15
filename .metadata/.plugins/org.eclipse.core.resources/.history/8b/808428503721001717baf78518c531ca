@@ -1,2 +1,0 @@
-dim u(8) as integer
-u (1, 9) = 9

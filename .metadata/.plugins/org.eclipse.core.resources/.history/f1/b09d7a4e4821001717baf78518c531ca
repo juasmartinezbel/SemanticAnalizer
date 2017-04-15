@@ -1,3 +1,0 @@
-dim u as string
-u="memazo"
-print "asu oe que buen "+u

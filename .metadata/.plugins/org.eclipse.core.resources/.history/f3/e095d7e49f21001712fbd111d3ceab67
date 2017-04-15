@@ -1437,9 +1437,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}
 			CharVar<Object, String, String> newVar;
 			if (suffix=="")
-				varClass="single";
+				varClass="integer";
 			Object vari=define(varClass, null);
-			if (suffix.equalsIgnoreCase("!") || suffix.equalsIgnoreCase("")){
+			if (suffix.equalsIgnoreCase("%") || suffix.equalsIgnoreCase("")){
 				newVar=new CharVar(vari, varClass, type_var);
 				variable=name;
 				tableVar.put(variable.toString().toLowerCase(), newVar);

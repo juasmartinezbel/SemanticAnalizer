@@ -2,29 +2,36 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Err" key="selection"/>
-		<item value="false" key="casesensitive"/>
+		<item value="ID" key="selection"/>
+		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="check"/>
-			<item value="err"/>
-			<item value="visitPar"/>
-			<item value="col0"/>
-			<item value="expr"/>
-			<item value="r"/>
-			<item value="visitExpr"/>
-			<item value="toPrin"/>
+			<item value="ID"/>
+			<item value="id"/>
+			<item value="put"/>
+			<item value="Variable.toString(),"/>
+			<item value=".PUT"/>
+			<item value="tableVar"/>
+			<item value="Char"/>
+			<item value=".equals("/>
 		</list>
 		<list key="replacehistory">
+			<item value="Variable.toString().toString().toLowerCase(),"/>
+			<item value="Variable.toString()..toString().toLowerCase(),"/>
+			<item value=".equalsIgnoreCase("/>
+			<item value=").equalsIgnoreCase(&quot;"/>
+			<item value="().equalsIgnoreCase(&quot;"/>
+			<item value="equalsIgnoreCase(&quot;"/>
+			<item value="equalsIgnoreCase"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="338" key="DIALOG_WIDTH"/>
 		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
 		<item value="434" key="DIALOG_HEIGHT"/>
-		<item value="823" key="DIALOG_X_ORIGIN"/>
-		<item value="226" key="DIALOG_Y_ORIGIN"/>
+		<item value="761" key="DIALOG_X_ORIGIN"/>
+		<item value="310" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

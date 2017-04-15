@@ -1,5 +1,0 @@
-u$="B"
-while u%<"Bebe"
-u$=u$+e
-wend
-print u$

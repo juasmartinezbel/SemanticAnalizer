@@ -1,4 +1,0 @@
-dim t as integer
-for t=1 to 8
-	print "meme";t
-next
