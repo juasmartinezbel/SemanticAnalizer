@@ -63,7 +63,7 @@ arg 		: (ID sufix| ID argpa);
 argpa 		: PIZQ PDER (('as' (TYPE|))|);
 argn		: COMMA;
 
-call 		: ID (expr (COMMA expr)*|);
+call 		: ID (PIZQ expr PDER (COMMA expr)*|expr (COMMA expr)*|);
 
 expr:	PIZQ expr PDER
 	|	neg expr

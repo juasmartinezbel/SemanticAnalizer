@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="error_cast" key="selection"/>
-		<item value="true" key="casesensitive"/>
+		<item value="EL ERROR" key="selection"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="error_cast"/>
-			<item value="Está haciendo"/>
-			<item value="Está"/>
-			<item value="está haciendo"/>
-			<item value="está"/>
-			<item value="(tableVar.toStri"/>
-			<item value="visitPos"/>
-			<item value="visitBool"/>
+			<item value="el error"/>
+			<item value="tiempo de"/>
+			<item value="system.out.println(v"/>
+			<item value="tiempo"/>
+			<item value="CharSub"/>
+			<item value="asu oe"/>
+			<item value="System.out.println"/>
+			<item value="casting|"/>
 		</list>
 		<list key="replacehistory">
 			<item value="Variable.toString().toString().toLowerCase(),"/>

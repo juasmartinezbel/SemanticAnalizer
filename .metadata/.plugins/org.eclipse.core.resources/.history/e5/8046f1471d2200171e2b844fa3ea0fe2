@@ -1,0 +1,6 @@
+PRINT f("hola", "5", "ty" )
+'PRINT f$("hola", "5", "ty" )
+
+FUNCTION f$ (a$, b$, c$)
+f$ = a$ + b$ + c$
+END FUNCTION

@@ -1,0 +1,12 @@
+'PRINT f("hola", "5", "ty" )
+'PRINT f$("hola", "5", "ty" )
+
+'FUNCTION f$ (a$, b$, c$)
+'f$ = a$ + b$ + c$
+'END FUNCTION
+
+print u("8")
+
+function u(a$)
+u!=6
+end function

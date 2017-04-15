@@ -1,0 +1,7 @@
+PRINT f("hola", "5", "ty" )
+PRINT f$("hola", "5", "ty" )
+dim f as integer
+
+FUNCTION f$ (a$, b$, c$)
+f$ = a$ + b$ + c$
+END FUNCTION

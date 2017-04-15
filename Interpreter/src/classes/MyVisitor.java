@@ -238,12 +238,12 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
  		if(ctx.fun()!=null){
  			
 			String name=ctx.fun().funidn().ID().getText();
-			String classVar= ctx.fun().funidn().sufix().getText();
-			name=name+classVar;
-			if (classVar.equals("")){
+			String suffix= ctx.fun().funidn().sufix().getText();
+			String classVar;
+			if (suffix.equals("")){
 				classVar="single";
 			}else{
-				classVar=varClass(classVar);
+				classVar=varClass(suffix);
 			}
 			int line= ctx.fun().funidn().ID().getSymbol().getLine();
 			int col= ctx.fun().funidn().ID().getSymbol().getCharPositionInLine()+1;
@@ -277,6 +277,10 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			
 			newVar= new CharVar(d, classVar, "global");
 			tableVar.put(name, newVar);
+
+			name=name+suffix;
+			newFun= new CharFun(classVar, argumentsN, arguments);
+			tableFun.put(name, newFun);
 		}else if (ctx.sub()!=null){
 			String name=ctx.sub().subidn().ID().getText();
 			int line= ctx.sub().subidn().ID().getSymbol().getLine();
@@ -476,6 +480,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			CharVar<Object, String, String> changedVar;
 			String z= tableVar.get(Variable).z;
 			Object res= visitExpr(ctx.expr());
+			
 			String tyr=TypeOf(res);
 			int line= ctx.expr().getStart().getLine();
 			int col= ctx.expr().getStart().getCharPositionInLine()+1;
@@ -527,6 +532,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			}else if(tyv.equalsIgnoreCase("double")){
 				if (tyr.equalsIgnoreCase("double")){
 					Double x= (double) res;
+		
 					changedVar=new CharVar(x, tyv, z);
 					tableVar.put(Variable.toString().toString().toLowerCase(), changedVar);
 				}else if (tyr.equalsIgnoreCase("string")){
@@ -564,51 +570,60 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		subExists(name+suffix, type_var, col, line);
 		Object[] toR=new Object[2];
 		if (!inFunction){
-			if(funExists(name+suffix, type_var, col, line)){
-				toR[0]=visitFuc(ctx, name+suffix);
+			if (ctx.par().PIZQ()==null){
+				if(funExists(name, type_var, col, line)){
+					toR[0]=visitFuc(ctx, name);
+					
+					return (T)toR[0];
+				}else if(suffix.equals("$")){
+					if(funExists(name+suffix, type_var, col, line)){
+						toR[0]=visitFuc(ctx, name+suffix);
+						return (T)toR[0];
+					}
+				}
+				
+			}
+			if(funExists(name, type_var, col, line)){
+				toR[0]=visitFuc(ctx, name);
 				toR[1]= (-1);
 				return (T)toR;
-			}else if(suffix.equals("")){
-				if(funExists(name+"!", type_var, col, line)){
-					toR[0]=visitFuc(ctx, name+"!");
-					toR[1]= (-1);
-					return (T)toR;
-				}
-			}else if(suffix.equals("!")){
-				if(funExists(name+"", type_var, col, line)){
-					toR[0]=visitFuc(ctx, name+"");
+			}else if(suffix.equals("$")){
+				if(funExists(name+suffix, type_var, col, line)){
+					toR[0]=visitFuc(ctx, name+suffix);
 					toR[1]= (-1);
 					return (T)toR;
 				}
 			}
+			
 		}else{
 			if (!type_var.equals("")){
 				if((name+suffix).equalsIgnoreCase(CurrentFunction.peek())){
 						return (T) (name+suffix);
 				}else if(suffix.equalsIgnoreCase("")){
-					if((name+"!").equalsIgnoreCase(CurrentFunction.peek())){
-						return (T) (name+"!");
-					}
-				}else if(suffix.equalsIgnoreCase("!")){
-					if((name+"").equalsIgnoreCase(CurrentFunction.peek())){
-						return (T) (name+"");
-					}
+					if((name+suffix).equalsIgnoreCase(CurrentFunction.peek()))
+						return (T) (name+suffix);
 				}
 				
 			}else{
-				if(funExists(name+suffix, type_var, col, line)){
-					toR[0]=visitFuc(ctx, name+suffix);
+				if (ctx.par().PIZQ()==null){
+					if(funExists(name, type_var, col, line)){
+						toR[0]=visitFuc(ctx, name);
+						return (T)toR[0];
+					}else if(suffix.equals("$")){
+						if(funExists(name+suffix, type_var, col, line)){
+							toR[0]=visitFuc(ctx, name+suffix);
+							return (T)toR[0];
+						}
+					}
+					
+				}
+				if(funExists(name, type_var, col, line)){
+					toR[0]=visitFuc(ctx, name);
 					toR[1]= (-1);
 					return (T)toR;
-				}else if(suffix.equals("")){
-					if(funExists(name+"!", type_var, col, line)){
-						toR[0]=visitFuc(ctx, name+"!");
-						toR[1]= (-1);
-						return (T)toR;
-					}
-				}else if(suffix.equals("!")){
-					if(funExists(name+"", type_var, col, line)){
-						toR[0]=visitFuc(ctx, name+"");
+				}else if(suffix.equals("$")){
+					if(funExists(name+suffix, type_var, col, line)){
+						toR[0]=visitFuc(ctx, name+suffix);
 						toR[1]= (-1);
 						return (T)toR;
 					}
@@ -948,9 +963,14 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	public T visitIdim(MyLanguageParser.IdimContext ctx, String[]typeVar) {
 		String name = ctx.ID().getText();
+		
 		int line = ctx.ID().getSymbol().getLine();
 		int col = ctx.ID().getSymbol().getCharPositionInLine()+1;
-
+		
+		if(Arrays.asList(firstDeclarations).contains(name.toLowerCase())){
+			error_red_var(name, line, col);
+		}
+		
 		if (ctx.par().PIZQ()!=null){
 			Integer [] arguments= (Integer[]) visitPar(ctx.par());
 			CharArr<Object[], String, String, Integer[]> variable;
@@ -1707,8 +1727,12 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		if (!tydow.equalsIgnoreCase("integer")){
 			if (tydow.equalsIgnoreCase("long")){
 				dow=(long)dow;
+			}else if(tydow.equals("double")){
+				dow=(long)(double)dow;
+			}else if(tydow.equals("single")||tydow.equals("float")){
+				dow=(int)(float)dow;
 			}else{
-				String [] should={"integer"};
+				String [] should={"double","integer","long","single"};
 				error_types(QB64Type(tydow), should, line, col);
 			}
 		}
@@ -1743,8 +1767,12 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			if (!tydow.equalsIgnoreCase("integer")){
 				if (tydow.equalsIgnoreCase("long")){
 					dow=(long)dow;
+				}else if(tydow.equals("double")){
+					dow=(long)(double)dow;
+				}else if(tydow.equals("single")||tydow.equals("float")){
+					dow=(int)(float)dow;
 				}else{
-					String [] should={"integer"};
+					String [] should={"double","integer","long","single"};
 					error_types(QB64Type(tydow), should, line, col);
 				}
 			}
@@ -2095,7 +2123,6 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 			String Type=tableVar.get(variable).y;
 			Object f= tableVar.get(variable).x;
 			String realType=TypeOf(f);
-			//System.out.println(Type);
 			if(tableVar.get(variable).z.toString().equals("variable")){
 	    		if (Type.equals("integer")){
 	    			
@@ -2150,7 +2177,6 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 		String[] arguments= tableFun.get(name).z;
 		
 		List<MyLanguageParser.PosContext> args = ctx.par().pos();
-	    
 	    if (args.size()!=arguments.length){
 	    	err_fun_args(name, linename, colname);
 	    }
@@ -2488,7 +2514,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	 *--------------------------------------------------------------------
 	 *--------------------------------------------------------------------
 	 */
-	
+	public char[] suffixArr={'!', '$', '#', '$', '%'};
 	@Override
 	public T visitIdnp(MyLanguageParser.IdnpContext ctx) {
 		if(ctx.idn()!=null){
@@ -2570,9 +2596,9 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	@Override
 	public T visitExpr(MyLanguageParser.ExprContext ctx) {
-		
+		//System.out.println("Asu oe "+visitValue(ctx.value()).toString());
 		if(ctx.value()!=null){
-			Object v=visitValue(ctx.value());;
+			Object v=visitValue(ctx.value());
 			String operand= TypeOf(v);
 			if(operand.equalsIgnoreCase("integer")){
 				Integer and = (int) v;
@@ -3481,7 +3507,8 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				resu=(double)(long)res;
 				return resu;
 			}else if (typeRes.equalsIgnoreCase("single")||typeRes.equalsIgnoreCase("float")){
-				resu=(double)(float) res;
+				String m=res.toString();
+				resu=Double.parseDouble(m);
 				return resu;
 			}else if(typeVar.equalsIgnoreCase(typeRes)){
 				resu=(double) res;
@@ -3501,14 +3528,16 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 
 	
 	public void error_tiempo_exe(int pos, int line, int col){
-		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+"> Error en tiempo de ejecución: Se accedio a una posicion no valida del arreglo: "+pos);
+		System.err.println("<"+String.valueOf(line)+","+String.valueOf(col)+"> Error en tiempo de ejecución: Se accedio a una posicion no valida del arreglo: "+pos);
 		System.exit(-1);
 	}
 	
 	public void check_Error_var(String name, String type, int line, int col){
 		if (tableVar.containsKey(name)){
-			error_red_var(name, line, col);
-
+			if(!tableVar.get(name).y.toString().equalsIgnoreCase(type)){
+				error_red_var(name, line, col);
+			}
+			
 		}
 	}
 	
@@ -3519,42 +3548,42 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	}
 	
 	public void error_red_var(String name, int line, int col){
-		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+"> Error semantico: '"+name+"' ya ha sido declarado.");
+		System.err.println("<"+String.valueOf(line)+","+String.valueOf(col)+"> Error semantico: '"+name+"' ya ha sido declarado.");
 		System.exit(-1);
 	}
 	
 	public void error_red_arr(String name, int line, int col){
-		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+"> Error semantico: El arreglo '"+name+"' ya ha sido declarado.");
+		System.err.println("<"+String.valueOf(line)+","+String.valueOf(col)+"> Error semantico: El arreglo '"+name+"' ya ha sido declarado.");
 		System.exit(-1);
 	}
 	public void error_constant(String name, int line, int col){
 		String err= "Error semantico: "+name+" no puede ser modificado.";
-		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
+		System.err.println("<"+String.valueOf(line)+","+String.valueOf(col)+">"+err);
 		System.exit(-1);
 	}
 	public void err_proc(String name, int col, int line){
-		String err= "'"+name+"' es un procedimiento, no tiene valor de retorno.";
-		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
+		String err= "Error semantico: '"+name+"' es un procedimiento, no tiene valor de retorno.";
+		System.err.println("<"+String.valueOf(line)+","+String.valueOf(col)+">"+err);
 		System.exit(-1);
 	}
 	
 	public void err_sub_n(String name, int line, int col){
 		String err= "Error semantico: el procedimiento '"+name+"' no ha sido declarado.";
-		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
+		System.err.println("<"+String.valueOf(line)+","+String.valueOf(col)+">"+err);
 		System.exit(-1);
 	}
 	
 	public void err_sub_args(String name, int line, int col){
 		
 		String err= "Error semantico: numero incorrecto de parametros al llamar el procedimiento '"+name+"'";
-		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
+		System.err.println("<"+String.valueOf(line)+","+String.valueOf(col)+">"+err);
 		System.exit(-1);
 	}
 	
 	public void err_fun_args(String name, int line, int col){
 		
 		String err= "Error semantico: numero incorrecto de parametros al llamar la funcion '"+name+"'";
-		System.err.println("<"+String.valueOf(line)+":"+String.valueOf(col)+">"+err);
+		System.err.println("<"+String.valueOf(line)+","+String.valueOf(col)+">"+err);
 		System.exit(-1);
 	}
 	

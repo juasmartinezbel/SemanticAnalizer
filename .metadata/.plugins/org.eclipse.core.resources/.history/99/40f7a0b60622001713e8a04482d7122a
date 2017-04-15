@@ -1,8 +1,0 @@
-a 
-f 1, 2
-print a
-
-
-function f! (k%, j%)
-	f=k%+j%
-end function

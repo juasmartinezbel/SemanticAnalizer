@@ -21,7 +21,6 @@
 <fullyQualifiedTypeName name="classes.MyLanguageParser.FunctionsubContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.ParfuContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.SufixContext"/>
-<fullyQualifiedTypeName name="classes.MyVisitor.CharArr"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.ArgContext"/>
 <fullyQualifiedTypeName name="classes.MyLanguageParser.ExprContext"/>
 <fullyQualifiedTypeName name="classes.MyVisitor.CharFun"/>
@@ -29,4 +28,6 @@
 <fullyQualifiedTypeName name="classes.MyLanguageParser.PosContext"/>
 <fullyQualifiedTypeName name="java.util.Stack"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Array"/>
+<fullyQualifiedTypeName name="classes.MyVisitor.CharArr"/>
 </qualifiedTypeNameHistroy>
