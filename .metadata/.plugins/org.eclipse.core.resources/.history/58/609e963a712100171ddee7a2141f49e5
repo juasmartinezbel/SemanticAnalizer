@@ -1,6 +1,0 @@
-if not(7>4) then
-	print "aaaaaaaaaaaaaaaa"
-	u%=6+3
-	
-end if
-print u%

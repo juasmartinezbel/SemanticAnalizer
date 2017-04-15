@@ -1,3 +1,0 @@
-if not(7>4) then
-	print "aaaaaaaaaaaaaaaa"
-end if

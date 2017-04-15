@@ -503,7 +503,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 					newVar=new CharArr(vari, varClass, type_var, arguments);
 					
 					variable=name;
-					if (arrExists(name, ""))
+					if (varExists(name, ""))
 						variable=name+'!';
 					tableArr.put(variable.toString().toLowerCase(), newVar);
 					Object [] variables= new Object[2];
@@ -898,7 +898,7 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 				}
 			case "long":
 				if (obj==null){
-					return (long) 0;
+					return 0;
 				}else{
 					return (Long) obj;
 				}

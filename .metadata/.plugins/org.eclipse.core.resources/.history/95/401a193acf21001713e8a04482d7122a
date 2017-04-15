@@ -1,0 +1,2 @@
+const u% = 4
+print u%
