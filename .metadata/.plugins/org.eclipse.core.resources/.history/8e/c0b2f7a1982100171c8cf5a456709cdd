@@ -425,7 +425,6 @@ public class MyVisitor <T> extends MyLanguageBaseVisitor<T> {
 	
 	public T visitIdn(MyLanguageParser.IdnContext ctx, String type_var){
 		String name=ctx.ID().getText();
-		name=name.toLowerCase();
 		int line=ctx.ID().getSymbol().getLine();
 		int col = ctx.ID().getSymbol().getCharPositionInLine()+1;
 		String suffix="";
